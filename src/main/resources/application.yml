@@ -1,0 +1,19 @@
+server:
+  port: 8088
+
+
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:mysql://localhost/account?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      max-active: 255
+      initial-size: 5
+      max-wait: 20000
+      min-idle: 5
+
+
+

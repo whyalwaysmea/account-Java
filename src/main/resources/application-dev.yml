@@ -1,0 +1,12 @@
+logging:
+  level.*: info
+spring:
+  datasource:
+    username: root
+    password: root
+  jpa:
+    show-sql: true
+  jackson:
+    serialization:
+      indent-output: true
+
