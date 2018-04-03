@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whyalwaysmea.account.mapper.WechatUserMapper">
+  <resultMap id="BaseResultMap" type="com.whyalwaysmea.account.po.WechatUser">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="wechat_openid" jdbcType="VARCHAR" property="wechatOpenid" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
+    <result column="gender" jdbcType="TINYINT" property="gender" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="country" jdbcType="VARCHAR" property="country" />
+    <result column="continuity_account_days" jdbcType="INTEGER" property="continuityAccountDays" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="last_account_time" jdbcType="TIMESTAMP" property="lastAccountTime" />
+  </resultMap>
+  <resultMap id="BaseResultMap" type="com.whyalwaysmea.account.po.WechatUser">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="wechat_openid" jdbcType="VARCHAR" property="wechatOpenid" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
+    <result column="gender" jdbcType="TINYINT" property="gender" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="country" jdbcType="VARCHAR" property="country" />
+    <result column="continuity_account_days" jdbcType="INTEGER" property="continuityAccountDays" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="last_account_time" jdbcType="TIMESTAMP" property="lastAccountTime" />
+  </resultMap>
+</mapper>

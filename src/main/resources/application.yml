@@ -6,8 +6,6 @@ spring:
   profiles:
     active: dev
   datasource:
-    url: jdbc:mysql://localhost/account?useUnicode=true&characterEncoding=utf-8&useSSL=false
-    driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       max-active: 255
@@ -15,5 +13,24 @@ spring:
       max-wait: 20000
       min-idle: 5
 
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: com.whyalwaysmea.account.po
+  configuration:
+    map-underscore-to-camel-case: true
 
+mapper:
+    mappers:
+        - com.whyalwaysmea.account.utils.MyMapper
+    # insert和update中，是否判断字符串类型!=''
+    not-empty: false
+    identity: MYSQL
 
+pagehelper:
+    # 指定分页插件使用哪种方言
+    helperDialect: mysql
+    # 分页合理化参数,当该参数设置为 true 时，pageNum<=0 时会查询第一页， pageNum>pages（超过总数时），会查询最后一页
+    reasonable: true
+    # 通过Mapper 接口参数来传递分页参数：分页插件会从查询方法的参数值中，自动根据上面 params 配置的字段中取值
+    supportMethodsArguments: true
+    params: count=countSql

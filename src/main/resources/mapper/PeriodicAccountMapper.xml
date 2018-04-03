@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whyalwaysmea.account.mapper.PeriodicAccountMapper">
+  <resultMap id="BaseResultMap" type="com.whyalwaysmea.account.po.PeriodicAccount">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="book_id" jdbcType="BIGINT" property="bookId" />
+    <result column="amount" jdbcType="INTEGER" property="amount" />
+    <result column="record_type" jdbcType="TINYINT" property="recordType" />
+    <result column="main_type" jdbcType="BIGINT" property="mainType" />
+    <result column="secondary_type" jdbcType="BIGINT" property="secondaryType" />
+    <result column="pay_income_way" jdbcType="BIGINT" property="payIncomeWay" />
+    <result column="peridoic_type" jdbcType="TINYINT" property="peridoicType" />
+    <result column="peridoic_date" jdbcType="TINYINT" property="peridoicDate" />
+    <result column="creator_id" jdbcType="VARCHAR" property="creatorId" />
+    <result column="record_time" jdbcType="TIMESTAMP" property="recordTime" />
+    <result column="next_record_time" jdbcType="TIMESTAMP" property="nextRecordTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
+  </resultMap>
+  <resultMap id="BaseResultMap" type="com.whyalwaysmea.account.po.PeriodicAccount">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="book_id" jdbcType="BIGINT" property="bookId" />
+    <result column="amount" jdbcType="INTEGER" property="amount" />
+    <result column="record_type" jdbcType="TINYINT" property="recordType" />
+    <result column="main_type" jdbcType="BIGINT" property="mainType" />
+    <result column="secondary_type" jdbcType="BIGINT" property="secondaryType" />
+    <result column="pay_income_way" jdbcType="BIGINT" property="payIncomeWay" />
+    <result column="peridoic_type" jdbcType="TINYINT" property="peridoicType" />
+    <result column="peridoic_date" jdbcType="TINYINT" property="peridoicDate" />
+    <result column="creator_id" jdbcType="VARCHAR" property="creatorId" />
+    <result column="record_time" jdbcType="TIMESTAMP" property="recordTime" />
+    <result column="next_record_time" jdbcType="TIMESTAMP" property="nextRecordTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
+  </resultMap>
+</mapper>
