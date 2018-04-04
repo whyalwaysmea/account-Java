@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="log.path" value="/home/account" />
+
+    <!--生产环境  -->
+    <springProfile name="prd">
+        <!-- 将日志记录到文件中 -->
+        <appender name="LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <File>${log.path}/account.log</File>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <FileNamePattern>/serverdata/log/datacenter.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            </rollingPolicy>
+            <encoder>
+                <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>
+            </encoder>
+        </appender>
+
+    </springProfile>
+
+    <!--测试环境  -->
+    <springProfile name="test, dev">
+        <appender name="LOG" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>
+            </encoder>
+        </appender>
+    </springProfile>
+
+    <root level="INFO">
+        <appender-ref ref="LOG"/>
+    </root>
+</configuration>
