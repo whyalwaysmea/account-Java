@@ -1,7 +1,7 @@
 package com.whyalwaysmea.account.po;
 
-import javax.persistence.*;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "periodic_account")
 public class PeriodicAccount {

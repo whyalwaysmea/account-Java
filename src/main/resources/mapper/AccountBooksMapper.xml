@@ -1,38 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.whyalwaysmea.account.mapper.AccountBooksMapper">
-  <resultMap id="BaseResultMap" type="com.whyalwaysmea.account.po.AccountBooks">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.whyalwaysmea.account.mapper.AccountBooksMapper" >
+  <resultMap id="BaseResultMap" type="com.whyalwaysmea.account.po.AccountBooks" >
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="cover_img" jdbcType="VARCHAR" property="coverImg" />
-    <result column="owner_id" jdbcType="VARCHAR" property="ownerId" />
-    <result column="creator_id" jdbcType="VARCHAR" property="creatorId" />
-    <result column="default_book" jdbcType="VARCHAR" property="defaultBook" />
-    <result column="budgetary_amount" jdbcType="INTEGER" property="budgetaryAmount" />
-    <result column="surplus_budgetary_amount" jdbcType="INTEGER" property="surplusBudgetaryAmount" />
-    <result column="book_type" jdbcType="TINYINT" property="bookType" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="last_account_time" jdbcType="TIMESTAMP" property="lastAccountTime" />
-    <result column="is_delete" jdbcType="TINYINT" property="isDelete" />
-  </resultMap>
-  <resultMap id="BaseResultMap" type="com.whyalwaysmea.account.po.AccountBooks">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="cover_img" jdbcType="VARCHAR" property="coverImg" />
-    <result column="owner_id" jdbcType="VARCHAR" property="ownerId" />
-    <result column="creator_id" jdbcType="VARCHAR" property="creatorId" />
-    <result column="default_book" jdbcType="VARCHAR" property="defaultBook" />
-    <result column="budgetary_amount" jdbcType="INTEGER" property="budgetaryAmount" />
-    <result column="surplus_budgetary_amount" jdbcType="INTEGER" property="surplusBudgetaryAmount" />
-    <result column="book_type" jdbcType="TINYINT" property="bookType" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="last_account_time" jdbcType="TIMESTAMP" property="lastAccountTime" />
-    <result column="is_delete" jdbcType="TINYINT" property="isDelete" />
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="cover_img" property="coverImg" jdbcType="VARCHAR" />
+    <result column="owner_id" property="ownerId" jdbcType="VARCHAR" />
+    <result column="creator_id" property="creatorId" jdbcType="VARCHAR" />
+    <result column="default_book" property="defaultBook" jdbcType="VARCHAR" />
+    <result column="budgetary_amount" property="budgetaryAmount" jdbcType="INTEGER" />
+    <result column="surplus_budgetary_amount" property="surplusBudgetaryAmount" jdbcType="INTEGER" />
+    <result column="book_type" property="bookType" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_account_time" property="lastAccountTime" jdbcType="TIMESTAMP" />
+    <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
   </resultMap>
 </mapper>

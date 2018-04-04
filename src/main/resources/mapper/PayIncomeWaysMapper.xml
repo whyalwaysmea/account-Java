@@ -1,20 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.whyalwaysmea.account.mapper.PayIncomeWaysMapper">
-  <resultMap id="BaseResultMap" type="com.whyalwaysmea.account.po.PayIncomeWays">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.whyalwaysmea.account.mapper.PayIncomeWaysMapper" >
+  <resultMap id="BaseResultMap" type="com.whyalwaysmea.account.po.PayIncomeWays" >
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="creator_id" jdbcType="VARCHAR" property="creatorId" />
-  </resultMap>
-  <resultMap id="BaseResultMap" type="com.whyalwaysmea.account.po.PayIncomeWays">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="creator_id" jdbcType="VARCHAR" property="creatorId" />
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="creator_id" property="creatorId" jdbcType="VARCHAR" />
   </resultMap>
 </mapper>

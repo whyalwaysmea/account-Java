@@ -1,20 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.whyalwaysmea.account.mapper.PeriodicAccountParterMapper">
-  <resultMap id="BaseResultMap" type="com.whyalwaysmea.account.po.PeriodicAccountParter">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.whyalwaysmea.account.mapper.PeriodicAccountParterMapper" >
+  <resultMap id="BaseResultMap" type="com.whyalwaysmea.account.po.PeriodicAccountParter" >
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="periodic_account_id" jdbcType="BIGINT" property="periodicAccountId" />
-    <result column="user_id" jdbcType="VARCHAR" property="userId" />
-  </resultMap>
-  <resultMap id="BaseResultMap" type="com.whyalwaysmea.account.po.PeriodicAccountParter">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="periodic_account_id" jdbcType="BIGINT" property="periodicAccountId" />
-    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="periodic_account_id" property="periodicAccountId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
   </resultMap>
 </mapper>
