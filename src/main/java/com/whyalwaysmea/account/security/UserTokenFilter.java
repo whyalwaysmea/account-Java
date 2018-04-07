@@ -1,6 +1,7 @@
 package com.whyalwaysmea.account.security;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,7 +39,6 @@ public class UserTokenFilter extends BasicHttpAuthenticationFilter {
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String authorization = httpServletRequest.getHeader("Authorization");
-        authorization = authorization.replace("Bearer ", "");
 
         UserToken token = new UserToken(authorization);
         // 提交给realm进行登入，如果错误他会抛出异常并被捕获
@@ -60,12 +60,12 @@ public class UserTokenFilter extends BasicHttpAuthenticationFilter {
             try {
                 executeLogin(request, response);
             } catch (Exception e) {
-                response401(request, response);
+                response401(request, response, e.getMessage());
                 return false;
             }
             return true;
         } else {
-            response401(request, response);
+            response401(request, response, null);
             return false;
         }
     }
@@ -91,10 +91,14 @@ public class UserTokenFilter extends BasicHttpAuthenticationFilter {
     /**
      * 将非法请求跳转到 /401
      */
-    private void response401(ServletRequest req, ServletResponse resp) {
+    private void response401(ServletRequest req, ServletResponse resp, String message) {
         try {
             HttpServletResponse httpServletResponse = (HttpServletResponse) resp;
-            httpServletResponse.sendRedirect("/unauthorized");
+            if(StringUtils.isNotBlank(message)) {
+                httpServletResponse.sendRedirect("/unauthorized?message=" + message);
+            } else {
+                httpServletResponse.sendRedirect("/unauthorized");
+            }
         } catch (IOException e) {
             log.error(e.getMessage());
         }

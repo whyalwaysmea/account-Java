@@ -1,7 +1,9 @@
 package com.whyalwaysmea.account.controller.common;
 
 import com.whyalwaysmea.account.dto.ExecuteResult;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -15,7 +17,11 @@ import springfox.documentation.annotations.ApiIgnore;
 public class CommonController {
 
     @RequestMapping("/unauthorized")
-    public ExecuteResult<String> unauthorized() {
-        return ExecuteResult.fail(401, "Unauthorized");
+    public ExecuteResult<String> unauthorized(@RequestParam(value = "message", required = false) String message) {
+        if(StringUtils.isNotBlank(message)) {
+            return ExecuteResult.fail(401, message);
+        } else {
+            return ExecuteResult.fail(401, "Unauthorized");
+        }
     }
 }
