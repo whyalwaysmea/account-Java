@@ -17,6 +17,17 @@ public interface UserService {
     WechatUser getWechatUser(String openid);
 
     /**
+     * 根据token获取当前用户id
+     * @return
+     */
+    String getCurrentUserId();
+
+    /**
+     * 根据token获取当前用户
+     */
+    WechatUser getCurrentUser();
+
+    /**
      * 新增微信用户
      * @param wechatUser
      */

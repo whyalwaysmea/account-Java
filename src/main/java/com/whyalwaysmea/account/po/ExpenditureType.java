@@ -1,8 +1,14 @@
 package com.whyalwaysmea.account.po;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Table(name = "expenditure_type")
+@Getter
+@Setter
 public class ExpenditureType {
     /**
      * 分类id
@@ -22,7 +28,7 @@ public class ExpenditureType {
     private String name;
 
     /**
-     * 分类创建者， -1表示所有人都有
+     * 分类创建者
      */
     @Column(name = "creator_id")
     private String creatorId;
@@ -34,92 +40,16 @@ public class ExpenditureType {
     private String iconUrl;
 
     /**
-     * 获取分类id
-     *
-     * @return id - 分类id
+     * 排序id
      */
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "order_id")
+    private Integer orderId;
 
     /**
-     * 设置分类id
-     *
-     * @param id 分类id
+     * 创建时间
      */
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(name = "create_time")
+    private Date createTime;
 
-    /**
-     * 获取分类父id
-     *
-     * @return pid - 分类父id
-     */
-    public Long getPid() {
-        return pid;
-    }
 
-    /**
-     * 设置分类父id
-     *
-     * @param pid 分类父id
-     */
-    public void setPid(Long pid) {
-        this.pid = pid;
-    }
-
-    /**
-     * 获取分类名称
-     *
-     * @return name - 分类名称
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * 设置分类名称
-     *
-     * @param name 分类名称
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * 获取分类创建者， -1表示所有人都有
-     *
-     * @return creator_id - 分类创建者， -1表示所有人都有
-     */
-    public String getCreatorId() {
-        return creatorId;
-    }
-
-    /**
-     * 设置分类创建者， -1表示所有人都有
-     *
-     * @param creatorId 分类创建者， -1表示所有人都有
-     */
-    public void setCreatorId(String creatorId) {
-        this.creatorId = creatorId;
-    }
-
-    /**
-     * 获取分类icon url
-     *
-     * @return icon_url - 分类icon url
-     */
-    public String getIconUrl() {
-        return iconUrl;
-    }
-
-    /**
-     * 设置分类icon url
-     *
-     * @param iconUrl 分类icon url
-     */
-    public void setIconUrl(String iconUrl) {
-        this.iconUrl = iconUrl;
-    }
 }

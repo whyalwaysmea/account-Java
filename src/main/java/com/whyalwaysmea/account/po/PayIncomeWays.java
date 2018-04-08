@@ -1,8 +1,14 @@
 package com.whyalwaysmea.account.po;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Table(name = "pay_income_ways")
+@Getter
+@Setter
 public class PayIncomeWays {
     /**
      * 方式id
@@ -17,62 +23,26 @@ public class PayIncomeWays {
     private String name;
 
     /**
-     * 收支方式创建者， -1表示所有人都有
+     * 收支方式创建者
      */
     @Column(name = "creator_id")
     private String creatorId;
 
     /**
-     * 获取方式id
-     *
-     * @return id - 方式id
+     * 分类icon url
      */
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "icon_url")
+    private String iconUrl;
 
     /**
-     * 设置方式id
-     *
-     * @param id 方式id
+     * 排序id
      */
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(name = "order_id")
+    private Integer orderId;
 
     /**
-     * 获取收支方式名称
-     *
-     * @return name - 收支方式名称
+     * 创建时间
      */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * 设置收支方式名称
-     *
-     * @param name 收支方式名称
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * 获取收支方式创建者， -1表示所有人都有
-     *
-     * @return creator_id - 收支方式创建者， -1表示所有人都有
-     */
-    public String getCreatorId() {
-        return creatorId;
-    }
-
-    /**
-     * 设置收支方式创建者， -1表示所有人都有
-     *
-     * @param creatorId 收支方式创建者， -1表示所有人都有
-     */
-    public void setCreatorId(String creatorId) {
-        this.creatorId = creatorId;
-    }
+    @Column(name = "create_time")
+    private Date createTime;
 }
