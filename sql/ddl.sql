@@ -1,9 +1,8 @@
 /*
-SQLyog 企业版 - MySQL GUI v8.14 
-MySQL - 5.7.17-log : Database - account
+SQLyog Ultimate v11.3 (32 bit)
+MySQL - 5.7.20-log : Database - account
 *********************************************************************
 */
-
 
 /*!40101 SET NAMES utf8 */;
 
@@ -104,8 +103,10 @@ CREATE TABLE `expenditure_type` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '分类id',
   `pid` bigint(20) NOT NULL COMMENT '分类父id',
   `name` varchar(36) NOT NULL COMMENT '分类名称',
-  `creator_id` varchar(36) DEFAULT '-1' COMMENT '分类创建者， -1表示所有人都有',
+  `creator_id` varchar(36) DEFAULT '-1' COMMENT '分类创建者',
   `icon_url` varchar(255) DEFAULT NULL COMMENT '分类icon url',
+  `order_id` int(20) DEFAULT NULL COMMENT '排序id',
+  `create_time` date DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `idx_creator_id` (`creator_id`),
   KEY `idx_pid` (`pid`)
@@ -119,8 +120,10 @@ CREATE TABLE `income_type` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '分类id',
   `pid` bigint(20) NOT NULL COMMENT '分类父id',
   `name` varchar(36) NOT NULL COMMENT '分类名称',
-  `creator_id` varchar(36) DEFAULT '-1' COMMENT '分类创建者， -1表示所有人都有',
+  `creator_id` varchar(36) DEFAULT '-1' COMMENT '分类创建者',
   `icon_url` varchar(255) DEFAULT NULL COMMENT '分类icon url',
+  `order_id` int(20) DEFAULT NULL COMMENT '序号',
+  `create_time` date DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `idx_creator_id` (`creator_id`),
   KEY `idx_pid` (`pid`)
@@ -133,7 +136,10 @@ DROP TABLE IF EXISTS `pay_income_ways`;
 CREATE TABLE `pay_income_ways` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '方式id',
   `name` varchar(36) NOT NULL COMMENT '收支方式名称',
-  `creator_id` varchar(36) DEFAULT '-1' COMMENT '收支方式创建者， -1表示所有人都有',
+  `creator_id` varchar(36) DEFAULT '-1' COMMENT '收支方式创建者',
+  `icon_url` varchar(255) DEFAULT NULL COMMENT 'icon的url',
+  `order_id` int(11) DEFAULT NULL COMMENT '排序id',
+  `create_time` date DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `idx_creator_id` (`creator_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='收支方式';
