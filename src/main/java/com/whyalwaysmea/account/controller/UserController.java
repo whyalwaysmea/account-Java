@@ -42,4 +42,7 @@ public class UserController {
         WechatUser currentUser = userService.getCurrentUser();
         return ExecuteResult.ok(currentUser);
     }
+
 }
+
+

@@ -1,6 +1,6 @@
 /*
-SQLyog Ultimate v11.3 (32 bit)
-MySQL - 5.7.20-log : Database - account
+SQLyog 企业版 - MySQL GUI v8.14
+MySQL - 5.7.17-log : Database - account
 *********************************************************************
 */
 
@@ -26,6 +26,8 @@ CREATE TABLE `account_book_parters` (
   PRIMARY KEY (`book_id`,`wechat_openid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账本参与者';
 
+/*Data for the table `account_book_parters` */
+
 /*Table structure for table `account_books` */
 
 DROP TABLE IF EXISTS `account_books`;
@@ -46,6 +48,8 @@ CREATE TABLE `account_books` (
   PRIMARY KEY (`id`),
   KEY `idx_delete` (`is_delete`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账本';
+
+/*Data for the table `account_books` */
 
 /*Table structure for table `account_record` */
 
@@ -71,6 +75,8 @@ CREATE TABLE `account_record` (
   KEY `idx_record_time` (`record_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账本记录了';
 
+/*Data for the table `account_record` */
+
 /*Table structure for table `account_record_parters` */
 
 DROP TABLE IF EXISTS `account_record_parters`;
@@ -80,6 +86,8 @@ CREATE TABLE `account_record_parters` (
   `wechat_openid` varchar(36) NOT NULL COMMENT '微信用户openid',
   PRIMARY KEY (`book_id`,`wechat_openid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账本参与者';
+
+/*Data for the table `account_record_parters` */
 
 /*Table structure for table `budgetary` */
 
@@ -95,22 +103,28 @@ CREATE TABLE `budgetary` (
   KEY `idx_account_book_id` (`account_book_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='预算详情';
 
+/*Data for the table `budgetary` */
+
 /*Table structure for table `expenditure_type` */
 
 DROP TABLE IF EXISTS `expenditure_type`;
 
 CREATE TABLE `expenditure_type` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '分类id',
-  `pid` bigint(20) NOT NULL COMMENT '分类父id',
+  `pid` bigint(20) DEFAULT NULL COMMENT '分类父id',
   `name` varchar(36) NOT NULL COMMENT '分类名称',
-  `creator_id` varchar(36) DEFAULT '-1' COMMENT '分类创建者',
+  `creator_id` varchar(36) NOT NULL COMMENT '分类创建者',
   `icon_url` varchar(255) DEFAULT NULL COMMENT '分类icon url',
   `order_id` int(20) DEFAULT NULL COMMENT '排序id',
-  `create_time` date DEFAULT NULL COMMENT '创建时间',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `idx_creator_id` (`creator_id`),
   KEY `idx_pid` (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='支出分类';
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8 COMMENT='支出分类';
+
+/*Data for the table `expenditure_type` */
+
+insert  into `expenditure_type`(`id`,`pid`,`name`,`creator_id`,`icon_url`,`order_id`,`create_time`) values (1,NULL,'普通','-1',NULL,1,'2018-04-10 16:16:10'),(2,NULL,'餐饮','-1',NULL,2,'2018-04-10 16:16:10'),(3,NULL,'服饰','-1',NULL,3,'2018-04-10 16:16:10'),(4,NULL,'购物','-1',NULL,4,'2018-04-10 16:16:10'),(5,NULL,'交通','-1',NULL,5,'2018-04-10 16:16:10'),(6,NULL,'娱乐','-1',NULL,6,'2018-04-10 16:16:10'),(7,NULL,'居家','-1',NULL,7,'2018-04-10 16:16:10'),(8,NULL,'其他','-1',NULL,8,'2018-04-10 16:16:10'),(9,1,'早餐','-1',NULL,2,'2018-04-10 16:18:05'),(10,1,'午餐','-1',NULL,3,'2018-04-10 16:18:05'),(11,1,'晚餐','-1',NULL,4,'2018-04-10 16:18:05'),(12,1,'夜宵','-1',NULL,5,'2018-04-10 16:18:05'),(13,1,'油盐酱醋','-1',NULL,6,'2018-04-10 16:18:05'),(14,1,'买菜','-1',NULL,7,'2018-04-10 16:18:05'),(15,1,'烟酒茶','-1',NULL,8,'2018-04-10 16:18:05'),(16,1,'水果','-1',NULL,9,'2018-04-10 16:18:05'),(17,1,'零食','-1',NULL,10,'2018-04-10 16:18:05'),(18,1,'饭卡','-1',NULL,11,'2018-04-10 16:18:05'),(19,1,'聚会','-1',NULL,12,'2018-04-10 16:18:05'),(20,2,'衣服','-1',NULL,1,'2018-04-10 16:22:33'),(21,2,'裤子','-1',NULL,2,'2018-04-10 16:22:33'),(22,2,'鞋子','-1',NULL,3,'2018-04-10 16:22:33'),(23,2,'包包','-1',NULL,4,'2018-04-10 16:22:33'),(24,2,'网购','-1',NULL,5,'2018-04-10 16:22:33'),(25,2,'其他','-1',NULL,6,'2018-04-10 16:22:33'),(26,3,'网购剁手','-1',NULL,1,'2018-04-10 16:24:44'),(27,3,'洗护用品','-1',NULL,2,'2018-04-10 16:24:44'),(28,3,'厨房用品','-1',NULL,3,'2018-04-10 16:24:44'),(29,3,'家居日用','-1',NULL,4,'2018-04-10 16:24:44'),(30,3,'家具家电','-1',NULL,5,'2018-04-10 16:24:44'),(31,3,'汽车用品','-1',NULL,6,'2018-04-10 16:24:44'),(32,3,'数码产品','-1',NULL,7,'2018-04-10 16:24:44'),(33,3,'办公用品','-1',NULL,8,'2018-04-10 16:24:44'),(34,3,'运动用品','-1',NULL,9,'2018-04-10 16:24:44'),(35,4,'公交卡','-1',NULL,1,'2018-04-10 16:26:20'),(36,4,'打车','-1',NULL,2,'2018-04-10 16:26:20'),(37,4,'加油','-1',NULL,3,'2018-04-10 16:26:20'),(38,4,'停车','-1',NULL,4,'2018-04-10 16:26:20'),(39,4,'保养','-1',NULL,5,'2018-04-10 16:26:20'),(40,4,'维修','-1',NULL,6,'2018-04-10 16:26:20'),(41,4,'违章罚款','-1',NULL,7,'2018-04-10 16:26:20'),(42,4,'外出','-1',NULL,8,'2018-04-10 16:26:20'),(43,5,'电影','-1',NULL,1,'2018-04-10 16:27:11'),(44,5,'K歌','-1',NULL,2,'2018-04-10 16:27:11'),(45,5,'麻将','-1',NULL,4,'2018-04-10 16:27:11'),(46,5,'聚会','-1',NULL,3,'2018-04-10 16:27:11'),(47,5,'游戏','-1',NULL,5,'2018-04-10 16:27:11'),(48,5,'旅游','-1',NULL,6,'2018-04-10 16:27:11'),(49,6,'房租','-1',NULL,1,'2018-04-10 16:27:53'),(50,6,'话费宽带','-1',NULL,2,'2018-04-10 16:27:53'),(51,6,'水电燃气','-1',NULL,4,'2018-04-10 16:27:53'),(52,6,'物业','-1',NULL,3,'2018-04-10 16:27:53'),(53,6,'家政服务','-1',NULL,5,'2018-04-10 16:27:53');
 
 /*Table structure for table `income_type` */
 
@@ -118,16 +132,20 @@ DROP TABLE IF EXISTS `income_type`;
 
 CREATE TABLE `income_type` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '分类id',
-  `pid` bigint(20) NOT NULL COMMENT '分类父id',
+  `pid` bigint(20) DEFAULT NULL COMMENT '分类父id',
   `name` varchar(36) NOT NULL COMMENT '分类名称',
   `creator_id` varchar(36) DEFAULT '-1' COMMENT '分类创建者',
   `icon_url` varchar(255) DEFAULT NULL COMMENT '分类icon url',
   `order_id` int(20) DEFAULT NULL COMMENT '序号',
-  `create_time` date DEFAULT NULL COMMENT '创建时间',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `idx_creator_id` (`creator_id`),
   KEY `idx_pid` (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='收入分类';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='收入分类';
+
+/*Data for the table `income_type` */
+
+insert  into `income_type`(`id`,`pid`,`name`,`creator_id`,`icon_url`,`order_id`,`create_time`) values (1,NULL,'工资','-1',NULL,1,'2018-04-10 16:31:48'),(2,NULL,'生活费','-1',NULL,2,'2018-04-10 16:31:53'),(3,NULL,'兼职','-1',NULL,3,'2018-04-10 16:32:02'),(4,NULL,'其他','-1',NULL,4,'2018-04-10 16:32:12');
 
 /*Table structure for table `pay_income_ways` */
 
@@ -139,10 +157,14 @@ CREATE TABLE `pay_income_ways` (
   `creator_id` varchar(36) DEFAULT '-1' COMMENT '收支方式创建者',
   `icon_url` varchar(255) DEFAULT NULL COMMENT 'icon的url',
   `order_id` int(11) DEFAULT NULL COMMENT '排序id',
-  `create_time` date DEFAULT NULL COMMENT '创建时间',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `idx_creator_id` (`creator_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='收支方式';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='收支方式';
+
+/*Data for the table `pay_income_ways` */
+
+insert  into `pay_income_ways`(`id`,`name`,`creator_id`,`icon_url`,`order_id`,`create_time`) values (1,'支付宝','-1',NULL,1,'2018-04-10 16:32:30'),(2,'微信','-1',NULL,2,'2018-04-10 16:32:37'),(3,'现金','-1',NULL,3,'2018-04-10 16:32:42'),(4,'信用卡','-1',NULL,4,'2018-04-10 16:32:48');
 
 /*Table structure for table `periodic_account` */
 
@@ -168,6 +190,8 @@ CREATE TABLE `periodic_account` (
   KEY `idx_book_id` (`book_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='周期帐';
 
+/*Data for the table `periodic_account` */
+
 /*Table structure for table `periodic_account_parter` */
 
 DROP TABLE IF EXISTS `periodic_account_parter`;
@@ -180,6 +204,8 @@ CREATE TABLE `periodic_account_parter` (
   KEY `idx_periodic_account_id` (`periodic_account_id`),
   KEY `idx_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='周期帐参与者';
+
+/*Data for the table `periodic_account_parter` */
 
 /*Table structure for table `wechat_user` */
 
@@ -199,6 +225,8 @@ CREATE TABLE `wechat_user` (
   `last_account_time` datetime DEFAULT NULL COMMENT '最后记账时间',
   PRIMARY KEY (`wechat_openid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信用户信息表';
+
+/*Data for the table `wechat_user` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
