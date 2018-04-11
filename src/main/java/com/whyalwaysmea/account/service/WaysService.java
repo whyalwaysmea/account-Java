@@ -24,7 +24,7 @@ public interface WaysService {
     /**
      * 移除支出分类
      */
-    void removeExpenditureType();
+    boolean deleteExpenditureType(int id);
 
     /**
      * 排序支出分类

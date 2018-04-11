@@ -1,5 +1,6 @@
 package com.whyalwaysmea.account.controller;
 
+import com.whyalwaysmea.account.controller.common.BaseController;
 import com.whyalwaysmea.account.dto.ExecuteResult;
 import com.whyalwaysmea.account.po.WechatUser;
 import com.whyalwaysmea.account.service.UserService;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/user")
 @Api(description = "用户相关")
-public class UserController {
+public class UserController extends BaseController {
 
     @Autowired
     private UserService userService;

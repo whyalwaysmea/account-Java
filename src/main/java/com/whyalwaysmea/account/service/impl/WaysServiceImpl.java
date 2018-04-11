@@ -1,5 +1,7 @@
 package com.whyalwaysmea.account.service.impl;
 
+import com.whyalwaysmea.account.enums.WaysError;
+import com.whyalwaysmea.account.exception.MyException;
 import com.whyalwaysmea.account.mapper.ExpenditureTypeMapper;
 import com.whyalwaysmea.account.mapper.IncomeTypeMapper;
 import com.whyalwaysmea.account.parameters.IncomeAndExpenditureTypeParam;
@@ -33,7 +35,7 @@ public class WaysServiceImpl implements WaysService {
         if(pid != null) {
             ExpenditureType expenditureType = expenditureTypeMapper.selectByPrimaryKey(pid);
             if(expenditureType == null) {
-                // todo throw error
+                throw new MyException(WaysError.ERROR_Expenditure_PID);
             }
             newExpenditure.setPid(pid);
             count = expenditureTypeMapper.selectCount(newExpenditure);
@@ -53,7 +55,9 @@ public class WaysServiceImpl implements WaysService {
         Long id = param.getId();
         ExpenditureType expenditureType = expenditureTypeMapper.selectByPrimaryKey(id);
         if(expenditureType == null) {
-            // todo throw error
+            if(expenditureType == null) {
+                throw new MyException(WaysError.ERROR_Expenditure_ID);
+            }
         }
         BeanUtils.copyProperties(param, expenditureType);
         expenditureTypeMapper.updateByPrimaryKey(expenditureType);
@@ -61,8 +65,15 @@ public class WaysServiceImpl implements WaysService {
     }
 
     @Override
-    public void removeExpenditureType() {
-
+    public boolean deleteExpenditureType(int id) {
+        ExpenditureType expenditureType = expenditureTypeMapper.selectByPrimaryKey(id);
+        if(expenditureType == null) {
+            if(expenditureType == null) {
+                throw new MyException(WaysError.ERROR_Expenditure_ID);
+            }
+        }
+        int delete = expenditureTypeMapper.deleteByPrimaryKey(id);
+        return delete == 1 ;
     }
 
     @Override
