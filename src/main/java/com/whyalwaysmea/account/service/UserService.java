@@ -1,5 +1,6 @@
 package com.whyalwaysmea.account.service;
 
+import com.whyalwaysmea.account.parameters.WechatUserInfoParam;
 import com.whyalwaysmea.account.po.WechatUser;
 
 /**
@@ -28,8 +29,8 @@ public interface UserService {
     WechatUser getCurrentUser();
 
     /**
-     * 新增微信用户
+     * 登录
      * @param wechatUser
      */
-    void saveWechatUser(WechatUser wechatUser);
+    WechatUser login(WechatUserInfoParam wechatUser);
 }

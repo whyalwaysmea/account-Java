@@ -2,16 +2,14 @@ package com.whyalwaysmea.account.controller;
 
 import com.whyalwaysmea.account.controller.common.BaseController;
 import com.whyalwaysmea.account.dto.ExecuteResult;
+import com.whyalwaysmea.account.parameters.WechatUserInfoParam;
 import com.whyalwaysmea.account.po.WechatUser;
 import com.whyalwaysmea.account.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author: whyalwaysmea
@@ -34,6 +32,13 @@ public class UserController extends BaseController {
         if(wechatUser == null) {
             return ExecuteResult.fail();
         }
+        return ExecuteResult.ok(wechatUser);
+    }
+
+    @ApiOperation("登录")
+    @PostMapping("/login")
+    public ExecuteResult<WechatUser> login(@RequestBody WechatUserInfoParam wechatUserInfo) {
+        WechatUser wechatUser = userService.login(wechatUserInfo);
         return ExecuteResult.ok(wechatUser);
     }
 

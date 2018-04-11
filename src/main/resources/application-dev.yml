@@ -7,4 +7,8 @@ spring:
   jackson:
     serialization:
       indent-output: true
+logging:
+  level:
+    com.whyalwaysmea.account.mapper: TRACE
+
 

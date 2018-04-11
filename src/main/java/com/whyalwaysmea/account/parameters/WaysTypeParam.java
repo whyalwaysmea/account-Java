@@ -15,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 @ApiModel("收入分类")
 @Getter
 @Setter
-public class IncomeAndExpenditureTypeParam {
+public class WaysTypeParam {
 
     @ApiModelProperty("条目id")
     private Long id;
