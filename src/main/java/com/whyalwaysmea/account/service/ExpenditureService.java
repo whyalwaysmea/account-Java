@@ -4,17 +4,32 @@ import com.whyalwaysmea.account.dto.PageBean;
 import com.whyalwaysmea.account.parameters.WaysTypeParam;
 import com.whyalwaysmea.account.po.ExpenditureType;
 
+import java.util.List;
+
 /**
  * @Author: Long
  * @Date: Create in 16:39 2018/4/10
  * @Description:    收入、支出分类
  */
-public interface WaysService {
+public interface ExpenditureService {
+
+    /**
+     * 获取默认的支持分类
+     * @return
+     */
+    List<ExpenditureType> getAllDefaultExpenditure();
 
     /**
      * 获取用户所有的父支出分类
      */
     PageBean<ExpenditureType> getAllParentExpenditure();
+
+    /**
+     * 获取指定父父类下的所有子条目
+     * @param pid
+     * @return
+     */
+    List<ExpenditureType> getChildExpenditureTypeByParendId(int pid);
 
     /**
      * 添加支出分类
@@ -37,18 +52,5 @@ public interface WaysService {
      */
     void orderExpenditureType();
 
-    /**
-     * 添加收入分类
-     */
-    void addIncomeType();
 
-    /**
-     * 移除收入分类
-     */
-    void removeIncomeType();
-
-    /**
-     * 排序收入分类
-     */
-    void orderIncomeType();
 }

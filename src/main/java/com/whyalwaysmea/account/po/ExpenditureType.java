@@ -1,6 +1,5 @@
 package com.whyalwaysmea.account.po;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -44,7 +43,7 @@ public class ExpenditureType {
      * 排序id
      */
     @Column(name = "order_id")
-    private Integer orderId;
+    private Long orderId;
 
     /**
      * 创建时间

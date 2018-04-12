@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public WechatUser login(WechatUserInfoParam param) {
         WechatUser wechatUser = userMapper.selectByPrimaryKey(param.getOpenId());
-        // 如果用户存在，则判断是否需要更新资料  头像/昵称
+        // 如果用户存在，则更新资料
         if(wechatUser != null) {
             BeanUtils.copyProperties(param, wechatUser);
             wechatUser.setWechatOpenid(param.getOpenId());
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
             userMapper.updateByPrimaryKey(wechatUser);
             return wechatUser;
         }
-        // 如果用户不存在，则新增
+        // 如果用户不存在，则新增，
         wechatUser = new WechatUser();
         BeanUtils.copyProperties(param, wechatUser);
         wechatUser.setWechatOpenid(param.getOpenId());
