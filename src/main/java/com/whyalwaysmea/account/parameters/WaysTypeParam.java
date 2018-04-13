@@ -31,6 +31,6 @@ public class WaysTypeParam {
     private String iconUrl;
 
     @ApiModelProperty("排序id")
-    private int orderId;
+    private Long orderId;
 
 }

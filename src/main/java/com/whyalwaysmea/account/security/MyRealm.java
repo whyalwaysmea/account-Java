@@ -9,6 +9,7 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
@@ -17,14 +18,12 @@ import javax.annotation.Resource;
  * @Date: Create in 2018/4/6 11:18
  * @Description:
  */
+@Component
 public class MyRealm extends AuthorizingRealm {
 
     @Resource
     private UserService userService;
 
-    /**
-     * 大坑！，必须重写此方法，不然Shiro会报错
-     */
     @Override
     public boolean supports(AuthenticationToken token) {
         return token instanceof UserToken;
@@ -47,7 +46,6 @@ public class MyRealm extends AuthorizingRealm {
         // 解密获得username，用于和数据库进行对比
         WechatUser user = userService.getWechatUser(token);
         if (user == null) {
-            // TODO 全局异常无法正常捕获
             throw new AuthenticationException("token invalid");
         }
         return new SimpleAuthenticationInfo(token, token, "my_realm");

@@ -28,17 +28,17 @@ CREATE TABLE `account_book_parters` (
 
 /*Data for the table `account_book_parters` */
 
-/*Table structure for table `account_books` */
+/*Table structure for table `account_book` */
 
-DROP TABLE IF EXISTS `account_books`;
+DROP TABLE IF EXISTS `account_book`;
 
-CREATE TABLE `account_books` (
+CREATE TABLE `account_book` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '账本id',
   `name` varchar(36) NOT NULL COMMENT '账本名称',
   `cover_img` varchar(255) DEFAULT NULL COMMENT '账本封面url',
   `owner_id` varchar(36) NOT NULL COMMENT '账本拥有者',
   `creator_id` varchar(36) NOT NULL COMMENT '账本创建者',
-  `default_book` varchar(4) DEFAULT NULL COMMENT '是否是默认账本',
+  `default_book` tinyint(4) DEFAULT NULL COMMENT '是否是默认账本',
   `budgetary_amount` int(11) DEFAULT '0' COMMENT '预算金额（分）',
   `surplus_budgetary_amount` int(11) DEFAULT '0' COMMENT '剩余预算金额（分）',
   `book_type` tinyint(4) NOT NULL COMMENT '账本类型  1：个人账本 2：多人账本',
@@ -49,7 +49,7 @@ CREATE TABLE `account_books` (
   KEY `idx_delete` (`is_delete`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账本';
 
-/*Data for the table `account_books` */
+/*Data for the table `account_book` */
 
 /*Table structure for table `account_record` */
 
@@ -115,16 +115,16 @@ CREATE TABLE `expenditure_type` (
   `name` varchar(36) NOT NULL COMMENT '分类名称',
   `creator_id` varchar(36) NOT NULL COMMENT '分类创建者',
   `icon_url` varchar(255) DEFAULT NULL COMMENT '分类icon url',
-  `order_id` int(20) DEFAULT NULL COMMENT '排序id',
+  `order_id` bigint(20) DEFAULT NULL COMMENT '排序id',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `idx_creator_id` (`creator_id`),
   KEY `idx_pid` (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8 COMMENT='支出分类';
+) ENGINE=InnoDB AUTO_INCREMENT=156 DEFAULT CHARSET=utf8 COMMENT='支出分类';
 
 /*Data for the table `expenditure_type` */
 
-insert  into `expenditure_type`(`id`,`pid`,`name`,`creator_id`,`icon_url`,`order_id`,`create_time`) values (1,NULL,'普通','-1',NULL,1,'2018-04-10 16:16:10'),(2,NULL,'餐饮','-1',NULL,2,'2018-04-10 16:16:10'),(3,NULL,'服饰','-1',NULL,3,'2018-04-10 16:16:10'),(4,NULL,'购物','-1',NULL,4,'2018-04-10 16:16:10'),(5,NULL,'交通','-1',NULL,5,'2018-04-10 16:16:10'),(6,NULL,'娱乐','-1',NULL,6,'2018-04-10 16:16:10'),(7,NULL,'居家','-1',NULL,7,'2018-04-10 16:16:10'),(8,NULL,'其他','-1',NULL,8,'2018-04-10 16:16:10'),(9,1,'早餐','-1',NULL,2,'2018-04-10 16:18:05'),(10,1,'午餐','-1',NULL,3,'2018-04-10 16:18:05'),(11,1,'晚餐','-1',NULL,4,'2018-04-10 16:18:05'),(12,1,'夜宵','-1',NULL,5,'2018-04-10 16:18:05'),(13,1,'油盐酱醋','-1',NULL,6,'2018-04-10 16:18:05'),(14,1,'买菜','-1',NULL,7,'2018-04-10 16:18:05'),(15,1,'烟酒茶','-1',NULL,8,'2018-04-10 16:18:05'),(16,1,'水果','-1',NULL,9,'2018-04-10 16:18:05'),(17,1,'零食','-1',NULL,10,'2018-04-10 16:18:05'),(18,1,'饭卡','-1',NULL,11,'2018-04-10 16:18:05'),(19,1,'聚会','-1',NULL,12,'2018-04-10 16:18:05'),(20,2,'衣服','-1',NULL,1,'2018-04-10 16:22:33'),(21,2,'裤子','-1',NULL,2,'2018-04-10 16:22:33'),(22,2,'鞋子','-1',NULL,3,'2018-04-10 16:22:33'),(23,2,'包包','-1',NULL,4,'2018-04-10 16:22:33'),(24,2,'网购','-1',NULL,5,'2018-04-10 16:22:33'),(25,2,'其他','-1',NULL,6,'2018-04-10 16:22:33'),(26,3,'网购剁手','-1',NULL,1,'2018-04-10 16:24:44'),(27,3,'洗护用品','-1',NULL,2,'2018-04-10 16:24:44'),(28,3,'厨房用品','-1',NULL,3,'2018-04-10 16:24:44'),(29,3,'家居日用','-1',NULL,4,'2018-04-10 16:24:44'),(30,3,'家具家电','-1',NULL,5,'2018-04-10 16:24:44'),(31,3,'汽车用品','-1',NULL,6,'2018-04-10 16:24:44'),(32,3,'数码产品','-1',NULL,7,'2018-04-10 16:24:44'),(33,3,'办公用品','-1',NULL,8,'2018-04-10 16:24:44'),(34,3,'运动用品','-1',NULL,9,'2018-04-10 16:24:44'),(35,4,'公交卡','-1',NULL,1,'2018-04-10 16:26:20'),(36,4,'打车','-1',NULL,2,'2018-04-10 16:26:20'),(37,4,'加油','-1',NULL,3,'2018-04-10 16:26:20'),(38,4,'停车','-1',NULL,4,'2018-04-10 16:26:20'),(39,4,'保养','-1',NULL,5,'2018-04-10 16:26:20'),(40,4,'维修','-1',NULL,6,'2018-04-10 16:26:20'),(41,4,'违章罚款','-1',NULL,7,'2018-04-10 16:26:20'),(42,4,'外出','-1',NULL,8,'2018-04-10 16:26:20'),(43,5,'电影','-1',NULL,1,'2018-04-10 16:27:11'),(44,5,'K歌','-1',NULL,2,'2018-04-10 16:27:11'),(45,5,'麻将','-1',NULL,4,'2018-04-10 16:27:11'),(46,5,'聚会','-1',NULL,3,'2018-04-10 16:27:11'),(47,5,'游戏','-1',NULL,5,'2018-04-10 16:27:11'),(48,5,'旅游','-1',NULL,6,'2018-04-10 16:27:11'),(49,6,'房租','-1',NULL,1,'2018-04-10 16:27:53'),(50,6,'话费宽带','-1',NULL,2,'2018-04-10 16:27:53'),(51,6,'水电燃气','-1',NULL,4,'2018-04-10 16:27:53'),(52,6,'物业','-1',NULL,3,'2018-04-10 16:27:53'),(53,6,'家政服务','-1',NULL,5,'2018-04-10 16:27:53');
+insert  into `expenditure_type`(`id`,`pid`,`name`,`creator_id`,`icon_url`,`order_id`,`create_time`) values (1,NULL,'普通','-1',NULL,90,'2018-04-10 16:16:10'),(2,NULL,'餐饮','-1',NULL,80,'2018-04-10 16:16:10'),(3,NULL,'服饰','-1',NULL,70,'2018-04-10 16:16:10'),(4,NULL,'购物','-1',NULL,60,'2018-04-10 16:16:10'),(5,NULL,'交通','-1',NULL,50,'2018-04-10 16:16:10'),(6,NULL,'娱乐','-1',NULL,40,'2018-04-10 16:16:10'),(7,NULL,'居家','-1',NULL,30,'2018-04-10 16:16:10'),(8,NULL,'其他','-1',NULL,20,'2018-04-10 16:16:10'),(9,1,'早餐','-1',NULL,110,'2018-04-10 16:18:05'),(10,1,'午餐','-1',NULL,100,'2018-04-10 16:18:05'),(11,1,'晚餐','-1',NULL,90,'2018-04-10 16:18:05'),(12,1,'夜宵','-1',NULL,80,'2018-04-10 16:18:05'),(13,1,'油盐酱醋','-1',NULL,70,'2018-04-10 16:18:05'),(14,1,'买菜','-1',NULL,60,'2018-04-10 16:18:05'),(15,1,'烟酒茶','-1',NULL,50,'2018-04-10 16:18:05'),(16,1,'水果','-1',NULL,40,'2018-04-10 16:18:05'),(17,1,'零食','-1',NULL,30,'2018-04-10 16:18:05'),(18,1,'饭卡','-1',NULL,20,'2018-04-10 16:18:05'),(19,1,'聚会','-1',NULL,10,'2018-04-10 16:18:05'),(20,2,'衣服','-1',NULL,100,'2018-04-10 16:22:33'),(21,2,'裤子','-1',NULL,90,'2018-04-10 16:22:33'),(22,2,'鞋子','-1',NULL,80,'2018-04-10 16:22:33'),(23,2,'包包','-1',NULL,70,'2018-04-10 16:22:33'),(24,2,'网购','-1',NULL,60,'2018-04-10 16:22:33'),(25,2,'其他','-1',NULL,50,'2018-04-10 16:22:33'),(26,3,'网购剁手','-1',NULL,40,'2018-04-10 16:24:44'),(27,3,'洗护用品','-1',NULL,30,'2018-04-10 16:24:44'),(28,3,'厨房用品','-1',NULL,20,'2018-04-10 16:24:44'),(29,3,'家居日用','-1',NULL,10,'2018-04-10 16:24:44'),(30,3,'家具家电','-1',NULL,100,'2018-04-10 16:24:44'),(31,3,'汽车用品','-1',NULL,90,'2018-04-10 16:24:44'),(32,3,'数码产品','-1',NULL,80,'2018-04-10 16:24:44'),(33,3,'办公用品','-1',NULL,70,'2018-04-10 16:24:44'),(34,3,'运动用品','-1',NULL,100,'2018-04-10 16:24:44'),(35,4,'公交卡','-1',NULL,90,'2018-04-10 16:26:20'),(36,4,'打车','-1',NULL,80,'2018-04-10 16:26:20'),(37,4,'加油','-1',NULL,70,'2018-04-10 16:26:20'),(38,4,'停车','-1',NULL,60,'2018-04-10 16:26:20'),(39,4,'保养','-1',NULL,50,'2018-04-10 16:26:20'),(40,4,'维修','-1',NULL,40,'2018-04-10 16:26:20'),(41,4,'违章罚款','-1',NULL,30,'2018-04-10 16:26:20'),(42,4,'外出','-1',NULL,20,'2018-04-10 16:26:20'),(43,5,'电影','-1',NULL,70,'2018-04-10 16:27:11'),(44,5,'K歌','-1',NULL,60,'2018-04-10 16:27:11'),(45,5,'麻将','-1',NULL,50,'2018-04-10 16:27:11'),(46,5,'聚会','-1',NULL,40,'2018-04-10 16:27:11'),(47,5,'游戏','-1',NULL,30,'2018-04-10 16:27:11'),(48,5,'旅游','-1',NULL,20,'2018-04-10 16:27:11'),(49,6,'房租','-1',NULL,110,'2018-04-10 16:27:53'),(50,6,'话费宽带','-1',NULL,100,'2018-04-10 16:27:53'),(51,6,'水电燃气','-1',NULL,90,'2018-04-10 16:27:53'),(52,6,'物业','-1',NULL,80,'2018-04-10 16:27:53'),(53,6,'家政服务','-1',NULL,70,'2018-04-10 16:27:53');
 
 /*Table structure for table `income_type` */
 
@@ -136,7 +136,7 @@ CREATE TABLE `income_type` (
   `name` varchar(36) NOT NULL COMMENT '分类名称',
   `creator_id` varchar(36) DEFAULT '-1' COMMENT '分类创建者',
   `icon_url` varchar(255) DEFAULT NULL COMMENT '分类icon url',
-  `order_id` int(20) DEFAULT NULL COMMENT '序号',
+  `order_id` bigint(20) DEFAULT NULL COMMENT '序号',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `idx_creator_id` (`creator_id`),
@@ -227,6 +227,8 @@ CREATE TABLE `wechat_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信用户信息表';
 
 /*Data for the table `wechat_user` */
+
+insert  into `wechat_user`(`wechat_openid`,`nick_name`,`avatar_url`,`gender`,`city`,`province`,`country`,`continuity_account_days`,`create_time`,`last_login_time`,`last_account_time`) values ('hahaha','哈哈哈',NULL,NULL,NULL,NULL,NULL,NULL,'2018-04-10 17:37:16','2018-04-10 17:37:16',NULL),('string','string','string',NULL,'string','string','string',NULL,'2018-04-11 17:48:50','2018-04-12 16:19:53',NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

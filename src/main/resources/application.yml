@@ -36,4 +36,5 @@ pagehelper:
     reasonable: true
     # 通过Mapper 接口参数来传递分页参数：分页插件会从查询方法的参数值中，自动根据上面 params 配置的字段中取值
     supportMethodsArguments: true
-    params: count=countSql
+    # 为了支持startPage(Object params)方法，增加了该参数来配置参数映射，用于从对象中根据属性名取值
+    params: pageNum=page;pageSize=limit

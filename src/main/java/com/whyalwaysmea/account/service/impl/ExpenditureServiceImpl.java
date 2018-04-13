@@ -1,8 +1,5 @@
 package com.whyalwaysmea.account.service.impl;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.whyalwaysmea.account.dto.PageBean;
 import com.whyalwaysmea.account.enums.WaysError;
 import com.whyalwaysmea.account.exception.MyException;
 import com.whyalwaysmea.account.mapper.ExpenditureTypeMapper;
@@ -38,13 +35,15 @@ public class ExpenditureServiceImpl implements ExpenditureService {
     }
 
     @Override
-    public PageBean<ExpenditureType> getAllParentExpenditure() {
+    public List<ExpenditureType> getAllParentExpenditure() {
         String currentUserId = UserUtils.getCurrentUserId();
         Example example = new Example(ExpenditureType.class);
-        example.createCriteria().andEqualTo("creatorId", currentUserId).andIsNull("pid");
-        Page<ExpenditureType> pageInfo = PageHelper.startPage(1, 10).doSelectPage(() -> expenditureTypeMapper.selectByExample(example));
-        log.info(pageInfo.toString());
-        return PageBean.data(pageInfo);
+        example.createCriteria()
+                .andEqualTo("creatorId", currentUserId)
+                .andIsNull("pid");
+        example.orderBy("orderId").desc();
+        List<ExpenditureType> expenditureTypes = expenditureTypeMapper.selectByExample(example);
+        return expenditureTypes;
     }
 
     @Override

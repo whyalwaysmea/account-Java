@@ -2,7 +2,6 @@ package com.whyalwaysmea.account.controller;
 
 import com.whyalwaysmea.account.controller.common.BaseController;
 import com.whyalwaysmea.account.dto.ExecuteResult;
-import com.whyalwaysmea.account.dto.PageBean;
 import com.whyalwaysmea.account.parameters.WaysTypeParam;
 import com.whyalwaysmea.account.po.ExpenditureType;
 import com.whyalwaysmea.account.service.ExpenditureService;
@@ -31,8 +30,8 @@ public class ExpenditureController extends BaseController {
 
     @ApiOperation("获取所有父类支出分类")
     @GetMapping("/parent/all")
-    public ExecuteResult<PageBean<ExpenditureType>> getAllParentExpenditureType() {
-        PageBean<ExpenditureType> expenditures = expenditureService.getAllParentExpenditure();
+    public ExecuteResult<List<ExpenditureType>> getAllParentExpenditureType() {
+        List<ExpenditureType> expenditures = expenditureService.getAllParentExpenditure();
         return ExecuteResult.ok(expenditures);
     }
 

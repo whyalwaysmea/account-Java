@@ -1,6 +1,5 @@
 package com.whyalwaysmea.account.service;
 
-import com.whyalwaysmea.account.dto.PageBean;
 import com.whyalwaysmea.account.parameters.WaysTypeParam;
 import com.whyalwaysmea.account.po.ExpenditureType;
 
@@ -14,7 +13,7 @@ import java.util.List;
 public interface ExpenditureService {
 
     /**
-     * 获取默认的支持分类
+     * 获取默认的支出分类
      * @return
      */
     List<ExpenditureType> getAllDefaultExpenditure();
@@ -22,7 +21,7 @@ public interface ExpenditureService {
     /**
      * 获取用户所有的父支出分类
      */
-    PageBean<ExpenditureType> getAllParentExpenditure();
+    List<ExpenditureType> getAllParentExpenditure();
 
     /**
      * 获取指定父父类下的所有子条目

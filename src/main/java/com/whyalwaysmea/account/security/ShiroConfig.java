@@ -7,6 +7,7 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -23,11 +24,14 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
+    @Autowired
+    private MyRealm myRealm;
+
+
     @Bean("securityManager")
     public DefaultWebSecurityManager getManager() {
         DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
-        // 使用自己的realm
-        manager.setRealm(myShiroRealm());
+        manager.setRealm(myRealm);
 
         DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
         DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
@@ -38,10 +42,6 @@ public class ShiroConfig {
         return manager;
     }
 
-    @Bean
-    public MyRealm myShiroRealm() {
-        return new MyRealm();
-    }
 
     @Bean("shiroFilter")
     public ShiroFilterFactoryBean factory(DefaultWebSecurityManager securityManager) {
