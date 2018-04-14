@@ -1,14 +1,12 @@
 package com.whyalwaysmea.account.po;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Table(name = "account_record")
-@Setter
-@Getter
+@Data
 public class AccountRecord {
     /**
      * 账本记录id
@@ -80,4 +78,6 @@ public class AccountRecord {
      * 备注
      */
     private String remark;
+
+
 }

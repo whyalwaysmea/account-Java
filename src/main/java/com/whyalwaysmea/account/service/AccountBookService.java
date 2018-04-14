@@ -1,6 +1,7 @@
 package com.whyalwaysmea.account.service;
 
 import com.whyalwaysmea.account.dto.PageBean;
+import com.whyalwaysmea.account.parameters.AccountBookParam;
 import com.whyalwaysmea.account.parameters.PageParam;
 import com.whyalwaysmea.account.po.AccountBook;
 
@@ -15,7 +16,9 @@ public interface AccountBookService {
      * 创建账本
      * @return
      */
-    AccountBook addAccountBook();
+    AccountBook addAccountBook(AccountBookParam accountBookParam);
+
+    AccountBook getAccountBook(long id);
 
     /**
      * 分页获取账本列表

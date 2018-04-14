@@ -1,14 +1,12 @@
 package com.whyalwaysmea.account.po;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Table(name = "income_type")
-@Getter
-@Setter
+@Data
 public class IncomeType {
     /**
      * 分类id
@@ -28,7 +26,7 @@ public class IncomeType {
     private String name;
 
     /**
-     * 分类创建者，
+     * 分类创建者
      */
     @Column(name = "creator_id")
     private String creatorId;
@@ -40,15 +38,16 @@ public class IncomeType {
     private String iconUrl;
 
     /**
-     * 排序id
+     * 序号
      */
     @Column(name = "order_id")
-    private Integer orderId;
+    private Long orderId;
 
     /**
      * 创建时间
      */
     @Column(name = "create_time")
     private Date createTime;
+
 
 }

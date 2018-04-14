@@ -38,13 +38,13 @@ CREATE TABLE `account_book` (
   `cover_img` varchar(255) DEFAULT NULL COMMENT '账本封面url',
   `owner_id` varchar(36) NOT NULL COMMENT '账本拥有者',
   `creator_id` varchar(36) NOT NULL COMMENT '账本创建者',
-  `default_book` tinyint(4) DEFAULT NULL COMMENT '是否是默认账本',
-  `budgetary_amount` int(11) DEFAULT '0' COMMENT '预算金额（分）',
+  `default_book` tinyint(4) DEFAULT 0 COMMENT '是否是默认账本, 1是',
+  `budgetary_amount` int(11) DEFAULT 0 COMMENT '预算金额（分）',
   `surplus_budgetary_amount` int(11) DEFAULT '0' COMMENT '剩余预算金额（分）',
-  `book_type` tinyint(4) NOT NULL COMMENT '账本类型  1：个人账本 2：多人账本',
+  `multiple_type` tinyint(4) NOT 0 COMMENT '账本类型  0：个人账本 1：多人账本',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `last_account_time` datetime DEFAULT NULL COMMENT '最后记账时间',
-  `is_delete` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否被删除， 1被删除',
+  `is_delete` tinyint(4) NOT NULL DEFAULT 0 COMMENT '是否被删除， 1被删除',
   PRIMARY KEY (`id`),
   KEY `idx_delete` (`is_delete`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账本';

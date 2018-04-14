@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AccountBookMapper extends MyMapper<AccountBook> {
+
+    AccountBook getAccountBook(long id);
+
 }

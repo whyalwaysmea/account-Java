@@ -2,7 +2,10 @@ package com.whyalwaysmea.account.parameters;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -11,12 +14,15 @@ import java.util.List;
  * @Description:
  */
 @ApiModel("账本")
+@Getter
+@Setter
 public class AccountBookParam {
 
     @ApiModelProperty("账本id")
     private Long id;
 
     @ApiModelProperty("账本名称")
+    @NotBlank(message = "账本名称不能为空")
     private String name;
 
     @ApiModelProperty("账本封面url")

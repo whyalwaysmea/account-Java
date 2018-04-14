@@ -1,14 +1,12 @@
 package com.whyalwaysmea.account.po;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Table(name = "expenditure_type")
-@Getter
-@Setter
+@Data
 public class ExpenditureType {
     /**
      * 分类id

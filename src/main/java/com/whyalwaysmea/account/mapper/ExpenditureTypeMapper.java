@@ -15,5 +15,4 @@ public interface ExpenditureTypeMapper extends MyMapper<ExpenditureType> {
      * @return
      */
     long getMaxOrderId(@Param("userId") String userId, @Param("pid") Long pid);
-
 }

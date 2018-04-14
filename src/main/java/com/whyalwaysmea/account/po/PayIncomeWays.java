@@ -1,14 +1,12 @@
 package com.whyalwaysmea.account.po;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Table(name = "pay_income_ways")
-@Getter
-@Setter
+@Data
 public class PayIncomeWays {
     /**
      * 方式id
@@ -29,7 +27,7 @@ public class PayIncomeWays {
     private String creatorId;
 
     /**
-     * 分类icon url
+     * icon的url
      */
     @Column(name = "icon_url")
     private String iconUrl;
@@ -45,4 +43,6 @@ public class PayIncomeWays {
      */
     @Column(name = "create_time")
     private Date createTime;
+
+
 }

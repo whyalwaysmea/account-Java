@@ -1,18 +1,27 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.whyalwaysmea.account.mapper.AccountBookMapper">
     <resultMap id="BaseResultMap" type="com.whyalwaysmea.account.po.AccountBook">
-        <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="name" property="name" jdbcType="VARCHAR"/>
-        <result column="cover_img" property="coverImg" jdbcType="VARCHAR"/>
-        <result column="owner_id" property="ownerId" jdbcType="VARCHAR"/>
-        <result column="creator_id" property="creatorId" jdbcType="VARCHAR"/>
-        <result column="default_book" property="defaultBook" jdbcType="VARCHAR"/>
-        <result column="budgetary_amount" property="budgetaryAmount" jdbcType="INTEGER"/>
-        <result column="surplus_budgetary_amount" property="surplusBudgetaryAmount" jdbcType="INTEGER"/>
-        <result column="book_type" property="bookType" jdbcType="TINYINT"/>
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-        <result column="last_account_time" property="lastAccountTime" jdbcType="TIMESTAMP"/>
-        <result column="is_delete" property="isDelete" jdbcType="TINYINT"/>
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="cover_img" jdbcType="VARCHAR" property="coverImg" />
+        <result column="owner_id" jdbcType="VARCHAR" property="ownerId" />
+        <result column="creator_id" jdbcType="VARCHAR" property="creatorId" />
+        <result column="default_book" jdbcType="VARCHAR" property="defaultBook" />
+        <result column="budgetary_amount" jdbcType="INTEGER" property="budgetaryAmount" />
+        <result column="surplus_budgetary_amount" jdbcType="INTEGER" property="surplusBudgetaryAmount" />
+        <result column="multiple_type" jdbcType="TINYINT" property="multipleType" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="last_account_time" jdbcType="TIMESTAMP" property="lastAccountTime" />
+        <result column="is_delete" jdbcType="TINYINT" property="isDelete" />
+        <collection property="participants" column="id" select="com.whyalwaysmea.account.mapper.AccountBookPartersMapper.getParters"/>
     </resultMap>
+
+    <sql id="allColumn" >
+        id, name, cover_img, owner_id, creator_id, default_book, budgetary_amount, surplus_budgetary_amount, multiple_type, create_time, last_account_time, is_delete
+    </sql>
+
+    <select id="getAccountBook" parameterType="long" resultMap="BaseResultMap" >
+        SELECT <include refid="allColumn" /> FROM account_book b WHERE id = #{id}
+    </select>
 </mapper>

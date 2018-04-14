@@ -1,15 +1,14 @@
 package com.whyalwaysmea.account.po;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Table(name = "account_book")
-@Getter
-@Setter
+@Data
 public class AccountBook {
     /**
      * 账本id
@@ -42,10 +41,10 @@ public class AccountBook {
     private String creatorId;
 
     /**
-     * 是否是默认账本
+     * 是否是默认账本, 1是
      */
     @Column(name = "default_book")
-    private String defaultBook;
+    private Boolean defaultBook;
 
     /**
      * 预算金额（分）
@@ -60,10 +59,10 @@ public class AccountBook {
     private Integer surplusBudgetaryAmount;
 
     /**
-     * 账本类型  1：个人账本 2：多人账本
+     * 账本类型  0：个人账本 1：多人账本
      */
-    @Column(name = "book_type")
-    private Byte bookType;
+    @Column(name = "multiple_type")
+    private Boolean multipleType;
 
     /**
      * 创建时间
@@ -81,10 +80,11 @@ public class AccountBook {
      * 是否被删除， 1被删除
      */
     @Column(name = "is_delete")
-    private Byte isDelete;
+    private Boolean isDelete;
 
     /**
      * 参与者
      */
-    private List<WechatUser> participant;
+    private List<WechatUser> participants = new ArrayList<>();
+
 }

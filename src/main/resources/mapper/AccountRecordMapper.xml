@@ -1,21 +1,21 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.whyalwaysmea.account.mapper.AccountRecordMapper">
     <resultMap id="BaseResultMap" type="com.whyalwaysmea.account.po.AccountRecord">
         <!--
           WARNING - @mbg.generated
         -->
-        <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="book_id" property="bookId" jdbcType="BIGINT"/>
-        <result column="amount" property="amount" jdbcType="INTEGER"/>
-        <result column="record_type" property="recordType" jdbcType="TINYINT"/>
-        <result column="main_type" property="mainType" jdbcType="BIGINT"/>
-        <result column="secondary_type" property="secondaryType" jdbcType="BIGINT"/>
-        <result column="pay_income_way" property="payIncomeWay" jdbcType="BIGINT"/>
-        <result column="creator_id" property="creatorId" jdbcType="VARCHAR"/>
-        <result column="record_time" property="recordTime" jdbcType="TIMESTAMP"/>
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-        <result column="last_account_time" property="lastAccountTime" jdbcType="TIMESTAMP"/>
-        <result column="remark" property="remark" jdbcType="LONGVARCHAR"/>
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="book_id" jdbcType="BIGINT" property="bookId" />
+        <result column="amount" jdbcType="INTEGER" property="amount" />
+        <result column="record_type" jdbcType="TINYINT" property="recordType" />
+        <result column="main_type" jdbcType="BIGINT" property="mainType" />
+        <result column="secondary_type" jdbcType="BIGINT" property="secondaryType" />
+        <result column="pay_income_way" jdbcType="BIGINT" property="payIncomeWay" />
+        <result column="creator_id" jdbcType="VARCHAR" property="creatorId" />
+        <result column="record_time" jdbcType="TIMESTAMP" property="recordTime" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="last_account_time" jdbcType="TIMESTAMP" property="lastAccountTime" />
+        <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
     </resultMap>
 </mapper>

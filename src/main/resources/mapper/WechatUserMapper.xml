@@ -1,20 +1,19 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.whyalwaysmea.account.mapper.WechatUserMapper" >
-  <resultMap id="BaseResultMap" type="com.whyalwaysmea.account.po.WechatUser" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="wechat_openid" property="wechatOpenid" jdbcType="VARCHAR" />
-    <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
-    <result column="avatar_url" property="avatarUrl" jdbcType="VARCHAR" />
-    <result column="gender" property="gender" jdbcType="TINYINT" />
-    <result column="city" property="city" jdbcType="VARCHAR" />
-    <result column="province" property="province" jdbcType="VARCHAR" />
-    <result column="country" property="country" jdbcType="VARCHAR" />
-    <result column="continuity_account_days" property="continuityAccountDays" jdbcType="INTEGER" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
-    <result column="last_account_time" property="lastAccountTime" jdbcType="TIMESTAMP" />
-  </resultMap>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whyalwaysmea.account.mapper.WechatUserMapper">
+    <resultMap id="BaseResultMap" type="com.whyalwaysmea.account.po.WechatUser">
+        <id column="wechat_openid" jdbcType="VARCHAR" property="wechatOpenid"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+        <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl"/>
+        <result column="gender" jdbcType="TINYINT" property="gender"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="province" jdbcType="VARCHAR" property="province"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="continuity_account_days" jdbcType="INTEGER" property="continuityAccountDays"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime"/>
+        <result column="last_account_time" jdbcType="TIMESTAMP" property="lastAccountTime"/>
+    </resultMap>
+
+
 </mapper>
