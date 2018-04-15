@@ -9,7 +9,9 @@ import lombok.Getter;
  */
 @Getter
 public enum AccountBookError implements CodeEnum {
-    ERROR_INSERT(2000, "insert error");
+    ERROR_INSERT(2000, "添加错误，请重试"),
+    ERROR_BUDGETARYAMOUNT(2001, "剩余预算不能超过总预算"),
+    ERROR_ACCOUNTBOOK(2001, "错误的账本信息");
 
     private Integer code;
     private String message;

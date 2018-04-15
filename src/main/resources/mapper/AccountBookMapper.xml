@@ -24,4 +24,12 @@
     <select id="getAccountBook" parameterType="long" resultMap="BaseResultMap" >
         SELECT <include refid="allColumn" /> FROM account_book b WHERE id = #{id}
     </select>
+
+    <select id="getAllAccountBook" parameterType="java.util.List" resultMap="BaseResultMap">
+        SELECT <include refid="allColumn" /> FROM account_book b WHERE id IN
+        <foreach collection="ids" open=" (" close=")"
+                 item="id" separator=",">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

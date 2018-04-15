@@ -34,6 +34,9 @@ public class AccountBookParam {
     @ApiModelProperty("预算金额")
     private Integer budgetaryAmount;
 
+    @ApiModelProperty("剩余预算金额")
+    private Integer surplusBudgetaryAmount;
+
     @ApiModelProperty("参与者id，创建者的不用传")
     private List<Long> participantIds;
 

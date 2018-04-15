@@ -85,6 +85,7 @@ public class AccountBook {
     /**
      * 参与者
      */
+    @Transient
     private List<WechatUser> participants = new ArrayList<>();
 
 }

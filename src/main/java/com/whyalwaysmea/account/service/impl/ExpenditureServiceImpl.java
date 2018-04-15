@@ -84,7 +84,7 @@ public class ExpenditureServiceImpl implements ExpenditureService {
             throw new MyException(WaysError.ERROR_Expenditure_ID);
         }
         BeanUtils.copyProperties(param, expenditureType);
-        expenditureTypeMapper.updateByPrimaryKey(expenditureType);
+        expenditureTypeMapper.updateByPrimaryKeySelective(expenditureType);
         return expenditureType;
     }
 

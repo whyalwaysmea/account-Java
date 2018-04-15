@@ -18,6 +18,18 @@ public interface AccountBookService {
      */
     AccountBook addAccountBook(AccountBookParam accountBookParam);
 
+    /**
+     * 更新账本
+     * @param accountBookParam
+     * @return
+     */
+    AccountBook updateAccountBook(AccountBookParam accountBookParam);
+
+    /**
+     * 根据id获取账本信息
+     * @param id
+     * @return
+     */
     AccountBook getAccountBook(long id);
 
     /**
@@ -25,4 +37,10 @@ public interface AccountBookService {
      * @return
      */
     PageBean<AccountBook> getAllAccountBook(PageParam pageParam);
+
+    /**
+     * 参与到账本
+     * @return
+     */
+    Boolean joinAccountBook(long id);
 }

@@ -1,18 +1,28 @@
 package com.whyalwaysmea.account.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.whyalwaysmea.account.dto.PageBean;
+import com.whyalwaysmea.account.enums.AccountBookError;
+import com.whyalwaysmea.account.enums.CommonError;
+import com.whyalwaysmea.account.exception.MyException;
 import com.whyalwaysmea.account.mapper.AccountBookMapper;
 import com.whyalwaysmea.account.mapper.AccountBookPartersMapper;
 import com.whyalwaysmea.account.parameters.AccountBookParam;
 import com.whyalwaysmea.account.parameters.PageParam;
 import com.whyalwaysmea.account.po.AccountBook;
 import com.whyalwaysmea.account.po.AccountBookParters;
+import com.whyalwaysmea.account.po.WechatUser;
 import com.whyalwaysmea.account.service.AccountBookService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author: Long
@@ -52,6 +62,39 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
     }
 
     @Override
+    public AccountBook updateAccountBook(AccountBookParam accountBookParam) {
+        AccountBook accountBook = getAccountBook(accountBookParam.getId());
+        List<String> parterIds = accountBook.getParticipants().stream().map(wechatUser -> wechatUser.getWechatOpenid()).collect(Collectors.toList());
+        if(accountBook == null || !parterIds.contains(getCurrentUserId())) {
+            throw new MyException(CommonError.INSUFFICIENT_PERMISSIONS);
+        }
+
+        if(StringUtils.isNotEmpty(accountBookParam.getName())) {
+            accountBook.setName(accountBookParam.getName());
+        }
+
+        if(accountBookParam.getDefaultBook() != null) {
+            accountBook.setDefaultBook(accountBookParam.getDefaultBook());
+        }
+
+        if(accountBookParam.getBudgetaryAmount() != null) {
+            accountBook.setBudgetaryAmount(accountBookParam.getBudgetaryAmount());
+        }
+
+        if(accountBookParam.getSurplusBudgetaryAmount() != null) {
+            if(accountBookParam.getSurplusBudgetaryAmount() > accountBook.getBudgetaryAmount()) {
+                throw new MyException(AccountBookError.ERROR_BUDGETARYAMOUNT);
+            } else {
+                accountBook.setSurplusBudgetaryAmount(accountBookParam.getSurplusBudgetaryAmount());
+            }
+        }
+
+        accountBookMapper.updateByPrimaryKeySelective(accountBook);
+
+        return null;
+    }
+
+    @Override
     public AccountBook getAccountBook(long id) {
         AccountBook accountBook = accountBookMapper.getAccountBook(id);
         return accountBook;
@@ -59,6 +102,37 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
 
     @Override
     public PageBean<AccountBook> getAllAccountBook(PageParam pageParam) {
-        return null;
+        AccountBookParters accountBookParters = new AccountBookParters();
+        accountBookParters.setWechatOpenid(getCurrentUserId());
+        List<AccountBookParters> parters = partersMapper.select(accountBookParters);
+        List<Long> bookIds = parters.stream().map(parter -> parter.getBookId()).collect(Collectors.toList());
+        PageHelper.startPage(pageParam);
+        if(CollectionUtils.isEmpty(bookIds)) {
+            return PageBean.data(null);
+        } else {
+            List<AccountBook> allAccountBook = accountBookMapper.getAllAccountBook(bookIds);
+            return PageBean.data(allAccountBook);
+        }
+    }
+
+    @Override
+    public Boolean joinAccountBook(long id) {
+        AccountBook accountBook = accountBookMapper.getAccountBook(id);
+        if(accountBook == null) {
+            throw new MyException(AccountBookError.ERROR_ACCOUNTBOOK);
+        }
+
+        List<WechatUser> participants = accountBook.getParticipants();
+        List<String> parterIds = participants.stream().map(wechatUser -> wechatUser.getWechatOpenid()).collect(Collectors.toList());
+        if(!parterIds.contains(getCurrentUserId())) {
+            parterIds.add(getCurrentUserId());
+            AccountBookParters accountBookParters = new AccountBookParters();
+            accountBookParters.setUser(getCurrentUser());
+            accountBookParters.setBookId(id);
+            partersMapper.insert(accountBookParters);
+            return true;
+        }
+
+        return false;
     }
 }

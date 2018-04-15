@@ -52,6 +52,10 @@ public class PageBean<T> implements Serializable {
     }
 
     public static <T> PageBean<T> data(List<T> list) {
+        if(list == null) {
+            Page<T> objects = new Page<>();
+            return new PageBean<T>(objects);
+        }
         return new PageBean<>(list);
     }
 }

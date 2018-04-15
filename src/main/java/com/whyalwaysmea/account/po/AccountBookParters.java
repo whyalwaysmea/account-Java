@@ -21,6 +21,7 @@ public class AccountBookParters {
     @Column(name = "wechat_openid")
     private String wechatOpenid;
 
+    @Transient
     private WechatUser user;
 
 }
