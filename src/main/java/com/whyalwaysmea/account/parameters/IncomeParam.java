@@ -2,20 +2,18 @@ package com.whyalwaysmea.account.parameters;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
 /**
- * @Author: Long
- * @Date: Create in 16:46 2018/4/10
+ * @Author: whyalwaysmea
+ * @Date: Create in 2018/4/15 19:39
  * @Description:
  */
 @ApiModel("收入分类")
-@Getter
-@Setter
-public class WaysTypeParam {
+@Data
+public class IncomeParam {
 
     @ApiModelProperty("条目id")
     private Long id;
@@ -32,5 +30,4 @@ public class WaysTypeParam {
 
     @ApiModelProperty("排序id")
     private Long orderId;
-
 }

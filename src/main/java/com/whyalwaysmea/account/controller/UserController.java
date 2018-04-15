@@ -25,7 +25,6 @@ public class UserController extends BaseController {
     private UserService userService;
 
     @ApiOperation("获取用户信息")
-    // @ApiImplicitParam(paramType="header", name = "Authorization", value = "Authorization", required = true, dataType = "String")
     @GetMapping("/{openid}")
     public ExecuteResult<WechatUser> getUserInfo(@PathVariable("openid") @ApiParam("微信openid") String openid) {
         WechatUser wechatUser = userService.getWechatUser(openid);

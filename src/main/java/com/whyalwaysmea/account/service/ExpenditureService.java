@@ -1,6 +1,6 @@
 package com.whyalwaysmea.account.service;
 
-import com.whyalwaysmea.account.parameters.WaysTypeParam;
+import com.whyalwaysmea.account.parameters.ExpenditureTypeParam;
 import com.whyalwaysmea.account.po.ExpenditureType;
 
 import java.util.List;
@@ -33,13 +33,13 @@ public interface ExpenditureService {
     /**
      * 添加支出分类
      */
-    ExpenditureType addExpenditureType(WaysTypeParam param);
+    ExpenditureType addExpenditureType(ExpenditureTypeParam param);
 
     /**
      * 更新支出分类
      * @param param
      */
-    ExpenditureType updateExpenditureType(WaysTypeParam param);
+    ExpenditureType updateExpenditureType(ExpenditureTypeParam param);
 
     /**
      * 移除支出分类

@@ -11,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -34,8 +35,11 @@ public class AccountBookController extends BaseController{
     }
 
     @ApiOperation("更新账本")
-    @PutMapping("/{id}")
-    public ExecuteResult<AccountBook> updateAccountBook(@PathVariable("id") @ApiParam("账本id") long id, @RequestBody AccountBookParam accountBookParam) {
+    @PutMapping("/{id:\\d+}")
+    public ExecuteResult<AccountBook> updateAccountBook(@PathVariable("id") @ApiParam("账本id") long id,
+                                                        @RequestBody AccountBookParam accountBookParam,
+                                                        BindingResult bindResult) {
+        checkParam(bindResult);
         accountBookParam.setId(id);
         AccountBook accountBook = accountBookService.updateAccountBook(accountBookParam);
         return ExecuteResult.ok(accountBook);
@@ -43,7 +47,7 @@ public class AccountBookController extends BaseController{
 
 
     @ApiOperation("获取账本详情")
-    @GetMapping("/{id}")
+    @GetMapping("/{id:\\d+}")
     public ExecuteResult<AccountBook> getAccountBook(@PathVariable("id") @ApiParam("账本id") long id) {
         AccountBook accountBook = accountBookService.getAccountBook(id);
         return ExecuteResult.ok(accountBook);
@@ -57,7 +61,7 @@ public class AccountBookController extends BaseController{
     }
 
     @ApiOperation("加入账本")
-    @PostMapping("/parter/{id}")
+    @PostMapping("/parter/{id:\\d+}")
     public ExecuteResult<Boolean> joinAccountBook(@PathVariable("id") @ApiParam("账本id") long id) {
         Boolean result = accountBookService.joinAccountBook(id);
         return ExecuteResult.ok(result);

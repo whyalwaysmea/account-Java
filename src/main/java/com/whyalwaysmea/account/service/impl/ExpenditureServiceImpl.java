@@ -3,7 +3,7 @@ package com.whyalwaysmea.account.service.impl;
 import com.whyalwaysmea.account.enums.WaysError;
 import com.whyalwaysmea.account.exception.MyException;
 import com.whyalwaysmea.account.mapper.ExpenditureTypeMapper;
-import com.whyalwaysmea.account.parameters.WaysTypeParam;
+import com.whyalwaysmea.account.parameters.ExpenditureTypeParam;
 import com.whyalwaysmea.account.po.ExpenditureType;
 import com.whyalwaysmea.account.service.ExpenditureService;
 import com.whyalwaysmea.account.utils.UserUtils;
@@ -56,7 +56,7 @@ public class ExpenditureServiceImpl implements ExpenditureService {
     }
 
     @Override
-    public ExpenditureType addExpenditureType(WaysTypeParam param) {
+    public ExpenditureType addExpenditureType(ExpenditureTypeParam param) {
         ExpenditureType newExpenditure = new ExpenditureType();
         String userId = UserUtils.getCurrentUserId();
         Long pid = param.getPid();
@@ -77,7 +77,7 @@ public class ExpenditureServiceImpl implements ExpenditureService {
     }
 
     @Override
-    public ExpenditureType updateExpenditureType(WaysTypeParam param) {
+    public ExpenditureType updateExpenditureType(ExpenditureTypeParam param) {
         Long id = param.getId();
         ExpenditureType expenditureType = expenditureTypeMapper.selectByPrimaryKey(id);
         if(expenditureType == null) {

@@ -89,6 +89,20 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
             }
         }
 
+        if(CollectionUtils.isNotEmpty(accountBookParam.getParticipantIds())) {
+            AccountBookParters delParters = new AccountBookParters();
+            delParters.setBookId(accountBookParam.getId());
+            partersMapper.delete(delParters);
+
+            List<AccountBookParters> newParters = accountBookParam.getParticipantIds().stream().map(id -> {
+                AccountBookParters accountBookParters = new AccountBookParters();
+                accountBookParters.setBookId(accountBookParam.getId());
+                accountBookParters.setWechatOpenid(id);
+                return accountBookParters;
+            }).collect(Collectors.toList());
+            partersMapper.insertList(newParters);
+        }
+
         accountBookMapper.updateByPrimaryKeySelective(accountBook);
 
         return null;

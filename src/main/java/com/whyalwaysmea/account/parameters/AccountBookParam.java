@@ -38,6 +38,6 @@ public class AccountBookParam {
     private Integer surplusBudgetaryAmount;
 
     @ApiModelProperty("参与者id，创建者的不用传")
-    private List<Long> participantIds;
+    private List<String> participantIds;
 
 }

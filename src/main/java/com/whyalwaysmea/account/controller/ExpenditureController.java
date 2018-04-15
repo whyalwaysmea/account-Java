@@ -2,7 +2,7 @@ package com.whyalwaysmea.account.controller;
 
 import com.whyalwaysmea.account.controller.common.BaseController;
 import com.whyalwaysmea.account.dto.ExecuteResult;
-import com.whyalwaysmea.account.parameters.WaysTypeParam;
+import com.whyalwaysmea.account.parameters.ExpenditureTypeParam;
 import com.whyalwaysmea.account.po.ExpenditureType;
 import com.whyalwaysmea.account.service.ExpenditureService;
 import io.swagger.annotations.Api;
@@ -29,14 +29,14 @@ public class ExpenditureController extends BaseController {
     private ExpenditureService expenditureService;
 
     @ApiOperation("获取所有父类支出分类")
-    @GetMapping("/parent/all")
+    @GetMapping("/parent/list")
     public ExecuteResult<List<ExpenditureType>> getAllParentExpenditureType() {
         List<ExpenditureType> expenditures = expenditureService.getAllParentExpenditure();
         return ExecuteResult.ok(expenditures);
     }
 
     @ApiModelProperty("获取父分类下的所有子条目")
-    @GetMapping("/child/{pid}")
+    @GetMapping("/child/{pid:\\d+}")
     public ExecuteResult<List<ExpenditureType>> getChildExpenditureTypeByParendId(@PathVariable("pid") @ApiParam("父条目id") int pid) {
         List<ExpenditureType> childExpenditureTypes = expenditureService.getChildExpenditureTypeByParendId(pid);
         return ExecuteResult.ok(childExpenditureTypes);
@@ -44,22 +44,23 @@ public class ExpenditureController extends BaseController {
 
     @ApiOperation("添加新的支出分类")
     @PostMapping
-    public ExecuteResult<ExpenditureType> addExpenditureType(@RequestBody WaysTypeParam param, BindingResult result) {
+    public ExecuteResult<ExpenditureType> addExpenditureType(@RequestBody ExpenditureTypeParam param, BindingResult result) {
         checkParam(result);
         ExpenditureType expenditureType = expenditureService.addExpenditureType(param);
         return ExecuteResult.ok(expenditureType);
     }
 
     @ApiOperation("更新支出分类")
-    @PutMapping
-    public ExecuteResult<ExpenditureType> updateExpenditureType(@RequestBody WaysTypeParam param, BindingResult result) {
+    @PutMapping("/{id:\\d+}")
+    public ExecuteResult<ExpenditureType> updateExpenditureType(@PathVariable("id") @ApiParam("条目id") long id, @RequestBody ExpenditureTypeParam param, BindingResult result) {
         checkParam(result);
+        param.setId(id);
         ExpenditureType expenditureType = expenditureService.updateExpenditureType(param);
         return ExecuteResult.ok(expenditureType);
     }
 
     @ApiOperation("删除支出分类条目")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id:\\d+}")
     public ExecuteResult<Boolean> deleteExpenditureType(@PathVariable("id") @ApiParam("条目id") Integer id) {
         boolean result = expenditureService.deleteExpenditureType(id);
         return ExecuteResult.ok(result);
