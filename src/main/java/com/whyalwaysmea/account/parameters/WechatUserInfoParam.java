@@ -24,7 +24,7 @@ public class WechatUserInfoParam {
     private String avatarUrl;
 
     @ApiModelProperty("用户的性别，值为1时是男性，值为2时是女性，值为0时是未知")
-    private String gender;
+    private Integer gender;
 
     @ApiModelProperty("用户所在城市")
     private String city;

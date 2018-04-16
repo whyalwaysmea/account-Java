@@ -10,10 +10,13 @@ import com.whyalwaysmea.account.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author: Long
@@ -22,16 +25,26 @@ import java.util.List;
  */
 @Service
 @Slf4j
+@CacheConfig(cacheNames = "expenditure")
 public class ExpenditureServiceImpl implements ExpenditureService {
 
     @Autowired
     private ExpenditureTypeMapper expenditureTypeMapper;
 
     @Override
+    @Cacheable(key = "'default'")
     public List<ExpenditureType> getAllDefaultExpenditure() {
         ExpenditureType expenditureType = new ExpenditureType();
         expenditureType.setCreatorId("-1");
         return expenditureTypeMapper.select(expenditureType);
+    }
+
+    @Override
+    public boolean addDefaultExpenditureForNewUser(String userId) {
+        List<ExpenditureType> allDefaultExpenditure = getAllDefaultExpenditure();
+        allDefaultExpenditure  = allDefaultExpenditure.stream().peek(expenditureType -> expenditureType.setCreatorId(userId)).collect(Collectors.toList());
+        expenditureTypeMapper.insertList(allDefaultExpenditure);
+        return false;
     }
 
     @Override
@@ -42,8 +55,7 @@ public class ExpenditureServiceImpl implements ExpenditureService {
                 .andEqualTo("creatorId", currentUserId)
                 .andIsNull("pid");
         example.orderBy("orderId").desc();
-        List<ExpenditureType> expenditureTypes = expenditureTypeMapper.selectByExample(example);
-        return expenditureTypes;
+        return expenditureTypeMapper.selectByExample(example);
     }
 
     @Override

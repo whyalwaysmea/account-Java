@@ -19,6 +19,13 @@ public interface ExpenditureService {
     List<ExpenditureType> getAllDefaultExpenditure();
 
     /**
+     * 为新用户添加默认的支出分类
+     * @param userId
+     * @return
+     */
+    boolean addDefaultExpenditureForNewUser(String userId);
+
+    /**
      * 获取用户所有的父支出分类
      */
     List<ExpenditureType> getAllParentExpenditure();

@@ -32,7 +32,7 @@ public class WechatUser {
     /**
      * 用户性别,值为1时是男性，值为2时是女性，值为0时是未知
      */
-    private Byte gender;
+    private Integer gender;
 
     /**
      * 用户所在城市

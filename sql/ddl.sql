@@ -41,7 +41,7 @@ CREATE TABLE `account_book` (
   `default_book` tinyint(4) DEFAULT 0 COMMENT '是否是默认账本, 1是',
   `budgetary_amount` int(11) DEFAULT 0 COMMENT '预算金额（分）',
   `surplus_budgetary_amount` int(11) DEFAULT '0' COMMENT '剩余预算金额（分）',
-  `multiple_type` tinyint(4) NOT 0 COMMENT '账本类型  0：个人账本 1：多人账本',
+  `multiple_type` tinyint(4) NOT NULL DEFAULT 0 COMMENT '账本类型  0：个人账本 1：多人账本',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `last_account_time` datetime DEFAULT NULL COMMENT '最后记账时间',
   `is_delete` tinyint(4) NOT NULL DEFAULT 0 COMMENT '是否被删除， 1被删除',

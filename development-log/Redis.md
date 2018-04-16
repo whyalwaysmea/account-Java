@@ -9,5 +9,9 @@ spring-data-redis的序列化类有下面这几个:
 
 
 # 参考链接
-[Redis 序列化方式StringRedisSerializer、FastJsonRedisSerializer和KryoRedisSerializer](https://blog.csdn.net/xiaolyuh123/article/details/78682200) 
+[Redis 序列化方式StringRedisSerializer、FastJsonRedisSerializer和KryoRedisSerializer](https://blog.csdn.net/xiaolyuh123/article/details/78682200)
+
+
+# @Cacheable不起作用  
+当Redis和Shiro配合使用的时候，shiro 相关的bean 中依赖 业务 bean 都要使用@Lazy 
 
