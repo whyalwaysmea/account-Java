@@ -1,5 +1,6 @@
 package com.whyalwaysmea.account.controller;
 
+import com.whyalwaysmea.account.controller.common.BaseController;
 import com.whyalwaysmea.account.dto.ExecuteResult;
 import com.whyalwaysmea.account.dto.PageBean;
 import com.whyalwaysmea.account.parameters.PageParam;
@@ -8,6 +9,7 @@ import com.whyalwaysmea.account.po.AccountRecord;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -18,22 +20,23 @@ import org.springframework.web.bind.annotation.*;
 @Api(description = "收支记录")
 @RestController
 @RequestMapping("/record")
-public class RecordController {
+public class RecordController extends BaseController {
 
     @ApiOperation("新增收支记录")
     @PostMapping
-    public ExecuteResult<AccountRecord> addRecord(@RequestBody RecordParam recordParam) {
+    public ExecuteResult<AccountRecord> addRecord(@RequestBody RecordParam recordParam, BindingResult bindingResult) {
+        checkParam(bindingResult);
         return ExecuteResult.ok();
     }
 
     @ApiOperation("更新收支记录")
-    @PutMapping("/id:\\d+")
+    @PutMapping("/{id:\\d+}")
     public ExecuteResult<AccountRecord> updateRecord(@PathVariable("id") @ApiParam("记录id") long id, @RequestBody RecordParam recordParam) {
         return ExecuteResult.ok();
     }
 
-    @ApiOperation("更新收支记录")
-    @DeleteMapping("/id:\\d+")
+    @ApiOperation("删除收支记录")
+    @DeleteMapping("/{id:\\d+}")
     public ExecuteResult<Boolean> delRecord(@PathVariable("id") @ApiParam("记录id") long id) {
         return ExecuteResult.ok();
     }

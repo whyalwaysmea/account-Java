@@ -3,11 +3,15 @@ package com.whyalwaysmea.account.po;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Table(name = "account_record")
 @Data
-public class AccountRecord {
+public class AccountRecord implements Serializable {
+
+    private static final long serialVersionUID = 5235296041039815360L;
+
     /**
      * 账本记录id
      */
@@ -30,7 +34,7 @@ public class AccountRecord {
      * 收入(1)or支出(2)
      */
     @Column(name = "record_type")
-    private Byte recordType;
+    private Integer recordType;
 
     /**
      * 主要分类
@@ -67,12 +71,6 @@ public class AccountRecord {
      */
     @Column(name = "create_time")
     private Date createTime;
-
-    /**
-     * 最后记账时间
-     */
-    @Column(name = "last_account_time")
-    private Date lastAccountTime;
 
     /**
      * 备注

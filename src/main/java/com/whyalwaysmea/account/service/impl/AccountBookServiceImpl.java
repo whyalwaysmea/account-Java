@@ -40,7 +40,7 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
     private AccountBookPartersMapper partersMapper;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     public AccountBook addAccountBook(AccountBookParam accountBookParam) {
         AccountBook accountBook = new AccountBook();
         BeanUtils.copyProperties(accountBookParam, accountBook);

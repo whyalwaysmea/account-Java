@@ -67,7 +67,6 @@ CREATE TABLE `account_record` (
   `remark` text COMMENT '备注',
   `record_time` datetime DEFAULT NULL COMMENT '记录关联日期',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `last_account_time` datetime DEFAULT NULL COMMENT '最后记账时间',
   PRIMARY KEY (`id`),
   KEY `idx_creator_id` (`creator_id`),
   KEY `idx_record_type` (`record_type`),

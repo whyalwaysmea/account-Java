@@ -32,6 +32,7 @@ public interface AccountBookService {
      */
     AccountBook getAccountBook(long id);
 
+
     /**
      * 分页获取账本列表
      * @return

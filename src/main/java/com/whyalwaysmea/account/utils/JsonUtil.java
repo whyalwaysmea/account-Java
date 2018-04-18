@@ -34,7 +34,7 @@ public class JsonUtil {
             return null;
         }
         try {
-            return src instanceof String ? (String) src : objectMapper.writeValueAsString(src);
+            return objectMapper.writeValueAsString(src);
         } catch (Exception e) {
             log.warn("parse object to String exception, error:{}", e);
             return null;
@@ -52,7 +52,7 @@ public class JsonUtil {
             return null;
         }
         try {
-            return (T) (objClass.getName().equals(String.class) ? src : objectMapper.readValue(src, objClass));
+            return objectMapper.readValue(src, objClass);
         } catch (Exception e) {
             log.warn("parse String to Object exception, String:{}, TypeReference<T>:{}, error:{}", src, objClass.getName(), e);
             return null;
