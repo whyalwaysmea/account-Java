@@ -20,10 +20,9 @@ public interface ExpenditureService {
 
     /**
      * 为新用户添加默认的支出分类
-     * @param userId
      * @return
      */
-    boolean addDefaultExpenditureForNewUser(String userId);
+    void addDefaultExpenditureForNewUser(String userId);
 
     /**
      * 获取用户所有的父支出分类

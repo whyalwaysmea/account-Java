@@ -7,6 +7,7 @@ import com.whyalwaysmea.account.parameters.RecordParam;
 import com.whyalwaysmea.account.po.AccountRecord;
 import com.whyalwaysmea.account.po.AccountRecordParters;
 import com.whyalwaysmea.account.service.RecordService;
+import com.whyalwaysmea.account.service.UserService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class RecordServiceImpl extends BaseService implements RecordService {
 
     @Autowired
     private AccountRecordPartersMapper recordPartersMapper;
+
+    @Autowired
+    private UserService userService;
 
 
     @Override
@@ -57,6 +61,7 @@ public class RecordServiceImpl extends BaseService implements RecordService {
 
 
         // 用户统计更新（最后记账时间）
+        userService.updateLastAccountTime(userId);
         return null;
     }
 

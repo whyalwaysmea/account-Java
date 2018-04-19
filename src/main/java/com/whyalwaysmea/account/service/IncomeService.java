@@ -18,6 +18,11 @@ public interface IncomeService {
     List<IncomeType> getAllDefaultIncomeType();
 
     /**
+     * 为用户添加默认的收入分类
+     */
+    void addDefaultIncomeTypeForNewUser(String userId);
+
+    /**
      * 获取用户所有的收入分类
      * @return
      */

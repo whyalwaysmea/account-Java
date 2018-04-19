@@ -4,7 +4,9 @@ import com.whyalwaysmea.account.mapper.WechatUserMapper;
 import com.whyalwaysmea.account.parameters.WechatUserInfoParam;
 import com.whyalwaysmea.account.po.WechatUser;
 import com.whyalwaysmea.account.service.ExpenditureService;
+import com.whyalwaysmea.account.service.IncomeService;
 import com.whyalwaysmea.account.service.UserService;
+import com.whyalwaysmea.account.service.WaysService;
 import com.whyalwaysmea.account.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -29,6 +31,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ExpenditureService expenditureService;
 
+    @Autowired
+    private WaysService waysService;
+
+    @Autowired
+    private IncomeService incomeService;
 
     @Override
     public WechatUser getWechatUser(String openid) {
@@ -67,9 +74,20 @@ public class UserServiceImpl implements UserService {
         userMapper.insertSelective(wechatUser);
 
         // 同步收支相关基础信息
-        expenditureService.addDefaultExpenditureForNewUser(wechatUser.getWechatOpenid());
+        String openId = param.getOpenId();
+        expenditureService.addDefaultExpenditureForNewUser(openId);
+        waysService.addDefaultWaysForNewUser(openId);
+        incomeService.addDefaultIncomeTypeForNewUser(openId);
 
         return wechatUser;
+    }
+
+    @Override
+    public void updateLastAccountTime(String userId) {
+        WechatUser wechatUser = new WechatUser();
+        wechatUser.setWechatOpenid(userId);
+        wechatUser.setLastAccountTime(new Date());
+        userMapper.updateByPrimaryKeySelective(wechatUser);
     }
 
 

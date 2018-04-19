@@ -33,4 +33,10 @@ public interface UserService {
      * @param wechatUser
      */
     WechatUser login(WechatUserInfoParam wechatUser);
+
+    /**
+     * 更新用户最后记账时间
+     * @param userId
+     */
+    void updateLastAccountTime(String userId);
 }

@@ -1,5 +1,6 @@
 package com.whyalwaysmea.account.service.impl;
 
+import com.whyalwaysmea.account.constant.Constant;
 import com.whyalwaysmea.account.enums.WaysError;
 import com.whyalwaysmea.account.exception.MyException;
 import com.whyalwaysmea.account.mapper.ExpenditureTypeMapper;
@@ -15,6 +16,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +28,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @CacheConfig(cacheNames = "expenditure")
-public class ExpenditureServiceImpl implements ExpenditureService {
+public class ExpenditureServiceImpl extends BaseService implements ExpenditureService {
 
     @Autowired
     private ExpenditureTypeMapper expenditureTypeMapper;
@@ -35,16 +37,18 @@ public class ExpenditureServiceImpl implements ExpenditureService {
     @Cacheable(key = "'default'")
     public List<ExpenditureType> getAllDefaultExpenditure() {
         ExpenditureType expenditureType = new ExpenditureType();
-        expenditureType.setCreatorId("-1");
+        expenditureType.setCreatorId(Constant.DEFAULT_USER_ID);
         return expenditureTypeMapper.select(expenditureType);
     }
 
     @Override
-    public boolean addDefaultExpenditureForNewUser(String userId) {
+    public void addDefaultExpenditureForNewUser(String userId) {
         List<ExpenditureType> allDefaultExpenditure = getAllDefaultExpenditure();
-        allDefaultExpenditure  = allDefaultExpenditure.stream().peek(expenditureType -> expenditureType.setCreatorId(userId)).collect(Collectors.toList());
+        allDefaultExpenditure  = allDefaultExpenditure.stream().peek(expenditureType -> {
+            expenditureType.setCreatorId(userId);
+            expenditureType.setCreateTime(new Date());
+        }).collect(Collectors.toList());
         expenditureTypeMapper.insertList(allDefaultExpenditure);
-        return false;
     }
 
     @Override

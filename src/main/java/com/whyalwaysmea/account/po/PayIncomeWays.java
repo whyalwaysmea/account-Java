@@ -5,6 +5,11 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.Date;
 
+/**
+ * 收支途径
+ * @author: Long
+ * @Date: 2018/4/19 14:27
+ */
 @Table(name = "pay_income_ways")
 @Data
 public class PayIncomeWays {

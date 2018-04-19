@@ -141,7 +141,7 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
         if(!parterIds.contains(getCurrentUserId())) {
             parterIds.add(getCurrentUserId());
             AccountBookParters accountBookParters = new AccountBookParters();
-            accountBookParters.setUser(getCurrentUser());
+            accountBookParters.setWechatOpenid(getCurrentUserId());
             accountBookParters.setBookId(id);
             partersMapper.insert(accountBookParters);
             return true;
