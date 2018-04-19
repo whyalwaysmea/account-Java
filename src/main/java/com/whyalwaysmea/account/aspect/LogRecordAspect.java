@@ -1,5 +1,6 @@
 package com.whyalwaysmea.account.aspect;
 
+import com.google.common.collect.Lists;
 import com.whyalwaysmea.account.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -14,6 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @Author: Long
@@ -47,17 +49,19 @@ public class LogRecordAspect {
         String queryString = request.getQueryString();
         String authorization = request.getHeader("Authorization");
 
+        // 方法参数
+        List<Object> params = Lists.newArrayList();
         if (pjp.getArgs().length > 0) {
             for (Object o : pjp.getArgs()) {
                 if (o instanceof HttpServletRequest || o instanceof HttpServletResponse
                         || o instanceof BeanPropertyBindingResult) {
                     continue;
                 }
-                log.info("请求参数 : " + JsonUtil.obj2String(o));
+                params.add(o);
             }
         }
 
-        log.info("请求开始, 各个参数, url: {}, method: {}, params: {},  authorization: {}", url, method,  queryString, authorization);
+        log.info("请求开始, 各个参数, url: {}, method: {}, params: {}, args: {}, authorization: {}", url, method,  queryString, JsonUtil.obj2String(params), authorization);
 
         // result的值就是被拦截方法的返回值
         long startTime = System.currentTimeMillis();
@@ -66,20 +70,10 @@ public class LogRecordAspect {
         // 如果方法执行时间大于5s
         long executeTime = endTime - startTime;
         if(executeTime > 50000) {
-            log.error("方法需要优化 url: {}, method: {},  params: {}, authorization: {},  方法执行了：{}", url, method,  queryString, authorization, executeTime);
-
-            if (pjp.getArgs().length > 0) {
-                for (Object o : pjp.getArgs()) {
-                    if (o instanceof HttpServletRequest || o instanceof HttpServletResponse
-                            || o instanceof BeanPropertyBindingResult) {
-                        continue;
-                    }
-                    log.error("请求参数 : " + JsonUtil.obj2String(o));
-                }
-            }
+            log.error("方法需要优化 url: {}, method: {},  params: {}, args: {}, authorization: {},  方法执行了：{}", url, method,  queryString, JsonUtil.obj2String(params), authorization, executeTime);
         }
 
-        log.info("请求结束，controller的返回值是：{}, 执行时间： {} ", JsonUtil.obj2String(result), executeTime );
+        log.info("请求结束，耗时： {}, 返回值是：{},  ", executeTime, JsonUtil.obj2String(result) );
         return result;
     }
 

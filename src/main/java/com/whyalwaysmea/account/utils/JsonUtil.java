@@ -21,7 +21,8 @@ public class JsonUtil {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         // 忽略无法转换的对象 “No serializer found for class com.xxx.xxx”
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS,false);
-
+        // 美化JSON输出
+        // objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
 
     /**
