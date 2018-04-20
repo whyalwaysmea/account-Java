@@ -40,19 +40,19 @@ public class AccountRecord implements Serializable {
      * 主要分类
      */
     @Column(name = "main_type")
-    private Long mainType;
+    private String mainType;
 
     /**
      * 次要分类
      */
     @Column(name = "secondary_type")
-    private Long secondaryType;
+    private String secondaryType;
 
     /**
      * 收支途径
      */
     @Column(name = "pay_income_way")
-    private Long payIncomeWay;
+    private String payIncomeWay;
 
     /**
      * 创建者
