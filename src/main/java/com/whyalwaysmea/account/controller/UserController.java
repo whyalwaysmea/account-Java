@@ -48,6 +48,11 @@ public class UserController extends BaseController {
         return ExecuteResult.ok(currentUser);
     }
 
+    @ApiOperation("创建一个虚拟用户，相当于多人账本中的用户")
+    @PostMapping("/register/fackerUser")
+    public ExecuteResult<WechatUser> regiterFackerUser() {
+        return ExecuteResult.ok();
+    }
 }
 
 

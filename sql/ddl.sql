@@ -45,8 +45,10 @@ CREATE TABLE `account_book` (
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `last_account_time` datetime DEFAULT NULL COMMENT '最后记账时间',
   `is_delete` tinyint(4) NOT NULL DEFAULT 0 COMMENT '是否被删除， 1被删除',
+  `faker_user` tinyint(1) DEFAULT '0' COMMENT '是否是虚假用户，0：否 1是',
   PRIMARY KEY (`id`),
-  KEY `idx_delete` (`is_delete`)
+  KEY `idx_delete` (`is_delete`),
+  KEY `idx_faker_user` (`faker_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账本';
 
 /*Data for the table `account_book` */

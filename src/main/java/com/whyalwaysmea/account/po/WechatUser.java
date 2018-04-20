@@ -73,5 +73,8 @@ public class WechatUser {
     @Column(name = "last_account_time")
     private Date lastAccountTime;
 
-
+    /**
+     * 是否是虚假用户
+     */
+    private Boolean fakerUser;
 }
