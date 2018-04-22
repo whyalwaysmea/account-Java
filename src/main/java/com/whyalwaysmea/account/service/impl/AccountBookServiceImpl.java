@@ -89,6 +89,7 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
             }
         }
 
+        // 同步账本参与人
         if(CollectionUtils.isNotEmpty(accountBookParam.getParticipantIds())) {
             AccountBookParters delParters = new AccountBookParters();
             delParters.setBookId(accountBookParam.getId());
@@ -100,6 +101,18 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
                 accountBookParters.setWechatOpenid(id);
                 return accountBookParters;
             }).collect(Collectors.toList());
+
+            if(!accountBookParam.getParticipantIds().contains(getCurrentUserId())) {
+                AccountBookParters accountBookParters = new AccountBookParters();
+                accountBookParters.setBookId(accountBookParam.getId());
+                accountBookParters.setWechatOpenid(getCurrentUserId());
+                newParters.add(accountBookParters);
+            }
+
+            if(newParters.size() > 1) {
+                accountBook.setMultipleType(true);
+            }
+
             partersMapper.insertList(newParters);
         }
 
@@ -110,8 +123,7 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
 
     @Override
     public AccountBook getAccountBook(long id) {
-        AccountBook accountBook = accountBookMapper.getAccountBook(id);
-        return accountBook;
+        return accountBookMapper.getAccountBook(id);
     }
 
     @Override

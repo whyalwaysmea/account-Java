@@ -39,16 +39,14 @@ CREATE TABLE `account_book` (
   `owner_id` varchar(36) NOT NULL COMMENT '账本拥有者',
   `creator_id` varchar(36) NOT NULL COMMENT '账本创建者',
   `default_book` tinyint(4) DEFAULT 0 COMMENT '是否是默认账本, 1是',
-  `budgetary_amount` int(11) DEFAULT 0 COMMENT '预算金额（分）',
-  `surplus_budgetary_amount` int(11) DEFAULT '0' COMMENT '剩余预算金额（分）',
+  `budgetary_amount` int(11) DEFAULT NULL COMMENT '预算金额（分）',
+  `surplus_budgetary_amount` int(11) DEFAULT NULL COMMENT '剩余预算金额（分）',
   `multiple_type` tinyint(4) NOT NULL DEFAULT 0 COMMENT '账本类型  0：个人账本 1：多人账本',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `last_account_time` datetime DEFAULT NULL COMMENT '最后记账时间',
   `is_delete` tinyint(4) NOT NULL DEFAULT 0 COMMENT '是否被删除， 1被删除',
-  `faker_user` tinyint(1) DEFAULT '0' COMMENT '是否是虚假用户，0：否 1是',
   PRIMARY KEY (`id`),
-  KEY `idx_delete` (`is_delete`),
-  KEY `idx_faker_user` (`faker_user`)
+  KEY `idx_delete` (`is_delete`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账本';
 
 /*Data for the table `account_book` */
@@ -85,6 +83,7 @@ DROP TABLE IF EXISTS `account_record_parters`;
 CREATE TABLE `account_record_parters` (
   `book_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '账本记录id',
   `wechat_openid` varchar(36) NOT NULL COMMENT '微信用户openid',
+  `state` tinyint(1) DEFAULT 0 COMMENT '是否已经接受邀请，0否 1是',
   PRIMARY KEY (`book_id`,`wechat_openid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账本参与者';
 
@@ -224,7 +223,9 @@ CREATE TABLE `wechat_user` (
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `last_login_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后登录时间',
   `last_account_time` datetime DEFAULT NULL COMMENT '最后记账时间',
-  PRIMARY KEY (`wechat_openid`)
+  `faker_user` tinyint(1) DEFAULT 0 COMMENT '是否是虚假用户，0：否 1是',
+  PRIMARY KEY (`wechat_openid`),
+  KEY `idx_faker_user` (`faker_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信用户信息表';
 
 /*Data for the table `wechat_user` */

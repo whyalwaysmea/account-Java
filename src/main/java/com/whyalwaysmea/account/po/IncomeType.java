@@ -3,11 +3,16 @@ package com.whyalwaysmea.account.po;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Table(name = "income_type")
 @Data
-public class IncomeType {
+public class IncomeType implements Serializable {
+
+    @Transient
+    private static final long serialVersionUID = -2834207644817915849L;
+
     /**
      * 分类id
      */

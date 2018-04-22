@@ -1,12 +1,15 @@
 package com.whyalwaysmea.account.service.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.whyalwaysmea.account.constant.Constant;
+import com.whyalwaysmea.account.constant.RedisKey;
 import com.whyalwaysmea.account.mapper.PayIncomeWaysMapper;
 import com.whyalwaysmea.account.po.PayIncomeWays;
 import com.whyalwaysmea.account.service.WaysService;
+import com.whyalwaysmea.account.utils.JsonUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -19,18 +22,25 @@ import java.util.stream.Collectors;
  * @Description:
  */
 @Service
-@CacheConfig(cacheNames = "ways")
 public class WaysServiceImpl extends BaseService implements WaysService {
 
     @Autowired
     private PayIncomeWaysMapper waysMapper;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @Override
-    @Cacheable(key = "'defaultAll'")
     public List<PayIncomeWays> getAllDefaultWays() {
-        PayIncomeWays payIncomeWays = new PayIncomeWays();
-        payIncomeWays.setCreatorId(Constant.DEFAULT_USER_ID);
-        return waysMapper.select(payIncomeWays);
+        String cache = (String) redisTemplate.opsForValue().get(RedisKey.DEFAULT_WAYS);
+        if(StringUtils.isBlank(cache)) {
+            PayIncomeWays payIncomeWays = new PayIncomeWays();
+            payIncomeWays.setCreatorId(Constant.DEFAULT_USER_ID);
+            List<PayIncomeWays> waysList = waysMapper.select(payIncomeWays);
+            redisTemplate.opsForValue().set(RedisKey.DEFAULT_WAYS, JsonUtil.obj2String(waysList));
+            return waysList;
+        }
+        return JsonUtil.string2Obj(cache, new TypeReference<List<PayIncomeWays>>() {});
     }
 
     @Override

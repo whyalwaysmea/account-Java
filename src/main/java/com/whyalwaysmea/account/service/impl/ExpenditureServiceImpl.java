@@ -1,18 +1,21 @@
 package com.whyalwaysmea.account.service.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.whyalwaysmea.account.constant.Constant;
+import com.whyalwaysmea.account.constant.RedisKey;
 import com.whyalwaysmea.account.enums.WaysError;
 import com.whyalwaysmea.account.exception.MyException;
 import com.whyalwaysmea.account.mapper.ExpenditureTypeMapper;
 import com.whyalwaysmea.account.parameters.ExpenditureTypeParam;
 import com.whyalwaysmea.account.po.ExpenditureType;
 import com.whyalwaysmea.account.service.ExpenditureService;
+import com.whyalwaysmea.account.utils.JsonUtil;
 import com.whyalwaysmea.account.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -27,18 +30,26 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-@CacheConfig(cacheNames = "expenditure")
 public class ExpenditureServiceImpl extends BaseService implements ExpenditureService {
 
     @Autowired
     private ExpenditureTypeMapper expenditureTypeMapper;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @Override
-    @Cacheable(key = "'default'")
     public List<ExpenditureType> getAllDefaultExpenditure() {
-        ExpenditureType expenditureType = new ExpenditureType();
-        expenditureType.setCreatorId(Constant.DEFAULT_USER_ID);
-        return expenditureTypeMapper.select(expenditureType);
+        String cache = (String) redisTemplate.opsForValue().get(RedisKey.DEFAULT_EXPENDITURE);
+        if(StringUtils.isBlank(cache)) {
+            ExpenditureType expenditureType = new ExpenditureType();
+            expenditureType.setCreatorId(Constant.DEFAULT_USER_ID);
+            List<ExpenditureType> expenditureList = expenditureTypeMapper.select(expenditureType);
+            redisTemplate.opsForValue().set(RedisKey.DEFAULT_EXPENDITURE, JsonUtil.obj2String(expenditureList));
+            return expenditureList;
+        }
+        return JsonUtil.string2Obj(cache, new TypeReference<List<ExpenditureType>>() {});
+
     }
 
     @Override

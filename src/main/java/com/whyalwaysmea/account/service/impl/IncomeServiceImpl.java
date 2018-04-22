@@ -1,10 +1,15 @@
 package com.whyalwaysmea.account.service.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.whyalwaysmea.account.constant.Constant;
+import com.whyalwaysmea.account.constant.RedisKey;
 import com.whyalwaysmea.account.mapper.IncomeTypeMapper;
 import com.whyalwaysmea.account.po.IncomeType;
 import com.whyalwaysmea.account.service.IncomeService;
+import com.whyalwaysmea.account.utils.JsonUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -22,11 +27,20 @@ public class IncomeServiceImpl extends BaseService implements IncomeService {
     @Autowired
     private IncomeTypeMapper incomeTypeMapper;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @Override
     public List<IncomeType> getAllDefaultIncomeType() {
-        IncomeType incomeType = new IncomeType();
-        incomeType.setCreatorId(Constant.DEFAULT_USER_ID);
-        return incomeTypeMapper.select(incomeType);
+        String cache = (String) redisTemplate.opsForValue().get(RedisKey.DEFAULT_INCOME);
+        if(StringUtils.isBlank(cache)) {
+            IncomeType incomeType = new IncomeType();
+            incomeType.setCreatorId(Constant.DEFAULT_USER_ID);
+            List<IncomeType> typeList = incomeTypeMapper.select(incomeType);
+            redisTemplate.opsForValue().set(RedisKey.DEFAULT_INCOME, JsonUtil.obj2String(typeList));
+            return typeList;
+        }
+        return JsonUtil.string2Obj(cache, new TypeReference<List<IncomeType>>() {});
     }
 
     @Override
