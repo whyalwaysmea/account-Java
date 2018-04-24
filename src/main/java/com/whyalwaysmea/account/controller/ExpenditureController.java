@@ -35,6 +35,13 @@ public class ExpenditureController extends BaseController {
         return ExecuteResult.ok(expenditures);
     }
 
+    @ApiOperation("获取所有的父子结构的支出分类")
+    @GetMapping("/list")
+    public ExecuteResult<List<ExpenditureType>> getAllExpenditureType() {
+        List<ExpenditureType> expenditureTypes = expenditureService.getAllExpenditure();
+        return ExecuteResult.ok(expenditureTypes);
+    }
+
     @ApiModelProperty("获取父分类下的所有子条目")
     @GetMapping("/child/{pid:\\d+}")
     public ExecuteResult<List<ExpenditureType>> getChildExpenditureTypeByParendId(@PathVariable("pid") @ApiParam("父条目id") int pid) {

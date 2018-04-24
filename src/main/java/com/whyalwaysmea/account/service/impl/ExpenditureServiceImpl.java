@@ -12,6 +12,7 @@ import com.whyalwaysmea.account.service.ExpenditureService;
 import com.whyalwaysmea.account.utils.JsonUtil;
 import com.whyalwaysmea.account.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,27 +40,57 @@ public class ExpenditureServiceImpl extends BaseService implements ExpenditureSe
     private RedisTemplate redisTemplate;
 
     @Override
-    public List<ExpenditureType> getAllDefaultExpenditure() {
-        String cache = (String) redisTemplate.opsForValue().get(RedisKey.DEFAULT_EXPENDITURE);
+    public List<ExpenditureType> getAllParentDefaultExpenditure() {
+        String cache = (String) redisTemplate.opsForValue().get(RedisKey.DEFAULT_PARENT_EXPENDITURE);
         if(StringUtils.isBlank(cache)) {
-            ExpenditureType expenditureType = new ExpenditureType();
-            expenditureType.setCreatorId(Constant.DEFAULT_USER_ID);
-            List<ExpenditureType> expenditureList = expenditureTypeMapper.select(expenditureType);
-            redisTemplate.opsForValue().set(RedisKey.DEFAULT_EXPENDITURE, JsonUtil.obj2String(expenditureList));
+            Example example = new Example(ExpenditureType.class);
+            example.createCriteria()
+                    .andEqualTo("creatorId", Constant.DEFAULT_USER_ID)
+                    .andIsNull("pid");
+            List<ExpenditureType> expenditureList = expenditureTypeMapper.selectByExample(example);
+            redisTemplate.opsForValue().set(RedisKey.DEFAULT_PARENT_EXPENDITURE, JsonUtil.obj2String(expenditureList));
             return expenditureList;
         }
         return JsonUtil.string2Obj(cache, new TypeReference<List<ExpenditureType>>() {});
+    }
 
+    @Override
+    public List<ExpenditureType> getAllChildDefaultExpenditureByPid(long pid) {
+        String cache = (String) redisTemplate.opsForValue().get(RedisKey.DEFAULT_CHILD_EXPENDITURE + pid);
+        if(StringUtils.isBlank(cache)) {
+            Example example = new Example(ExpenditureType.class);
+            example.createCriteria()
+                    .andEqualTo("creatorId", Constant.DEFAULT_USER_ID)
+                    .andEqualTo("pid", pid);
+            List<ExpenditureType> expenditureList = expenditureTypeMapper.selectByExample(example);
+            redisTemplate.opsForValue().set(RedisKey.DEFAULT_CHILD_EXPENDITURE + pid, JsonUtil.obj2String(expenditureList));
+            return expenditureList;
+        }
+        return JsonUtil.string2Obj(cache, new TypeReference<List<ExpenditureType>>() {});
     }
 
     @Override
     public void addDefaultExpenditureForNewUser(String userId) {
-        List<ExpenditureType> allDefaultExpenditure = getAllDefaultExpenditure();
-        allDefaultExpenditure  = allDefaultExpenditure.stream().peek(expenditureType -> {
+        // TODO 第一次会很慢，不知道是不是逻辑有问题
+        List<ExpenditureType> allDefaultExpenditure = getAllParentDefaultExpenditure();
+        for (ExpenditureType expenditureType : allDefaultExpenditure) {
+            // 先保存父类
+            List<ExpenditureType> childDefaultExpenditure = getAllChildDefaultExpenditureByPid(expenditureType.getId());
+            expenditureType.setId(null);
             expenditureType.setCreatorId(userId);
             expenditureType.setCreateTime(new Date());
-        }).collect(Collectors.toList());
-        expenditureTypeMapper.insertList(allDefaultExpenditure);
+            expenditureTypeMapper.insert(expenditureType);
+            // 再保存子类
+            if(CollectionUtils.isNotEmpty(childDefaultExpenditure)) {
+                childDefaultExpenditure = childDefaultExpenditure.stream().peek(childExpenditureType -> {
+                    childExpenditureType.setId(null);
+                    childExpenditureType.setPid(expenditureType.getId());
+                    childExpenditureType.setCreatorId(userId);
+                    childExpenditureType.setCreateTime(new Date());
+                }).collect(Collectors.toList());
+                expenditureTypeMapper.insertList(childDefaultExpenditure);
+            }
+        }
     }
 
     @Override
@@ -71,6 +102,12 @@ public class ExpenditureServiceImpl extends BaseService implements ExpenditureSe
                 .andIsNull("pid");
         example.orderBy("orderId").desc();
         return expenditureTypeMapper.selectByExample(example);
+    }
+
+    @Override
+    public List<ExpenditureType> getAllExpenditure() {
+        List<ExpenditureType> all = expenditureTypeMapper.findAll(getCurrentUserId());
+        return all;
     }
 
     @Override

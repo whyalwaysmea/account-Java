@@ -11,6 +11,8 @@ import com.whyalwaysmea.account.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,7 @@ import java.util.Date;
  */
 @Service
 @Slf4j
+@CacheConfig(cacheNames = "user")
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -38,6 +41,7 @@ public class UserServiceImpl implements UserService {
     private IncomeService incomeService;
 
     @Override
+    @Cacheable(key = "#openid")
     public WechatUser getWechatUser(String openid) {
         WechatUser wechatUser = userMapper.selectByPrimaryKey(openid);
         return wechatUser;

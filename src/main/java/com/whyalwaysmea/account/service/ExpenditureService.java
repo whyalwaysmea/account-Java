@@ -13,10 +13,16 @@ import java.util.List;
 public interface ExpenditureService {
 
     /**
-     * 获取默认的支出分类
+     * 获取默认的父支出分类
      * @return
      */
-    List<ExpenditureType> getAllDefaultExpenditure();
+    List<ExpenditureType> getAllParentDefaultExpenditure();
+
+    /**
+     * 获取默认的子支出分类
+     * @return
+     */
+    List<ExpenditureType> getAllChildDefaultExpenditureByPid(long pid);
 
     /**
      * 为新用户添加默认的支出分类
@@ -28,6 +34,12 @@ public interface ExpenditureService {
      * 获取用户所有的父支出分类
      */
     List<ExpenditureType> getAllParentExpenditure();
+
+    /**
+     * 获取所有父子结构的支出分类
+     * @return
+     */
+    List<ExpenditureType> getAllExpenditure();
 
     /**
      * 获取指定父父类下的所有子条目

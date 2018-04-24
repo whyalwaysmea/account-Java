@@ -5,6 +5,8 @@ import com.whyalwaysmea.account.utils.MyMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ExpenditureTypeMapper extends MyMapper<ExpenditureType> {
 
@@ -15,4 +17,11 @@ public interface ExpenditureTypeMapper extends MyMapper<ExpenditureType> {
      * @return
      */
     long getMaxOrderId(@Param("userId") String userId, @Param("pid") Long pid);
+
+    /**
+     * 获取所有父子结构的支出分类
+     * @param userId
+     * @return
+     */
+    List<ExpenditureType> findAll(@Param("userId") String userId);
 }

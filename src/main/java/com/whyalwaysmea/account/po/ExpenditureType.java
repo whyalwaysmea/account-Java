@@ -5,12 +5,15 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "expenditure_type")
 @Data
 public class ExpenditureType implements Serializable {
 
+    @Transient
     private static final long serialVersionUID = -5409588016640623359L;
+
     /**
      * 分类id
      */
@@ -52,5 +55,6 @@ public class ExpenditureType implements Serializable {
     @Column(name = "create_time")
     private Date createTime;
 
-
+    @Transient
+    private List<ExpenditureType> childExpenditure;
 }
