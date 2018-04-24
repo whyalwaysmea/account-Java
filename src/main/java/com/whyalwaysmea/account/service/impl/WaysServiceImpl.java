@@ -3,6 +3,8 @@ package com.whyalwaysmea.account.service.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.whyalwaysmea.account.constant.Constant;
 import com.whyalwaysmea.account.constant.RedisKey;
+import com.whyalwaysmea.account.enums.WaysError;
+import com.whyalwaysmea.account.exception.MyException;
 import com.whyalwaysmea.account.mapper.PayIncomeWaysMapper;
 import com.whyalwaysmea.account.po.PayIncomeWays;
 import com.whyalwaysmea.account.service.WaysService;
@@ -51,5 +53,17 @@ public class WaysServiceImpl extends BaseService implements WaysService {
             payIncomeWays.setCreateTime(new Date());
         }).collect(Collectors.toList());
         waysMapper.insertList(collect);
+    }
+
+    @Override
+    public PayIncomeWays getPayIncomeWays(long id) {
+        PayIncomeWays payIncomeWays = new PayIncomeWays();
+        payIncomeWays.setCreatorId(getCurrentUserId());
+        payIncomeWays.setId(id);
+        payIncomeWays = waysMapper.selectOne(payIncomeWays);
+        if(payIncomeWays == null) {
+            throw new MyException(WaysError.ERROR_ID);
+        }
+        return payIncomeWays;
     }
 }

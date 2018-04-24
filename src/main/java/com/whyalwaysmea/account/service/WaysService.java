@@ -21,4 +21,11 @@ public interface WaysService {
      * 为用户添加默认的收支方式
      */
     void addDefaultWaysForNewUser(String userId);
+
+    /**
+     * 根据id获取收支途径
+     * @param id
+     * @return
+     */
+    PayIncomeWays getPayIncomeWays(long id);
 }

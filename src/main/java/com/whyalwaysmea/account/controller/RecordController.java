@@ -6,10 +6,13 @@ import com.whyalwaysmea.account.dto.PageBean;
 import com.whyalwaysmea.account.parameters.PageParam;
 import com.whyalwaysmea.account.parameters.RecordParam;
 import com.whyalwaysmea.account.po.AccountRecord;
+import com.whyalwaysmea.account.service.RecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -22,11 +25,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/record")
 public class RecordController extends BaseController {
 
+    @Autowired
+    private RecordService recordService;
+
     @ApiOperation("新增收支记录")
     @PostMapping
-    public ExecuteResult<AccountRecord> addRecord(@RequestBody RecordParam recordParam, BindingResult bindingResult) {
+    public ExecuteResult<AccountRecord> addRecord(@RequestBody @Validated RecordParam recordParam, BindingResult bindingResult) {
         checkParam(bindingResult);
-        return ExecuteResult.ok();
+        AccountRecord accountRecord = recordService.addRecord(recordParam);
+        return ExecuteResult.ok(accountRecord);
     }
 
     @ApiOperation("更新收支记录")

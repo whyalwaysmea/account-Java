@@ -3,6 +3,7 @@ package com.whyalwaysmea.account.service;
 import com.whyalwaysmea.account.dto.PageBean;
 import com.whyalwaysmea.account.parameters.AccountBookParam;
 import com.whyalwaysmea.account.parameters.PageParam;
+import com.whyalwaysmea.account.parameters.RecordParam;
 import com.whyalwaysmea.account.po.AccountBook;
 
 /**
@@ -24,6 +25,13 @@ public interface AccountBookService {
      * @return
      */
     AccountBook updateAccountBook(AccountBookParam accountBookParam);
+
+    /**
+     * 账本统计更新（最后记账时间，预算，）
+     * @param recordParam
+     * @return
+     */
+    boolean updateAccountRecord(RecordParam recordParam);
 
     /**
      * 根据id获取账本信息

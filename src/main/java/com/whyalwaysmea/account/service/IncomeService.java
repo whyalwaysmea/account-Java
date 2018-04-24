@@ -28,4 +28,10 @@ public interface IncomeService {
      */
     List<IncomeType> getAllParentIncomeType();
 
+    /**
+     * 根据id获取收入条目
+     * @param id
+     * @return
+     */
+    IncomeType getIncomeType(long id);
 }

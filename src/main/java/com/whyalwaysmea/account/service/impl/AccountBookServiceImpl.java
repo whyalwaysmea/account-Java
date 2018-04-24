@@ -9,6 +9,7 @@ import com.whyalwaysmea.account.mapper.AccountBookMapper;
 import com.whyalwaysmea.account.mapper.AccountBookPartersMapper;
 import com.whyalwaysmea.account.parameters.AccountBookParam;
 import com.whyalwaysmea.account.parameters.PageParam;
+import com.whyalwaysmea.account.parameters.RecordParam;
 import com.whyalwaysmea.account.po.AccountBook;
 import com.whyalwaysmea.account.po.AccountBookParters;
 import com.whyalwaysmea.account.po.WechatUser;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -119,6 +121,27 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
         accountBookMapper.updateByPrimaryKeySelective(accountBook);
 
         return null;
+    }
+
+    @Override
+    public boolean updateAccountRecord(RecordParam recordParam) {
+        AccountBook accountBook = accountBookMapper.selectByPrimaryKey(recordParam.getBookId());
+        if(accountBook == null) {
+            throw new MyException(AccountBookError.ERROR_ACCOUNTBOOK);
+        }
+        // 最后记账时间
+        accountBook.setLastAccountTime(new Date());
+        // 预算
+        Integer budgetaryAmount = accountBook.getBudgetaryAmount();
+        if(budgetaryAmount != null) {
+            Integer costAmount = recordParam.getAmount();
+            Integer surplusBudgetaryAmount = accountBook.getSurplusBudgetaryAmount();
+            surplusBudgetaryAmount = surplusBudgetaryAmount - costAmount;
+            accountBook.setSurplusBudgetaryAmount(surplusBudgetaryAmount);
+        }
+
+        accountBookMapper.updateByPrimaryKeySelective(accountBook);
+        return true;
     }
 
     @Override

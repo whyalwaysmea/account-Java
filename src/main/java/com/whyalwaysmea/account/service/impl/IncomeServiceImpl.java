@@ -3,6 +3,8 @@ package com.whyalwaysmea.account.service.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.whyalwaysmea.account.constant.Constant;
 import com.whyalwaysmea.account.constant.RedisKey;
+import com.whyalwaysmea.account.enums.WaysError;
+import com.whyalwaysmea.account.exception.MyException;
 import com.whyalwaysmea.account.mapper.IncomeTypeMapper;
 import com.whyalwaysmea.account.po.IncomeType;
 import com.whyalwaysmea.account.service.IncomeService;
@@ -56,5 +58,17 @@ public class IncomeServiceImpl extends BaseService implements IncomeService {
     @Override
     public List<IncomeType> getAllParentIncomeType() {
         return null;
+    }
+
+    @Override
+    public IncomeType getIncomeType(long id) {
+        IncomeType incomeType = new IncomeType();
+        incomeType.setId(id);
+        incomeType.setCreatorId(getCurrentUserId());
+        incomeType = incomeTypeMapper.selectOne(incomeType);
+        if(incomeType == null) {
+            throw new MyException(WaysError.ERROR_ID);
+        }
+        return incomeType;
     }
 }

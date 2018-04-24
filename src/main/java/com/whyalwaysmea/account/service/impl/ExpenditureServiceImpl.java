@@ -127,7 +127,7 @@ public class ExpenditureServiceImpl extends BaseService implements ExpenditureSe
         if(pid != null) {
             ExpenditureType expenditureType = expenditureTypeMapper.selectByPrimaryKey(pid);
             if(expenditureType == null) {
-                throw new MyException(WaysError.ERROR_Expenditure_PID);
+                throw new MyException(WaysError.ERROR_PID);
             }
             newExpenditure.setPid(pid);
         }
@@ -145,7 +145,7 @@ public class ExpenditureServiceImpl extends BaseService implements ExpenditureSe
         Long id = param.getId();
         ExpenditureType expenditureType = expenditureTypeMapper.selectByPrimaryKey(id);
         if(expenditureType == null) {
-            throw new MyException(WaysError.ERROR_Expenditure_ID);
+            throw new MyException(WaysError.ERROR_ID);
         }
         BeanUtils.copyProperties(param, expenditureType);
         expenditureTypeMapper.updateByPrimaryKeySelective(expenditureType);
@@ -156,7 +156,7 @@ public class ExpenditureServiceImpl extends BaseService implements ExpenditureSe
     public boolean deleteExpenditureType(int id) {
         ExpenditureType expenditureType = expenditureTypeMapper.selectByPrimaryKey(id);
         if(expenditureType == null) {
-            throw new MyException(WaysError.ERROR_Expenditure_ID);
+            throw new MyException(WaysError.ERROR_ID);
         }
         int delete = expenditureTypeMapper.deleteByPrimaryKey(id);
         return delete == 1 ;
@@ -165,6 +165,18 @@ public class ExpenditureServiceImpl extends BaseService implements ExpenditureSe
     @Override
     public void orderExpenditureType() {
 
+    }
+
+    @Override
+    public ExpenditureType findExpenditureById(long id) {
+        ExpenditureType expenditureType = new ExpenditureType();
+        expenditureType.setId(id);
+        expenditureType.setCreatorId(getCurrentUserId());
+        expenditureType = expenditureTypeMapper.selectOne(expenditureType);
+        if(expenditureType == null) {
+            throw new MyException(WaysError.ERROR_ID);
+        }
+        return expenditureType;
     }
 
 

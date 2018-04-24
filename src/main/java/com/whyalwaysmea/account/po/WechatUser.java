@@ -5,11 +5,17 @@ import lombok.Data;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.io.Serializable;
 import java.util.Date;
 
 @Table(name = "wechat_user")
 @Data
-public class WechatUser {
+public class WechatUser implements Serializable{
+
+    @Transient
+    private static final long serialVersionUID = -4916230468526464823L;
+
     /**
      * 微信openid
      */

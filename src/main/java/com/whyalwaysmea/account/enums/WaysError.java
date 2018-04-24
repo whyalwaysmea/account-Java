@@ -9,8 +9,8 @@ import lombok.Getter;
  */
 @Getter
 public enum WaysError implements CodeEnum {
-    ERROR_Expenditure_ID(1000, "error id"),
-    ERROR_Expenditure_PID(1001, "error pid");
+    ERROR_ID(1000, "错误的条目id"),
+    ERROR_PID(1001, "错误的条目pid");
 
     private Integer code;
     private String message;

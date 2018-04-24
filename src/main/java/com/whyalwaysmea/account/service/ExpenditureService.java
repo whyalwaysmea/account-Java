@@ -69,5 +69,10 @@ public interface ExpenditureService {
      */
     void orderExpenditureType();
 
-
+    /**
+     * 根据id获取支出条目
+     * @param id
+     * @return
+     */
+    ExpenditureType findExpenditureById(long id);
 }

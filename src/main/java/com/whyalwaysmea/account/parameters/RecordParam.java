@@ -3,6 +3,7 @@ package com.whyalwaysmea.account.parameters;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -30,7 +31,7 @@ public class RecordParam {
     private Integer amount;
 
     @ApiModelProperty("收入(1)or支出(2)")
-    @NotNull(message = "请选择正确的收支分类")
+    @Range(min = 1, max = 2, message = "请选择正确的收支分类")
     private Integer recordType;
 
     @ApiModelProperty("主要分类")
@@ -43,7 +44,7 @@ public class RecordParam {
     @ApiModelProperty("收支途径")
     private Long payIncomeWay;
 
-    @ApiModelProperty("记录关联的日期 yyyy-MM-dd ")
+    @ApiModelProperty("记录关联的日期 yyyy-MM-dd git")
     @NotNull(message = "关联时间不能为空")
     private Date recordTime;
 

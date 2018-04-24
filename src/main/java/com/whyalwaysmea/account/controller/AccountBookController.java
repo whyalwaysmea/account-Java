@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -37,7 +38,7 @@ public class AccountBookController extends BaseController{
     @ApiOperation("更新账本")
     @PutMapping("/{id:\\d+}")
     public ExecuteResult<AccountBook> updateAccountBook(@PathVariable("id") @ApiParam("账本id") long id,
-                                                        @RequestBody AccountBookParam accountBookParam,
+                                                        @RequestBody @Validated AccountBookParam accountBookParam,
                                                         BindingResult bindResult) {
         checkParam(bindResult);
         accountBookParam.setId(id);
