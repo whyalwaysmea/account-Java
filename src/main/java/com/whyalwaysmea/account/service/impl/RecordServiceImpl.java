@@ -89,7 +89,7 @@ public class RecordServiceImpl extends BaseService implements RecordService {
         }
         List<AccountRecordParters> parters = partersId.stream().map(id -> {
             AccountRecordParters accountRecordParters = new AccountRecordParters();
-            accountRecordParters.setRecordId(recordParam.getBookId());
+            accountRecordParters.setRecordId(accountRecord.getId());
             accountRecordParters.setWechatOpenid(id);
             return accountRecordParters;
         }).collect(Collectors.toList());
