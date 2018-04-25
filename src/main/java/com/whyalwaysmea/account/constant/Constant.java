@@ -13,4 +13,5 @@ public interface Constant {
     Integer INCOME = 1;
     // 支出
     Integer EXPENDITURE = 2;
+
 }

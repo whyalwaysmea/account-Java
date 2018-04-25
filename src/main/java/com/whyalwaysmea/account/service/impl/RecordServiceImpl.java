@@ -13,6 +13,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,6 +48,7 @@ public class RecordServiceImpl extends BaseService implements RecordService {
     private WaysService waysService;
 
     @Override
+    @Transactional
     public AccountRecord addRecord(RecordParam recordParam) {
         String userId = getCurrentUserId();
         // 账本统计更新（最后记账时间，预算，）
@@ -86,6 +88,8 @@ public class RecordServiceImpl extends BaseService implements RecordService {
         List<String> partersId = recordParam.getPartersId();
         if(CollectionUtils.isEmpty(partersId)) {
             partersId = Lists.newArrayList(userId);
+        } else {
+
         }
         List<AccountRecordParters> parters = partersId.stream().map(id -> {
             AccountRecordParters accountRecordParters = new AccountRecordParters();

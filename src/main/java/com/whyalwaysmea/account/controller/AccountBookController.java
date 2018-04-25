@@ -3,13 +3,17 @@ package com.whyalwaysmea.account.controller;
 import com.whyalwaysmea.account.controller.common.BaseController;
 import com.whyalwaysmea.account.dto.ExecuteResult;
 import com.whyalwaysmea.account.dto.PageBean;
+import com.whyalwaysmea.account.enums.CommonError;
+import com.whyalwaysmea.account.exception.MyException;
 import com.whyalwaysmea.account.parameters.AccountBookParam;
 import com.whyalwaysmea.account.parameters.PageParam;
 import com.whyalwaysmea.account.po.AccountBook;
 import com.whyalwaysmea.account.service.AccountBookService;
+import com.whyalwaysmea.account.service.BookParterService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -28,11 +32,21 @@ public class AccountBookController extends BaseController{
     @Autowired
     private AccountBookService accountBookService;
 
+    @Autowired
+    private BookParterService bookParterService;
+
     @ApiOperation("新增账本")
     @PostMapping()
     public ExecuteResult<AccountBook> addAccountBook(@RequestBody AccountBookParam accountBookParam) {
         AccountBook accountBook = accountBookService.addAccountBook(accountBookParam);
         return ExecuteResult.ok(accountBook);
+    }
+
+    @ApiOperation("删除账本")
+    @DeleteMapping("/{id:\\d+}")
+    public ExecuteResult<Boolean> delAccountBook(@PathVariable("id") @ApiParam("账本id") long id) {
+        boolean result = accountBookService.delAccountBook(id);
+        return ExecuteResult.ok(result);
     }
 
     @ApiOperation("更新账本")
@@ -62,10 +76,25 @@ public class AccountBookController extends BaseController{
     }
 
     @ApiOperation("加入账本")
-    @PostMapping("/parter/{id:\\d+}")
-    public ExecuteResult<Boolean> joinAccountBook(@PathVariable("id") @ApiParam("账本id") long id) {
-        Boolean result = accountBookService.joinAccountBook(id);
+    @PostMapping("/parter/{bookId:\\d+}")
+    public ExecuteResult<Integer> joinAccountBook(@PathVariable("bookId") @ApiParam("账本id") long bookId) {
+        int result = bookParterService.joinAccountBook(bookId);
         return ExecuteResult.ok(result);
     }
 
+    @ApiOperation("移除账本参与者")
+    @DeleteMapping("/parter/{bookId:\\d+}")
+    public ExecuteResult<Boolean> removeParters(@RequestParam("ids") @ApiParam("要移除的用户id， 多人用,分割") String ids,
+                                                @PathVariable("bookId") @ApiParam("账本id") long bookId) {
+        String[] idList = ids.split(",");
+        if(ArrayUtils.isEmpty(idList)) {
+            throw new MyException(CommonError.ERROR_PARAMTER);
+        }
+        for (String id : idList) {
+            bookParterService.removeParter(id, bookId);
+        }
+
+
+        return ExecuteResult.ok(true);
+    }
 }

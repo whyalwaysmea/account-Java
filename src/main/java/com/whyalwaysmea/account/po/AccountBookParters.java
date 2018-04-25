@@ -10,14 +10,12 @@ public class AccountBookParters {
     /**
      * 账本id
      */
-    @Id
     @Column(name = "book_id")
     private Long bookId;
 
     /**
      * 微信用户openid
      */
-    @Id
     @Column(name = "wechat_openid")
     private String wechatOpenid;
 

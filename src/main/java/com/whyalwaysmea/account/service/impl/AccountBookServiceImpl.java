@@ -60,13 +60,30 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
         accountBookParters.setWechatOpenid(getCurrentUserId());
         partersMapper.insert(accountBookParters);
 
-        return null;
+        return accountBookMapper.selectByPrimaryKey(accountBook.getId());
     }
 
     @Override
+    public boolean delAccountBook(long id) {
+        AccountBook accountBook = accountBookMapper.selectByPrimaryKey(id);
+        List<String> parterIds = accountBook.getParticipants().stream().map(WechatUser::getWechatOpenid).collect(Collectors.toList());
+        if(parterIds.contains(getCurrentUserId())) {
+            AccountBookParters accountBookParters = new AccountBookParters();
+            accountBookParters.setBookId(id);
+            accountBookParters.setWechatOpenid(getCurrentUserId());
+            int i = partersMapper.delete(accountBookParters);
+            return i == 1;
+        } else {
+            throw new MyException(CommonError.INSUFFICIENT_PERMISSIONS);
+        }
+    }
+
+    @Override
+    @Transactional
     public AccountBook updateAccountBook(AccountBookParam accountBookParam) {
         AccountBook accountBook = getAccountBook(accountBookParam.getId());
-        List<String> parterIds = accountBook.getParticipants().stream().map(wechatUser -> wechatUser.getWechatOpenid()).collect(Collectors.toList());
+        // 账本正确性
+        List<String> parterIds = accountBook.getParticipants().stream().map(WechatUser::getWechatOpenid).collect(Collectors.toList());
         if(accountBook == null || !parterIds.contains(getCurrentUserId())) {
             throw new MyException(CommonError.INSUFFICIENT_PERMISSIONS);
         }
@@ -113,6 +130,8 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
 
             if(newParters.size() > 1) {
                 accountBook.setMultipleType(true);
+            } else {
+                accountBook.setMultipleType(false);
             }
 
             partersMapper.insertList(newParters);
@@ -120,7 +139,7 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
 
         accountBookMapper.updateByPrimaryKeySelective(accountBook);
 
-        return null;
+        return accountBookMapper.selectByPrimaryKey(accountBook.getId());
     }
 
     @Override
@@ -164,24 +183,5 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
         }
     }
 
-    @Override
-    public Boolean joinAccountBook(long id) {
-        AccountBook accountBook = accountBookMapper.getAccountBook(id);
-        if(accountBook == null) {
-            throw new MyException(AccountBookError.ERROR_ACCOUNTBOOK);
-        }
 
-        List<WechatUser> participants = accountBook.getParticipants();
-        List<String> parterIds = participants.stream().map(wechatUser -> wechatUser.getWechatOpenid()).collect(Collectors.toList());
-        if(!parterIds.contains(getCurrentUserId())) {
-            parterIds.add(getCurrentUserId());
-            AccountBookParters accountBookParters = new AccountBookParters();
-            accountBookParters.setWechatOpenid(getCurrentUserId());
-            accountBookParters.setBookId(id);
-            partersMapper.insert(accountBookParters);
-            return true;
-        }
-
-        return false;
-    }
 }

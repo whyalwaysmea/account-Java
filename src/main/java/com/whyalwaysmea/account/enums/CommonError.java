@@ -9,7 +9,8 @@ import lombok.Getter;
  */
 @Getter
 public enum CommonError implements CodeEnum {
-    INSUFFICIENT_PERMISSIONS(800, "没有权限操作");
+    INSUFFICIENT_PERMISSIONS(800, "没有权限操作"),
+    ERROR_PARAMTER(800, "没有权限操作");
 
     private Integer code;
     private String message;
