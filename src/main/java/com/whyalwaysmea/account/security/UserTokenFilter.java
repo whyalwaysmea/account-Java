@@ -76,9 +76,9 @@ public class UserTokenFilter extends BasicHttpAuthenticationFilter {
         try {
             HttpServletResponse httpServletResponse = (HttpServletResponse) resp;
             if(StringUtils.isNotBlank(message)) {
-                httpServletResponse.sendRedirect("/unauthorized?message=" + message);
+                httpServletResponse.sendRedirect("/api/unauthorized?message=" + message);
             } else {
-                httpServletResponse.sendRedirect("/unauthorized");
+                httpServletResponse.sendRedirect("/api/unauthorized");
             }
         } catch (IOException e) {
             log.error(e.getMessage());

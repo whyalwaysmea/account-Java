@@ -1,20 +1,21 @@
 package com.whyalwaysmea.account.service.impl;
 
+import com.whyalwaysmea.account.enums.UserError;
+import com.whyalwaysmea.account.exception.MyException;
 import com.whyalwaysmea.account.mapper.WechatUserMapper;
+import com.whyalwaysmea.account.parameters.AccountBookParam;
 import com.whyalwaysmea.account.parameters.WechatUserInfoParam;
+import com.whyalwaysmea.account.po.AccountBook;
 import com.whyalwaysmea.account.po.WechatUser;
-import com.whyalwaysmea.account.service.ExpenditureService;
-import com.whyalwaysmea.account.service.IncomeService;
-import com.whyalwaysmea.account.service.UserService;
-import com.whyalwaysmea.account.service.WaysService;
+import com.whyalwaysmea.account.service.*;
 import com.whyalwaysmea.account.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -40,10 +41,18 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private IncomeService incomeService;
 
+    @Autowired
+    private AccountBookService accountBookService;
+
+    private String defaultBookName = "%s的默认账本";
+
     @Override
     @Cacheable(key = "#openid")
     public WechatUser getWechatUser(String openid) {
         WechatUser wechatUser = userMapper.selectByPrimaryKey(openid);
+        if(wechatUser == null) {
+            throw new MyException(UserError.ERROR_USERID);
+        }
         return wechatUser;
     }
 
@@ -55,35 +64,59 @@ public class UserServiceImpl implements UserService {
     @Override
     public WechatUser getCurrentUser() {
         String currentUserId = getCurrentUserId();
-        WechatUser user = userMapper.selectByPrimaryKey(currentUserId);
+        WechatUser user = getWechatUser(currentUserId);
         return user;
     }
 
     @Override
-    @Transactional
-    public WechatUser login(WechatUserInfoParam param) {
-        WechatUser wechatUser = userMapper.selectByPrimaryKey(param.getOpenId());
-        // 如果用户存在，则更新资料
+    public WechatUser login(String openId) {
+        WechatUser wechatUser = getWechatUser(openId);
         if(wechatUser != null) {
-            BeanUtils.copyProperties(param, wechatUser);
-            wechatUser.setWechatOpenid(param.getOpenId());
             wechatUser.setLastLoginTime(new Date());
+
+            // TODO MQ去更新最后登录时间
             userMapper.updateByPrimaryKey(wechatUser);
             return wechatUser;
         }
         // 如果用户不存在，则新增，
         wechatUser = new WechatUser();
-        BeanUtils.copyProperties(param, wechatUser);
-        wechatUser.setWechatOpenid(param.getOpenId());
+        wechatUser.setWechatOpenid(openId);
         userMapper.insertSelective(wechatUser);
 
-        // 同步收支相关基础信息
-        String openId = param.getOpenId();
+
+        // TODO 同步收支相关基础信息（MQ去操作）
         expenditureService.addDefaultExpenditureForNewUser(openId);
         waysService.addDefaultWaysForNewUser(openId);
         incomeService.addDefaultIncomeTypeForNewUser(openId);
 
-        return wechatUser;
+        return null;
+    }
+
+    @Override
+    public WechatUser updateLastActivityDate() {
+        WechatUser currentUser = getCurrentUser();
+        currentUser.setLastLoginTime(new Date());
+        userMapper.updateByPrimaryKey(currentUser);
+        return currentUser;
+    }
+
+
+    @Override
+    @CachePut(key = "#result.getWechatOpenid()")
+    public WechatUser updateInfo(WechatUserInfoParam infoParam) {
+        WechatUser currentUser = getCurrentUser();
+        BeanUtils.copyProperties(infoParam, currentUser);
+        if(infoParam.isCreateBook()) {
+            AccountBookParam accountBookParam = new AccountBookParam();
+            accountBookParam.setDefaultBook(true);
+            String bookName = String.format(defaultBookName, infoParam.getNickName());
+            accountBookParam.setName(bookName);
+            accountBookParam.setCoverImg(infoParam.getAvatarUrl());
+            AccountBook accountBook = accountBookService.addAccountBook(accountBookParam);
+            currentUser.setDefaultAccount(accountBook.getId());
+        }
+        userMapper.updateByPrimaryKeySelective(currentUser);
+        return currentUser;
     }
 
     @Override

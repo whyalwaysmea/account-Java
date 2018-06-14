@@ -35,4 +35,7 @@ public class WechatUserInfoParam {
     @ApiModelProperty("用户所在国家")
     private String country;
 
+    @ApiModelProperty("是否创建默认账本")
+    private boolean createBook;
+
 }

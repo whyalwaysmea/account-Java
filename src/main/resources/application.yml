@@ -1,5 +1,7 @@
 server:
   port: 8088
+  servlet:
+    context-path: /api
 
 
 spring:
@@ -15,6 +17,12 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+
+# 小程序配置
+wechat:
+  appid:
+  appsecret:
+  loginUrl: https://api.weixin.qq.com/sns/jscode2session?appid=${wechat.appid}&secret=${wechat.appsecret}&js_code=%s&grant_type=authorization_code
 
 # mybatis配置
 mybatis:

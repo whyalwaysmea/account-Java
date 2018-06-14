@@ -41,6 +41,7 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
     @Autowired
     private AccountBookPartersMapper partersMapper;
 
+
     @Override
     @Transactional(rollbackFor=Exception.class)
     public AccountBook addAccountBook(AccountBookParam accountBookParam) {

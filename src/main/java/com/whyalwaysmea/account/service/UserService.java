@@ -29,10 +29,23 @@ public interface UserService {
     WechatUser getCurrentUser();
 
     /**
-     * 登录
-     * @param wechatUser
+     * 根据openid登录
+     * @param openId
+     * @return
      */
-    WechatUser login(WechatUserInfoParam wechatUser);
+    WechatUser login(String openId);
+
+    /**
+     * 更新最后登录时间
+     */
+    WechatUser updateLastActivityDate();
+
+    /**
+     * 更新用户信息
+     * @param infoParam
+     * @return
+     */
+    WechatUser updateInfo(WechatUserInfoParam infoParam);
 
     /**
      * 更新用户最后记账时间

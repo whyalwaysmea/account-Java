@@ -63,4 +63,9 @@ public class BookParterServiceImpl extends BaseService implements BookParterServ
     public Boolean createParter() {
         return null;
     }
+
+    @Override
+    public boolean removeParter(String userId, long bookId) {
+        return false;
+    }
 }

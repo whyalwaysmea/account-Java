@@ -83,4 +83,9 @@ public class WechatUser implements Serializable{
      * 是否是虚假用户
      */
     private Boolean fakerUser;
+
+    /**
+     * 默认账本id
+     */
+    private Long defaultAccount;
 }
