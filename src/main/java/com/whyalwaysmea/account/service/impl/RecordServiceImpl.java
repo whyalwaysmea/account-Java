@@ -1,7 +1,7 @@
 package com.whyalwaysmea.account.service.impl;
 
 import com.google.common.collect.Lists;
-import com.whyalwaysmea.account.constant.Constant;
+import com.whyalwaysmea.account.constant.RecordType;
 import com.whyalwaysmea.account.enums.WaysError;
 import com.whyalwaysmea.account.exception.MyException;
 import com.whyalwaysmea.account.mapper.AccountRecordMapper;
@@ -58,7 +58,7 @@ public class RecordServiceImpl extends BaseService implements RecordService {
         AccountRecord accountRecord = new AccountRecord();
         BeanUtils.copyProperties(recordParam, accountRecord);
         accountRecord.setCreatorId(userId);
-        if(Constant.INCOME.equals(recordParam.getRecordType())) {
+        if(RecordType.INCOME.equals(recordParam.getRecordType())) {
             IncomeType mainType = incomeService.getIncomeType(recordParam.getMainType());
             accountRecord.setMainType(mainType.getName());
             if(recordParam.getSecondaryType() != null) {

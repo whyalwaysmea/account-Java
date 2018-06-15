@@ -49,7 +49,7 @@ public class RecordController extends BaseController {
     }
 
     @ApiOperation("获取收支记录列表")
-    @GetMapping("/list")
+    @GetMapping("/{id}")
     public ExecuteResult<PageBean<AccountRecord>> getRecords(PageParam pageParam) {
         return ExecuteResult.ok();
     }

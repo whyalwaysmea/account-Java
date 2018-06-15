@@ -10,6 +10,7 @@ import com.whyalwaysmea.account.parameters.PageParam;
 import com.whyalwaysmea.account.po.AccountBook;
 import com.whyalwaysmea.account.service.AccountBookService;
 import com.whyalwaysmea.account.service.BookParterService;
+import com.whyalwaysmea.account.vo.AccountBookDetails;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -63,8 +64,8 @@ public class AccountBookController extends BaseController{
 
     @ApiOperation("获取账本详情")
     @GetMapping("/{id:\\d+}")
-    public ExecuteResult<AccountBook> getAccountBook(@PathVariable("id") @ApiParam("账本id") long id) {
-        AccountBook accountBook = accountBookService.getAccountBook(id);
+    public ExecuteResult<AccountBookDetails> getAccountBook(@PathVariable("id") @ApiParam("账本id") long id) {
+        AccountBookDetails accountBook = accountBookService.getAccountBookDetails(id);
         return ExecuteResult.ok(accountBook);
     }
 

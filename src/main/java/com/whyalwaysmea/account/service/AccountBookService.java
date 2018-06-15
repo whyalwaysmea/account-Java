@@ -5,6 +5,7 @@ import com.whyalwaysmea.account.parameters.AccountBookParam;
 import com.whyalwaysmea.account.parameters.PageParam;
 import com.whyalwaysmea.account.parameters.RecordParam;
 import com.whyalwaysmea.account.po.AccountBook;
+import com.whyalwaysmea.account.vo.AccountBookDetails;
 
 /**
  * @Author: Long
@@ -45,7 +46,7 @@ public interface AccountBookService {
      * @param id
      * @return
      */
-    AccountBook getAccountBook(long id);
+    AccountBookDetails getAccountBookDetails(long id);
 
 
     /**

@@ -2,9 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.whyalwaysmea.account.mapper.AccountRecordMapper">
     <resultMap id="BaseResultMap" type="com.whyalwaysmea.account.po.AccountRecord">
-        <!--
-          WARNING - @mbg.generated
-        -->
         <id column="id" jdbcType="BIGINT" property="id" />
         <result column="book_id" jdbcType="BIGINT" property="bookId" />
         <result column="amount" jdbcType="INTEGER" property="amount" />
@@ -15,7 +12,12 @@
         <result column="creator_id" jdbcType="VARCHAR" property="creatorId" />
         <result column="record_time" jdbcType="TIMESTAMP" property="recordTime" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-        <result column="last_account_time" jdbcType="TIMESTAMP" property="lastAccountTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
         <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
     </resultMap>
+
+
+    <select id="currentMonthTotalMoney" resultType="int">
+        SELECT IFNULL(SUM(amount), 0) FROM account_record WHERE record_time BETWEEN #{startDate} AND #{endDate} AND is_delete = 0 AND record_type = ${recordType};
+    </select>
 </mapper>

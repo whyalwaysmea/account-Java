@@ -72,6 +72,9 @@ public class AccountRecord implements Serializable {
     @Column(name = "create_time")
     private Date createTime;
 
+    @Column(name = "update_time")
+    private Date updateTime;
+
     /**
      * 备注
      */

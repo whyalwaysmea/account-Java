@@ -1,12 +1,14 @@
 package com.whyalwaysmea.account.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.whyalwaysmea.account.constant.RecordType;
 import com.whyalwaysmea.account.dto.PageBean;
 import com.whyalwaysmea.account.enums.AccountBookError;
 import com.whyalwaysmea.account.enums.CommonError;
 import com.whyalwaysmea.account.exception.MyException;
 import com.whyalwaysmea.account.mapper.AccountBookMapper;
 import com.whyalwaysmea.account.mapper.AccountBookPartersMapper;
+import com.whyalwaysmea.account.mapper.AccountRecordMapper;
 import com.whyalwaysmea.account.parameters.AccountBookParam;
 import com.whyalwaysmea.account.parameters.PageParam;
 import com.whyalwaysmea.account.parameters.RecordParam;
@@ -14,6 +16,8 @@ import com.whyalwaysmea.account.po.AccountBook;
 import com.whyalwaysmea.account.po.AccountBookParters;
 import com.whyalwaysmea.account.po.WechatUser;
 import com.whyalwaysmea.account.service.AccountBookService;
+import com.whyalwaysmea.account.utils.DateUtils;
+import com.whyalwaysmea.account.vo.AccountBookDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -40,6 +44,9 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
 
     @Autowired
     private AccountBookPartersMapper partersMapper;
+
+    @Autowired
+    private AccountRecordMapper recordMapper;
 
 
     @Override
@@ -82,7 +89,7 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
     @Override
     @Transactional
     public AccountBook updateAccountBook(AccountBookParam accountBookParam) {
-        AccountBook accountBook = getAccountBook(accountBookParam.getId());
+        AccountBook accountBook = accountBookMapper.getAccountBook(accountBookParam.getId());
         // 账本正确性
         List<String> parterIds = accountBook.getParticipants().stream().map(WechatUser::getWechatOpenid).collect(Collectors.toList());
         if(accountBook == null || !parterIds.contains(getCurrentUserId())) {
@@ -165,8 +172,16 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
     }
 
     @Override
-    public AccountBook getAccountBook(long id) {
-        return accountBookMapper.getAccountBook(id);
+    public AccountBookDetails getAccountBookDetails(long id) {
+        AccountBook accountBook = accountBookMapper.getAccountBook(id);
+        AccountBookDetails accountBookDetails = new AccountBookDetails();
+        BeanUtils.copyProperties(accountBook, accountBookDetails);
+
+        Integer totalIncome = recordMapper.currentMonthTotalMoney(RecordType.INCOME, DateUtils.getFirstDayOfCurrentMonth(), DateUtils.getCurrentDate());
+        Integer totalExpenditure = recordMapper.currentMonthTotalMoney(RecordType.EXPENDITURE, DateUtils.getFirstDayOfCurrentMonth(), DateUtils.getCurrentDate());
+        accountBookDetails.setIncomeAmount(totalIncome);
+        accountBookDetails.setExpenditureAmount(totalExpenditure);
+        return accountBookDetails;
     }
 
     @Override
