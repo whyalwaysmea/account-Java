@@ -21,7 +21,7 @@ spring:
 # 小程序配置
 wechat:
   appid:
-  appsecret:
+  appsecret: 123
   loginUrl: https://api.weixin.qq.com/sns/jscode2session?appid=${wechat.appid}&secret=${wechat.appsecret}&js_code=%s&grant_type=authorization_code
 
 # mybatis配置
