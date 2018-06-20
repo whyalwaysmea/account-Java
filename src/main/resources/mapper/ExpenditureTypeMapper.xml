@@ -12,7 +12,6 @@
             <result column="cpid" jdbcType="BIGINT" property="pid" />
             <result column="cname" jdbcType="VARCHAR" property="name" />
             <result column="ccreator_id" jdbcType="VARCHAR" property="creatorId" />
-            <result column="cicon_url" jdbcType="VARCHAR" property="iconUrl" />
         </collection>
     </resultMap>
 
@@ -30,7 +29,7 @@
 
 
     <select id="findAll" resultMap="BaseResultMap">
-        SELECT p.id, p.pid, p.name, p.creator_id, p.icon_url, c.id cid, c.pid cpid, c.name cname, c.creator_id ccreator_id, c.icon_url cicon_url
+        SELECT p.id, p.pid, p.name, p.creator_id, p.icon_url, c.id cid, c.pid cpid, c.name cname, c.creator_id ccreator_id
         FROM expenditure_type p LEFT JOIN expenditure_type c ON p.id = c.pid WHERE p.creator_id = #{userId} AND p.pid IS NULL;
     </select>
 </mapper>

@@ -2,6 +2,7 @@ package com.whyalwaysmea.account.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 
 import javax.servlet.ServletRequest;
@@ -34,13 +35,17 @@ public class UserTokenFilter extends BasicHttpAuthenticationFilter {
      *
      */
     @Override
-    protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
+    protected boolean executeLogin(ServletRequest request, ServletResponse response)  {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String authorization = httpServletRequest.getHeader("Authorization");
 
         UserToken token = new UserToken(authorization);
         // 提交给realm进行登入，如果错误他会抛出异常并被捕获
-        getSubject(request, response).login(token);
+        try {
+            getSubject(request, response).login(token);
+        } catch (AuthenticationException e) {
+            response401(request, response, e.getMessage());
+        }
         // 如果没有抛出异常则代表登入成功，返回true
         return true;
     }

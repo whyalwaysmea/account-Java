@@ -26,7 +26,7 @@ public interface IncomeService {
      * 获取用户所有的收入分类
      * @return
      */
-    List<IncomeType> getAllParentIncomeType();
+    List<IncomeType> getAllIncomeType(String userId);
 
     /**
      * 根据id获取收入条目

@@ -2,14 +2,18 @@ package com.whyalwaysmea.account.controller;
 
 import com.whyalwaysmea.account.controller.common.BaseController;
 import com.whyalwaysmea.account.dto.ExecuteResult;
-import com.whyalwaysmea.account.dto.PageBean;
 import com.whyalwaysmea.account.parameters.IncomeParam;
 import com.whyalwaysmea.account.po.IncomeType;
+import com.whyalwaysmea.account.service.IncomeService;
+import com.whyalwaysmea.account.utils.UserUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @Author: whyalwaysmea
@@ -21,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class IncomeController extends BaseController {
 
+    @Autowired
+    private IncomeService incomeService;
 
     @ApiOperation("新增收入分类")
     @PostMapping
@@ -46,8 +52,9 @@ public class IncomeController extends BaseController {
 
     @ApiOperation("获取所有的收入分类")
     @GetMapping("/list")
-    public ExecuteResult<PageBean<IncomeType>> getAllIncome() {
-        return ExecuteResult.ok();
+    public ExecuteResult<List<IncomeType>> getAllIncome() {
+        List<IncomeType> allIncomeType = incomeService.getAllIncomeType(UserUtils.getCurrentUserId());
+        return ExecuteResult.ok(allIncomeType);
     }
 
     @ApiOperation("获取收入分类的详情以及子类")

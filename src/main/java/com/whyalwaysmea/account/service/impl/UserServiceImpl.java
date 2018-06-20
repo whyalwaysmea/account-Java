@@ -1,7 +1,5 @@
 package com.whyalwaysmea.account.service.impl;
 
-import com.whyalwaysmea.account.enums.UserError;
-import com.whyalwaysmea.account.exception.MyException;
 import com.whyalwaysmea.account.mapper.WechatUserMapper;
 import com.whyalwaysmea.account.parameters.AccountBookParam;
 import com.whyalwaysmea.account.parameters.WechatUserInfoParam;
@@ -50,9 +48,6 @@ public class UserServiceImpl implements UserService {
     @Cacheable(key = "#openid")
     public WechatUser getWechatUser(String openid) {
         WechatUser wechatUser = userMapper.selectByPrimaryKey(openid);
-        if(wechatUser == null) {
-            throw new MyException(UserError.ERROR_USERID);
-        }
         return wechatUser;
     }
 
@@ -83,18 +78,19 @@ public class UserServiceImpl implements UserService {
         wechatUser.setWechatOpenid(openId);
         userMapper.insertSelective(wechatUser);
 
-
         // TODO 同步收支相关基础信息（MQ去操作）
         expenditureService.addDefaultExpenditureForNewUser(openId);
         waysService.addDefaultWaysForNewUser(openId);
         incomeService.addDefaultIncomeTypeForNewUser(openId);
 
-        return null;
+        return wechatUser;
     }
 
     @Override
     public WechatUser updateLastActivityDate() {
         WechatUser currentUser = getCurrentUser();
+
+        // TODO MQ去做
         currentUser.setLastLoginTime(new Date());
         userMapper.updateByPrimaryKey(currentUser);
         return currentUser;

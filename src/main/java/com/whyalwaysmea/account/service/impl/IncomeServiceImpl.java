@@ -56,8 +56,11 @@ public class IncomeServiceImpl extends BaseService implements IncomeService {
     }
 
     @Override
-    public List<IncomeType> getAllParentIncomeType() {
-        return null;
+    public List<IncomeType> getAllIncomeType(String userId) {
+        IncomeType incomeType = new IncomeType();
+        incomeType.setCreatorId(userId);
+
+        return incomeTypeMapper.select(incomeType);
     }
 
     @Override
