@@ -1,6 +1,7 @@
 package com.whyalwaysmea.account.service.impl;
 
 import com.whyalwaysmea.account.mapper.WechatUserMapper;
+import com.whyalwaysmea.account.mq.QueueEnum;
 import com.whyalwaysmea.account.parameters.AccountBookParam;
 import com.whyalwaysmea.account.parameters.WechatUserInfoParam;
 import com.whyalwaysmea.account.po.AccountBook;
@@ -8,6 +9,9 @@ import com.whyalwaysmea.account.po.WechatUser;
 import com.whyalwaysmea.account.service.*;
 import com.whyalwaysmea.account.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.rabbit.annotation.RabbitHandler;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -44,6 +48,9 @@ public class UserServiceImpl implements UserService {
 
     private String defaultBookName = "%s的默认账本";
 
+    @Autowired
+    private AmqpTemplate amqpTemplate;
+
     @Override
     @Cacheable(key = "#openid")
     public WechatUser getWechatUser(String openid) {
@@ -69,7 +76,6 @@ public class UserServiceImpl implements UserService {
         if(wechatUser != null) {
             wechatUser.setLastLoginTime(new Date());
 
-            // TODO MQ去更新最后登录时间
             userMapper.updateByPrimaryKey(wechatUser);
             return wechatUser;
         }
@@ -78,22 +84,30 @@ public class UserServiceImpl implements UserService {
         wechatUser.setWechatOpenid(openId);
         userMapper.insertSelective(wechatUser);
 
-        // TODO 同步收支相关基础信息（MQ去操作）
-        expenditureService.addDefaultExpenditureForNewUser(openId);
-        waysService.addDefaultWaysForNewUser(openId);
-        incomeService.addDefaultIncomeTypeForNewUser(openId);
+        amqpTemplate.convertAndSend(QueueEnum.USER_REGISTER.getName(), openId);
 
         return wechatUser;
     }
 
+
     @Override
     public WechatUser updateLastActivityDate() {
         WechatUser currentUser = getCurrentUser();
-
-        // TODO MQ去做
         currentUser.setLastLoginTime(new Date());
         userMapper.updateByPrimaryKey(currentUser);
         return currentUser;
+    }
+
+    @Override
+    @RabbitListener(queues = "user.register")
+    @RabbitHandler
+    public void initAccountInfo(String openId) {
+        WechatUser wechatUser = getWechatUser(openId);
+        if(wechatUser != null) {
+            expenditureService.addDefaultExpenditureForNewUser(openId);
+            waysService.addDefaultWaysForNewUser(openId);
+            incomeService.addDefaultIncomeTypeForNewUser(openId);
+        }
     }
 
 

@@ -119,6 +119,12 @@
 			<optional>true</optional>
 		</dependency>
 
+		<!-- rabbitmq -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
+
 		<!-- utils -->
         <dependency>
             <groupId>org.apache.commons</groupId>

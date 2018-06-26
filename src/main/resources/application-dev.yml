@@ -10,10 +10,19 @@ spring:
   redis:
     host: localhost
     port: 6379
+  rabbitmq:
+    host: 192.168.0.125
+    port: 5672
+    username: whyalwaysmea
+    password: 123456...
+    publisher-confirms: true
+    virtual-host: /
 
 
 logging:
   level:
     com.whyalwaysmea.account.mapper: TRACE
+
+
 
 

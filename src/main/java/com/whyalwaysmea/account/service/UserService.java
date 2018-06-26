@@ -41,6 +41,11 @@ public interface UserService {
     WechatUser updateLastActivityDate();
 
     /**
+     * 初始化收支相关基础信息
+     */
+    void initAccountInfo(String openId);
+
+    /**
      * 更新用户信息
      * @param infoParam
      * @return
