@@ -14,6 +14,9 @@ import java.util.Date;
  */
 public class DateUtils {
 
+    public static final String DATE_TIME_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
+
     /**
      * 获取当月第一天
      * @return

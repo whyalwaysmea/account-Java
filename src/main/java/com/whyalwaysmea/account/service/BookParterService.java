@@ -1,5 +1,9 @@
 package com.whyalwaysmea.account.service;
 
+import com.whyalwaysmea.account.po.AccountBookParters;
+
+import java.util.List;
+
 /**
  * @Author: Long
  * @Date: Create in 15:38 2018/4/25
@@ -26,4 +30,11 @@ public interface BookParterService {
      * @return
      */
     boolean removeParter(String userId, long bookId);
+
+    /**
+     * 根据账本id，查找所有的参与者
+     * @param bookId
+     * @return
+     */
+    List<AccountBookParters> findAllByBookId(long bookId);
 }

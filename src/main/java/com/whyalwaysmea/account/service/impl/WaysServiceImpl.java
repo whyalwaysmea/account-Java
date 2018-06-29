@@ -11,6 +11,8 @@ import com.whyalwaysmea.account.service.WaysService;
 import com.whyalwaysmea.account.utils.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
  * @Description:
  */
 @Service
+@CacheConfig(cacheNames = "ways")
 public class WaysServiceImpl extends BaseService implements WaysService {
 
     @Autowired
@@ -56,6 +59,7 @@ public class WaysServiceImpl extends BaseService implements WaysService {
     }
 
     @Override
+    @Cacheable(key = "#id")
     public PayIncomeWays getPayIncomeWays(long id) {
         PayIncomeWays payIncomeWays = new PayIncomeWays();
         payIncomeWays.setCreatorId(getCurrentUserId());
@@ -65,5 +69,14 @@ public class WaysServiceImpl extends BaseService implements WaysService {
             throw new MyException(WaysError.ERROR_ID);
         }
         return payIncomeWays;
+    }
+
+    @Override
+    @Cacheable(key = "#userId")
+    public List<PayIncomeWays> getUserAllWays(String userId) {
+        PayIncomeWays payIncomeWays = new PayIncomeWays();
+        payIncomeWays.setCreatorId(userId);
+        List<PayIncomeWays> waysList = waysMapper.select(payIncomeWays);
+        return waysList;
     }
 }

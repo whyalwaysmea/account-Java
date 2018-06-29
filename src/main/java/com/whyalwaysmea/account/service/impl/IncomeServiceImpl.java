@@ -11,6 +11,8 @@ import com.whyalwaysmea.account.service.IncomeService;
 import com.whyalwaysmea.account.utils.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
  * @Description:
  */
 @Service
+@CacheConfig(cacheNames = "income")
 public class IncomeServiceImpl extends BaseService implements IncomeService {
 
     @Autowired
@@ -56,6 +59,7 @@ public class IncomeServiceImpl extends BaseService implements IncomeService {
     }
 
     @Override
+    @Cacheable(key = "#userId")
     public List<IncomeType> getAllIncomeType(String userId) {
         IncomeType incomeType = new IncomeType();
         incomeType.setCreatorId(userId);
@@ -64,6 +68,7 @@ public class IncomeServiceImpl extends BaseService implements IncomeService {
     }
 
     @Override
+    @Cacheable(key = "#id")
     public IncomeType getIncomeType(long id) {
         IncomeType incomeType = new IncomeType();
         incomeType.setId(id);

@@ -68,4 +68,11 @@ public class BookParterServiceImpl extends BaseService implements BookParterServ
     public boolean removeParter(String userId, long bookId) {
         return false;
     }
+
+
+    @Override
+    public List<AccountBookParters> findAllByBookId(long bookId) {
+        List<AccountBookParters> parters = partersMapper.getParters(bookId);
+        return parters;
+    }
 }

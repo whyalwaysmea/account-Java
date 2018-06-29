@@ -16,6 +16,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -31,6 +33,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
+@CacheConfig(cacheNames = "expenditure")
 public class ExpenditureServiceImpl extends BaseService implements ExpenditureService {
 
     @Autowired
@@ -111,6 +114,7 @@ public class ExpenditureServiceImpl extends BaseService implements ExpenditureSe
     }
 
     @Override
+    @Cacheable(key = "'pid-' + #pid")
     public List<ExpenditureType> getChildExpenditureTypeByParendId(int pid) {
         String currentUserId = UserUtils.getCurrentUserId();
         ExpenditureType expenditureType = new ExpenditureType();
@@ -168,6 +172,7 @@ public class ExpenditureServiceImpl extends BaseService implements ExpenditureSe
     }
 
     @Override
+    @Cacheable(key = "#id")
     public ExpenditureType findExpenditureById(long id) {
         ExpenditureType expenditureType = new ExpenditureType();
         expenditureType.setId(id);

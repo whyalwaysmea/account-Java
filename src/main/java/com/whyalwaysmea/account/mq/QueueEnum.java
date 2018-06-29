@@ -15,9 +15,9 @@ public enum QueueEnum {
     USER_REGISTER("user.register"),
 
     /**
-     * 用户登录
+     * 记账同步
      */
-    USER_LOGIN("user.login")
+    RECORD("record.sync")
     ;
 
     /**

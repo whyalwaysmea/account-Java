@@ -28,6 +28,7 @@ public class AccountRecord implements Serializable {
     /**
      * 金额
      */
+    @Column(name = "amount")
     private Integer amount;
 
     /**

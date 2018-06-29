@@ -28,4 +28,6 @@ public interface WaysService {
      * @return
      */
     PayIncomeWays getPayIncomeWays(long id);
+
+    List<PayIncomeWays> getUserAllWays(String userId);
 }

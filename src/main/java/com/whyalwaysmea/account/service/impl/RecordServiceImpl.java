@@ -1,22 +1,25 @@
 package com.whyalwaysmea.account.service.impl;
 
-import com.google.common.collect.Lists;
 import com.whyalwaysmea.account.constant.RecordType;
+import com.whyalwaysmea.account.dto.SyncAccountBookDTO;
 import com.whyalwaysmea.account.enums.WaysError;
 import com.whyalwaysmea.account.exception.MyException;
 import com.whyalwaysmea.account.mapper.AccountRecordMapper;
-import com.whyalwaysmea.account.mapper.AccountRecordPartersMapper;
+import com.whyalwaysmea.account.mq.QueueEnum;
 import com.whyalwaysmea.account.parameters.RecordParam;
-import com.whyalwaysmea.account.po.*;
-import com.whyalwaysmea.account.service.*;
-import org.apache.commons.collections.CollectionUtils;
+import com.whyalwaysmea.account.po.AccountRecord;
+import com.whyalwaysmea.account.po.ExpenditureType;
+import com.whyalwaysmea.account.po.IncomeType;
+import com.whyalwaysmea.account.po.PayIncomeWays;
+import com.whyalwaysmea.account.service.ExpenditureService;
+import com.whyalwaysmea.account.service.IncomeService;
+import com.whyalwaysmea.account.service.RecordService;
+import com.whyalwaysmea.account.service.WaysService;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @Author: whyalwaysmea
@@ -29,14 +32,7 @@ public class RecordServiceImpl extends BaseService implements RecordService {
     @Autowired
     private AccountRecordMapper accountRecordMapper;
 
-    @Autowired
-    private AccountRecordPartersMapper recordPartersMapper;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private AccountBookService accountBookService;
 
     @Autowired
     private ExpenditureService expenditureService;
@@ -47,12 +43,13 @@ public class RecordServiceImpl extends BaseService implements RecordService {
     @Autowired
     private WaysService waysService;
 
+    @Autowired
+    private AmqpTemplate amqpTemplate;
+
     @Override
     @Transactional
     public AccountRecord addRecord(RecordParam recordParam) {
         String userId = getCurrentUserId();
-        // 账本统计更新（最后记账时间，预算，）
-        accountBookService.updateAccountRecord(recordParam);
 
         // 新增记录
         AccountRecord accountRecord = new AccountRecord();
@@ -84,26 +81,17 @@ public class RecordServiceImpl extends BaseService implements RecordService {
         accountRecord.setPayIncomeWay(payIncomeWays.getName());
         accountRecordMapper.insertSelective(accountRecord);
 
-        // 关联的消费者
-        List<String> partersId = recordParam.getPartersId();
-        if(CollectionUtils.isEmpty(partersId)) {
-            partersId = Lists.newArrayList(userId);
-        } else {
 
-        }
-        List<AccountRecordParters> parters = partersId.stream().map(id -> {
-            AccountRecordParters accountRecordParters = new AccountRecordParters();
-            accountRecordParters.setRecordId(accountRecord.getId());
-            accountRecordParters.setWechatOpenid(id);
-            return accountRecordParters;
-        }).collect(Collectors.toList());
-        recordPartersMapper.insertList(parters);
+        // 同步账本统计数据  1. 关联消费者 2.用户统计更新 3.账本统计更新
+        recordParam.setId(accountRecord.getId());
+        SyncAccountBookDTO syncAccountBookDTO = new SyncAccountBookDTO();
+        syncAccountBookDTO.setRecordParam(recordParam);
+        syncAccountBookDTO.setUserId(userId);
+        amqpTemplate.convertAndSend(QueueEnum.RECORD.getName(), syncAccountBookDTO);
 
-
-        // 用户统计更新（最后记账时间）
-        userService.updateLastAccountTime(userId);
         return accountRecord;
     }
+
 
     @Override
     public AccountRecord updateRecord(RecordParam recordParam) {

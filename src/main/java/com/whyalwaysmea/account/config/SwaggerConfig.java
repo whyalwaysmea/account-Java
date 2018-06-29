@@ -46,7 +46,7 @@ public class SwaggerConfig {
                 .modelRef(new ModelRef("string"))
                 .parameterType("header")
                 .required(false)
-                .defaultValue("hahaha")
+                .defaultValue("oiFEY42zs5nEdFumsoFsOAH-hjv4")
                 .build();
         pars.add(tokenPar.build());
         return pars;

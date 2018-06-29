@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -17,10 +18,12 @@ import java.util.List;
  */
 @ApiModel("收支记录")
 @Data
-public class RecordParam {
+public class RecordParam implements Serializable{
+
+    private static final long serialVersionUID = -4736989274218053924L;
 
     @ApiModelProperty("记录id")
-    private Integer id;
+    private Long id;
 
     @ApiModelProperty("账本id")
     @NotNull(message = "账本id不能为空")
@@ -44,7 +47,7 @@ public class RecordParam {
     @ApiModelProperty("收支途径")
     private Long payIncomeWay;
 
-    @ApiModelProperty("记录关联的日期 yyyy-MM-dd git")
+    @ApiModelProperty("记录关联的日期 yyyy-MM-dd")
     @NotNull(message = "关联时间不能为空")
     private Date recordTime;
 

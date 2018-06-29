@@ -2,14 +2,18 @@ package com.whyalwaysmea.account.controller;
 
 import com.whyalwaysmea.account.controller.common.BaseController;
 import com.whyalwaysmea.account.dto.ExecuteResult;
-import com.whyalwaysmea.account.dto.PageBean;
 import com.whyalwaysmea.account.parameters.WaysParam;
 import com.whyalwaysmea.account.po.PayIncomeWays;
+import com.whyalwaysmea.account.service.WaysService;
+import com.whyalwaysmea.account.utils.UserUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @Author: whyalwaysmea
@@ -20,6 +24,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/way")
 public class WaysController extends BaseController {
+
+    @Autowired
+    private WaysService waysService;
 
     @ApiOperation("新增收支途径")
     @PostMapping
@@ -42,8 +49,10 @@ public class WaysController extends BaseController {
 
     @ApiModelProperty("获取所有的收支途径")
     @GetMapping("/list")
-    public ExecuteResult<PageBean<PayIncomeWays>> getAllWays() {
-        return ExecuteResult.ok();
+    public ExecuteResult<List<PayIncomeWays>> getAllWays() {
+        String userId = UserUtils.getCurrentUserId();
+
+        return ExecuteResult.ok(waysService.getUserAllWays(userId));
     }
 
 

@@ -8,6 +8,7 @@ import com.whyalwaysmea.account.exception.MyException;
 import com.whyalwaysmea.account.parameters.AccountBookParam;
 import com.whyalwaysmea.account.parameters.PageParam;
 import com.whyalwaysmea.account.po.AccountBook;
+import com.whyalwaysmea.account.po.AccountBookParters;
 import com.whyalwaysmea.account.service.AccountBookService;
 import com.whyalwaysmea.account.service.BookParterService;
 import com.whyalwaysmea.account.vo.AccountBookDetails;
@@ -19,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @Author: Long
@@ -97,5 +100,12 @@ public class AccountBookController extends BaseController{
 
 
         return ExecuteResult.ok(true);
+    }
+
+    @ApiOperation("获取账本的参与者")
+    @GetMapping("/parter/{bookId:\\d+}")
+    public ExecuteResult<List<AccountBookParters>> getBookParters(@PathVariable("bookId") @ApiParam("账本id") long bookId) {
+        List<AccountBookParters> parters = bookParterService.findAllByBookId(bookId);
+        return ExecuteResult.ok(parters);
     }
 }
