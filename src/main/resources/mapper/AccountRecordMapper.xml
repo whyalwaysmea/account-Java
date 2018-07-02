@@ -10,7 +10,7 @@
         <result column="secondary_type" jdbcType="BIGINT" property="secondaryType" />
         <result column="pay_income_way" jdbcType="BIGINT" property="payIncomeWay" />
         <result column="creator_id" jdbcType="VARCHAR" property="creatorId" />
-        <result column="record_time" jdbcType="TIMESTAMP" property="recordTime" />
+        <result column="record_time" jdbcType="DATE" property="recordTime" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
         <result column="remark" jdbcType="LONGVARCHAR" property="remark" />

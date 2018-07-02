@@ -1,10 +1,13 @@
 package com.whyalwaysmea.account.service.impl;
 
+import com.whyalwaysmea.account.mapper.AccountBookPartersMapper;
+import com.whyalwaysmea.account.mapper.UserStatisticalMapper;
 import com.whyalwaysmea.account.mapper.WechatUserMapper;
 import com.whyalwaysmea.account.mq.QueueEnum;
 import com.whyalwaysmea.account.parameters.AccountBookParam;
 import com.whyalwaysmea.account.parameters.WechatUserInfoParam;
 import com.whyalwaysmea.account.po.AccountBook;
+import com.whyalwaysmea.account.po.UserStatistical;
 import com.whyalwaysmea.account.po.WechatUser;
 import com.whyalwaysmea.account.service.*;
 import com.whyalwaysmea.account.utils.UserUtils;
@@ -46,7 +49,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private AccountBookService accountBookService;
 
-    private String defaultBookName = "%s的默认账本";
+    @Autowired
+    private UserStatisticalMapper userStatisticalMapper;
+
+    @Autowired
+    private AccountBookPartersMapper bookPartersMapper;
+
+    private static final String DEFAULT_BOOKNAME = "%s的默认账本";
 
     @Autowired
     private AmqpTemplate amqpTemplate;
@@ -107,6 +116,9 @@ public class UserServiceImpl implements UserService {
             expenditureService.addDefaultExpenditureForNewUser(openId);
             waysService.addDefaultWaysForNewUser(openId);
             incomeService.addDefaultIncomeTypeForNewUser(openId);
+            UserStatistical userStatistical = new UserStatistical();
+            userStatistical.setWechatOpenid(openId);
+            userStatisticalMapper.insertSelective(userStatistical);
         }
     }
 
@@ -119,7 +131,7 @@ public class UserServiceImpl implements UserService {
         if(infoParam.isCreateBook()) {
             AccountBookParam accountBookParam = new AccountBookParam();
             accountBookParam.setDefaultBook(true);
-            String bookName = String.format(defaultBookName, infoParam.getNickName());
+            String bookName = String.format(DEFAULT_BOOKNAME, infoParam.getNickName());
             accountBookParam.setName(bookName);
             accountBookParam.setCoverImg(infoParam.getAvatarUrl());
             AccountBook accountBook = accountBookService.addAccountBook(accountBookParam);
@@ -131,10 +143,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateLastAccountTime(String userId) {
-        WechatUser wechatUser = new WechatUser();
-        wechatUser.setWechatOpenid(userId);
-        wechatUser.setLastAccountTime(new Date());
-        userMapper.updateByPrimaryKeySelective(wechatUser);
+        UserStatistical userStatistical = userStatisticalMapper.selectByPrimaryKey(userId);
+        userStatistical.setLastAccountTime(new Date());
+        Integer totalRecordTimes = userStatistical.getTotalRecordTimes() + 1;
+        userStatistical.setTotalRecordTimes(totalRecordTimes);
+        userStatisticalMapper.updateByPrimaryKeySelective(userStatistical);
     }
 
 

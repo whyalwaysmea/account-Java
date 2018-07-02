@@ -4,6 +4,7 @@ import com.whyalwaysmea.account.dto.SyncAccountBookDTO;
 import com.whyalwaysmea.account.mapper.AccountRecordPartersMapper;
 import com.whyalwaysmea.account.parameters.RecordParam;
 import com.whyalwaysmea.account.po.AccountRecordParters;
+import com.whyalwaysmea.account.service.AccountBookParterService;
 import com.whyalwaysmea.account.service.AccountBookService;
 import com.whyalwaysmea.account.service.UserService;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
@@ -32,6 +33,9 @@ public class SyncAccountBookMessage {
     @Autowired
     private AccountBookService accountBookService;
 
+    @Autowired
+    private AccountBookParterService parterService;
+
     @RabbitHandler
     public void updateRecordInfo(SyncAccountBookDTO syncAccountBookDTO) {
         RecordParam recordParam = syncAccountBookDTO.getRecordParam();
@@ -45,6 +49,8 @@ public class SyncAccountBookMessage {
         }).collect(Collectors.toList());
         recordPartersMapper.insertList(parters);
 
+
+        parterService.updateParterLastAccountTime(recordParam.getBookId(), syncAccountBookDTO.getUserId());
 
         // 用户统计更新（最后记账时间）
         userService.updateLastAccountTime(syncAccountBookDTO.getUserId());

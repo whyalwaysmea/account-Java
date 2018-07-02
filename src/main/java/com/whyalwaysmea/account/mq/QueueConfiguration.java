@@ -23,6 +23,10 @@ public class QueueConfiguration {
     }
 
 
+    /**
+     * 账本同步
+     * @return
+     */
     @Bean
     public Queue syncAccountBookInfo() {
         return new Queue(QueueEnum.RECORD.getName(), true);

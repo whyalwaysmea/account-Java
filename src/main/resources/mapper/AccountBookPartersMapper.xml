@@ -4,18 +4,17 @@
     <resultMap id="BaseResultMap" type="com.whyalwaysmea.account.po.AccountBookParters">
         <id column="book_id" property="bookId" jdbcType="BIGINT"/>
         <id column="wechat_openid" property="wechatOpenid" jdbcType="VARCHAR"/>
-        <association property="user" javaType="WechatUser" >
-            <id column="wechat_openid" jdbcType="VARCHAR" property="wechatOpenid"/>
-            <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
-            <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl"/>
-            <result column="last_account_time" jdbcType="VARCHAR" property="lastAccountTime"/>
-        </association>
+        <id column="last_account_time" property="lastAccountTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <select id="getParters" parameterType="long" resultMap="com.whyalwaysmea.account.mapper.WechatUserMapper.BaseResultMap">
-        SELECT p.book_id, p.wechat_openid, u.nick_name, u.avatar_url, u.last_account_time FROM account_book_parters p
+    <select id="getParters" parameterType="long" resultType="com.whyalwaysmea.account.vo.AccountBookPartersVO">
+        SELECT p.book_id, p.wechat_openid, p.last_account_time, u.nick_name, u.avatar_url FROM account_book_parters p
             INNER JOIN wechat_user u
                 ON p.wechat_openid = u.wechat_openid
         WHERE p.book_id = #{id}
     </select>
+
+    <update id="updateLastAccountTime">
+        UPDATE account_book_parters SET last_account_time = NOW() WHERE book_id = #{bookId} AND wechat_openid = #{userId}
+    </update>
 </mapper>

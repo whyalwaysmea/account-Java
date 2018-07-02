@@ -8,6 +8,7 @@ import com.whyalwaysmea.account.po.AccountBook;
 import com.whyalwaysmea.account.po.AccountBookParters;
 import com.whyalwaysmea.account.po.WechatUser;
 import com.whyalwaysmea.account.service.BookParterService;
+import com.whyalwaysmea.account.vo.AccountBookPartersVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,8 +72,8 @@ public class BookParterServiceImpl extends BaseService implements BookParterServ
 
 
     @Override
-    public List<AccountBookParters> findAllByBookId(long bookId) {
-        List<AccountBookParters> parters = partersMapper.getParters(bookId);
+    public List<AccountBookPartersVO> findAllByBookId(long bookId) {
+        List<AccountBookPartersVO> parters = partersMapper.getParters(bookId);
         return parters;
     }
 }

@@ -1,6 +1,6 @@
 package com.whyalwaysmea.account.service;
 
-import com.whyalwaysmea.account.po.AccountBookParters;
+import com.whyalwaysmea.account.vo.AccountBookPartersVO;
 
 import java.util.List;
 
@@ -36,5 +36,5 @@ public interface BookParterService {
      * @param bookId
      * @return
      */
-    List<AccountBookParters> findAllByBookId(long bookId);
+    List<AccountBookPartersVO> findAllByBookId(long bookId);
 }

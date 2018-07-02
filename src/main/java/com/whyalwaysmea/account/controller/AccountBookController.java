@@ -8,10 +8,10 @@ import com.whyalwaysmea.account.exception.MyException;
 import com.whyalwaysmea.account.parameters.AccountBookParam;
 import com.whyalwaysmea.account.parameters.PageParam;
 import com.whyalwaysmea.account.po.AccountBook;
-import com.whyalwaysmea.account.po.AccountBookParters;
 import com.whyalwaysmea.account.service.AccountBookService;
 import com.whyalwaysmea.account.service.BookParterService;
 import com.whyalwaysmea.account.vo.AccountBookDetails;
+import com.whyalwaysmea.account.vo.AccountBookPartersVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -104,8 +104,8 @@ public class AccountBookController extends BaseController{
 
     @ApiOperation("获取账本的参与者")
     @GetMapping("/parter/{bookId:\\d+}")
-    public ExecuteResult<List<AccountBookParters>> getBookParters(@PathVariable("bookId") @ApiParam("账本id") long bookId) {
-        List<AccountBookParters> parters = bookParterService.findAllByBookId(bookId);
+    public ExecuteResult<List<AccountBookPartersVO>> getBookParters(@PathVariable("bookId") @ApiParam("账本id") long bookId) {
+        List<AccountBookPartersVO> parters = bookParterService.findAllByBookId(bookId);
         return ExecuteResult.ok(parters);
     }
 }

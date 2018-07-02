@@ -74,12 +74,6 @@ public class WechatUser implements Serializable{
     private Date lastLoginTime;
 
     /**
-     * 最后记账时间
-     */
-    @Column(name = "last_account_time")
-    private Date lastAccountTime;
-
-    /**
      * 是否是虚假用户
      */
     private Boolean fakerUser;
