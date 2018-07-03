@@ -2,6 +2,9 @@ package com.whyalwaysmea.account.service;
 
 import com.whyalwaysmea.account.parameters.RecordParam;
 import com.whyalwaysmea.account.po.AccountRecord;
+import com.whyalwaysmea.account.vo.RecordListVO;
+
+import java.util.List;
 
 /**
  * @Author: whyalwaysmea
@@ -31,4 +34,12 @@ public interface RecordService {
      * @return
      */
     boolean delRecord(long id);
+
+    /**
+     * 根据账本id，获取记录
+     * @param bookId 账本id
+     * @return
+     */
+    List<RecordListVO> getRecords(long bookId, String date);
+
 }

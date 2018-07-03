@@ -2,11 +2,10 @@ package com.whyalwaysmea.account.controller;
 
 import com.whyalwaysmea.account.controller.common.BaseController;
 import com.whyalwaysmea.account.dto.ExecuteResult;
-import com.whyalwaysmea.account.dto.PageBean;
-import com.whyalwaysmea.account.parameters.PageParam;
 import com.whyalwaysmea.account.parameters.RecordParam;
 import com.whyalwaysmea.account.po.AccountRecord;
 import com.whyalwaysmea.account.service.RecordService;
+import com.whyalwaysmea.account.vo.RecordListVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -14,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: whyalwaysmea
@@ -49,9 +51,10 @@ public class RecordController extends BaseController {
     }
 
     @ApiOperation("获取收支记录列表")
-    @GetMapping("/{id}")
-    public ExecuteResult<PageBean<AccountRecord>> getRecords(PageParam pageParam) {
-        return ExecuteResult.ok();
+    @GetMapping("")
+    public ExecuteResult<List<RecordListVO>> getRecords(@RequestParam("bookId") @ApiParam("账本id") long bookId, @RequestParam("date") @ApiParam("日期 yyyy-MM") String date) {
+        List<RecordListVO> records = recordService.getRecords(bookId, date);
+        return ExecuteResult.ok(records);
     }
 
 }

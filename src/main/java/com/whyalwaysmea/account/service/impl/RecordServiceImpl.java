@@ -1,9 +1,11 @@
 package com.whyalwaysmea.account.service.impl;
 
 import com.whyalwaysmea.account.constant.RecordType;
+import com.whyalwaysmea.account.dto.RecordListItem;
 import com.whyalwaysmea.account.dto.SyncAccountBookDTO;
 import com.whyalwaysmea.account.enums.WaysError;
 import com.whyalwaysmea.account.exception.MyException;
+import com.whyalwaysmea.account.mapper.AccountBookPartersMapper;
 import com.whyalwaysmea.account.mapper.AccountRecordMapper;
 import com.whyalwaysmea.account.mq.QueueEnum;
 import com.whyalwaysmea.account.parameters.RecordParam;
@@ -15,11 +17,18 @@ import com.whyalwaysmea.account.service.ExpenditureService;
 import com.whyalwaysmea.account.service.IncomeService;
 import com.whyalwaysmea.account.service.RecordService;
 import com.whyalwaysmea.account.service.WaysService;
+import com.whyalwaysmea.account.utils.UserUtils;
+import com.whyalwaysmea.account.vo.RecordListVO;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: whyalwaysmea
@@ -32,8 +41,6 @@ public class RecordServiceImpl extends BaseService implements RecordService {
     @Autowired
     private AccountRecordMapper accountRecordMapper;
 
-
-
     @Autowired
     private ExpenditureService expenditureService;
 
@@ -42,6 +49,9 @@ public class RecordServiceImpl extends BaseService implements RecordService {
 
     @Autowired
     private WaysService waysService;
+
+    @Autowired
+    private AccountBookPartersMapper partersMapper;
 
     @Autowired
     private AmqpTemplate amqpTemplate;
@@ -101,5 +111,57 @@ public class RecordServiceImpl extends BaseService implements RecordService {
     @Override
     public boolean delRecord(long id) {
         return false;
+    }
+
+    @Override
+    public List<RecordListVO> getRecords(long bookId, String date) {
+        List<String> parterIds = partersMapper.getParterIds(bookId);
+        if(!parterIds.contains(UserUtils.getCurrentUserId())) {
+            return null;
+        }
+        List<RecordListItem> recordList = accountRecordMapper.getRecordList(bookId, date);
+        if(CollectionUtils.isEmpty(recordList)) {
+            return null;
+        }
+        List<RecordListItem> items = new ArrayList<>();
+        Date currentDate = recordList.get(0).getRecordTime();
+        long inputAmount = 0;
+        long expenditureAmount = 0;
+        List<RecordListVO> result = new ArrayList<>();
+        RecordListVO recordListVO = null;
+        for (int i = 0; i < recordList.size(); i++) {
+            RecordListItem item = recordList.get(i);
+
+            if(item.getRecordTime().compareTo(currentDate) != 0) {
+                recordListVO = new RecordListVO();
+                recordListVO.setIncomeAmount(inputAmount);
+                recordListVO.setExpenditureAmount(expenditureAmount);
+                recordListVO.setDate(currentDate);
+                recordListVO.setItems(items);
+                result.add(recordListVO);
+
+                inputAmount = 0;
+                expenditureAmount = 0;
+                currentDate = item.getRecordTime();
+                items = new ArrayList<>();
+            }
+
+            if(RecordType.INCOME.equals(item.getRecordType())) {
+                inputAmount += item.getAmount();
+            } else {
+                expenditureAmount += item.getAmount();
+            }
+            items.add(item);
+
+            if(i == recordList.size() - 1) {
+                recordListVO = new RecordListVO();
+                recordListVO.setIncomeAmount(inputAmount);
+                recordListVO.setExpenditureAmount(expenditureAmount);
+                recordListVO.setDate(currentDate);
+                recordListVO.setItems(items);
+                result.add(recordListVO);
+            }
+        }
+        return result;
     }
 }

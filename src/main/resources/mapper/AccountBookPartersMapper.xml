@@ -11,10 +11,16 @@
         SELECT p.book_id, p.wechat_openid, p.last_account_time, u.nick_name, u.avatar_url FROM account_book_parters p
             INNER JOIN wechat_user u
                 ON p.wechat_openid = u.wechat_openid
-        WHERE p.book_id = #{id}
+        WHERE p.book_id = #{bookId}
+    </select>
+
+    <select id="getParterIds" resultType="string" parameterType="long">
+        SELECT wechat_openid FROM account_book_parters WHERE book_id = #{bookId}
     </select>
 
     <update id="updateLastAccountTime">
         UPDATE account_book_parters SET last_account_time = NOW() WHERE book_id = #{bookId} AND wechat_openid = #{userId}
     </update>
+
+
 </mapper>

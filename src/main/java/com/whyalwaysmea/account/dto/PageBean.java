@@ -23,31 +23,15 @@ public class PageBean<T> implements Serializable {
     @ApiModelProperty("数据结果集")
     private List<T> list;
 
-    @ApiModelProperty("是否是最后一页")
-    private boolean isLastPage;
+    private PageBean() {
 
-    @ApiModelProperty("总的页数")
-    private int pages;
-
-    @ApiModelProperty("当前页码")
-    private int pageNum;
-
-    @ApiModelProperty("当前每页条数")
-    private int pageSize;
+    }
 
     public PageBean(List<T> list) {
         if(list instanceof Page) {
             Page<T> page = (Page<T>) list;
-            this.pageNum = page.getPageNum();
-            this.pageSize = page.getPageSize();
             this.total = page.getTotal();
-            this.pages = page.getPages();
             this.list = page.getResult();
-            if(pageNum < pages) {
-                this.isLastPage = false;
-            } else {
-                this.isLastPage = true;
-            }
         }
     }
 
@@ -57,5 +41,12 @@ public class PageBean<T> implements Serializable {
             return new PageBean<T>(objects);
         }
         return new PageBean<>(list);
+    }
+
+    public static <T> PageBean<T> data(List<T> list, int count) {
+        PageBean<T> pageBean = new PageBean<>();
+        pageBean.setList(list);
+        pageBean.setTotal(count);
+        return pageBean;
     }
 }

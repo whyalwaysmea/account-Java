@@ -13,10 +13,22 @@ public interface AccountBookPartersMapper extends MyMapper<AccountBookParters> {
 
     /**
      * 账本参与者
-     * @param id
+     * @param bookId 账本id
      * @return
      */
-    List<AccountBookPartersVO> getParters(long id);
+    List<AccountBookPartersVO> getParters(long bookId);
 
+    /**
+     * 账本参与者的id
+     * @param bookId 账本id
+     * @return
+     */
+    List<String> getParterIds(long bookId);
+
+    /**
+     * 更新最后记账时间
+     * @param bookId
+     * @param userId
+     */
     void updateLastAccountTime(@Param("bookId") Long bookId, @Param("userId") String userId);
 }
