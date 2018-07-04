@@ -16,6 +16,8 @@ public class DateUtils {
 
     public static final String DATE_TIME_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
+    public static final String DATE_MONTH_FORMAT_PATTERN = "MM月dd日 ";
+    public static final String WEEK_STR = "星期%s";
 
     /**
      * 获取当月第一天
@@ -71,5 +73,59 @@ public class DateUtils {
         return localDate;
     }
 
+    /**
+     * date 转换成 星期
+     * @param date
+     * @return
+     */
+    private static int date2Week(Date date) {
+        LocalDate localDate = date2LocalDate(date);
+        int value = localDate.getDayOfWeek().getValue();
+        return value;
+    }
 
+    /**
+     * date 转换成 星期
+     * @param date
+     * @return
+     */
+    public static String date2WeekStr(Date date) {
+        if(org.apache.commons.lang3.time.DateUtils.isSameDay(date, new Date())) {
+            return "今天";
+        }
+        int week = date2Week(date);
+        String day = "";
+        switch (week) {
+            case 1:
+                day = "一";
+                break;
+            case 2:
+                day = "二";
+                break;
+            case 3:
+                day = "三";
+                break;
+            case 4:
+                day = "四";
+                break;
+            case 5:
+                day = "五";
+                break;
+            case 6:
+                day = "六";
+                break;
+            case 7:
+                day = "天";
+                break;
+        }
+        return String.format(WEEK_STR, day);
+    }
+
+    public static void main(String[] args) {
+
+        LocalDate localDate = LocalDate.parse("2018-07-01");
+
+        int i = date2Week(localDate2Date(localDate));
+        System.out.println(i);
+    }
 }

@@ -25,6 +25,8 @@
         <result column="main_type" jdbcType="BIGINT" property="mainType" />
         <result column="secondary_type" jdbcType="BIGINT" property="secondaryType" />
         <result column="record_time" jdbcType="DATE" property="recordTime" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="record_avator_url" jdbcType="VARCHAR" property="recordAvatorUrl" />
         <collection property="avatorUrls" ofType="String" column="avatar_url">
             <result column="avatar_url" property="avatorUrls" jdbcType="VARCHAR" />
         </collection>
@@ -35,12 +37,14 @@
     </select>
 
     <select id="getRecordList" resultMap="recordListMap">
-        SELECT r.id, r.book_id, r.amount, r.record_type, r.main_type, r.secondary_type, r.record_time, u.avatar_url
+        SELECT r.id, r.book_id, r.amount, r.record_type, r.main_type, r.secondary_type, r.record_time, r.remark, u.avatar_url, ur.avatar_url AS record_avator_url
         FROM (SELECT * FROM account_record WHERE book_id = #{bookId} AND is_delete = 0 AND DATE_FORMAT(record_time, '%Y-%m') = #{date}) r
             INNER JOIN account_record_parters p
                 ON r.id = p.record_id
             INNER JOIN wechat_user u
                 ON u.wechat_openid = p.wechat_openid
+            INNER JOIN wechat_user ur
+                ON ur.wechat_openid = r.creator_id
         ORDER BY r.record_time DESC
     </select>
 

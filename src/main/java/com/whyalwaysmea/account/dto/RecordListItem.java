@@ -39,10 +39,16 @@ public class RecordListItem implements Serializable {
     @ApiModelProperty("次要分类")
     private String secondaryType;
 
+    @ApiModelProperty("备注")
+    private String remark;
+
     @ApiModelProperty("记录关联时间")
     @JsonFormat(pattern = DateUtils.DATE_FORMAT_PATTERN, timezone = "GMT+8")
     private Date recordTime;
 
     @ApiModelProperty("关联者头像")
     private List<String> avatorUrls;
+
+    @ApiModelProperty("记录者的头像")
+    private String recordAvatorUrl;
 }

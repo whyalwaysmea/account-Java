@@ -26,7 +26,7 @@ public class RecordListVO implements Serializable {
     private List<RecordListItem> items;
 
     @ApiModelProperty("关联日期")
-    @JsonFormat(pattern = DateUtils.DATE_FORMAT_PATTERN, timezone = "GMT+8")
+    @JsonFormat(pattern = DateUtils.DATE_MONTH_FORMAT_PATTERN, timezone = "GMT+8")
     private Date date;
 
     @ApiModelProperty("收入金额（分）")
@@ -34,4 +34,7 @@ public class RecordListVO implements Serializable {
 
     @ApiModelProperty("支出金额（分）")
     private Long expenditureAmount;
+
+    @ApiModelProperty("星期")
+    private String week;
 }

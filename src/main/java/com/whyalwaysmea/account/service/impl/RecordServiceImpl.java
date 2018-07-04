@@ -17,6 +17,7 @@ import com.whyalwaysmea.account.service.ExpenditureService;
 import com.whyalwaysmea.account.service.IncomeService;
 import com.whyalwaysmea.account.service.RecordService;
 import com.whyalwaysmea.account.service.WaysService;
+import com.whyalwaysmea.account.utils.DateUtils;
 import com.whyalwaysmea.account.utils.UserUtils;
 import com.whyalwaysmea.account.vo.RecordListVO;
 import org.apache.commons.collections.CollectionUtils;
@@ -137,6 +138,7 @@ public class RecordServiceImpl extends BaseService implements RecordService {
                 recordListVO.setIncomeAmount(inputAmount);
                 recordListVO.setExpenditureAmount(expenditureAmount);
                 recordListVO.setDate(currentDate);
+                recordListVO.setWeek(DateUtils.date2WeekStr(currentDate));
                 recordListVO.setItems(items);
                 result.add(recordListVO);
 
@@ -158,6 +160,7 @@ public class RecordServiceImpl extends BaseService implements RecordService {
                 recordListVO.setIncomeAmount(inputAmount);
                 recordListVO.setExpenditureAmount(expenditureAmount);
                 recordListVO.setDate(currentDate);
+                recordListVO.setWeek(DateUtils.date2WeekStr(currentDate));
                 recordListVO.setItems(items);
                 result.add(recordListVO);
             }
