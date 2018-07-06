@@ -1,5 +1,6 @@
 package com.whyalwaysmea.account.po;
 
+import com.whyalwaysmea.account.vo.AccountBookPartersVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -62,12 +63,16 @@ public class AccountBook {
     @ApiModelProperty("预算金额（分）")
     private Integer budgetaryAmount;
 
+    @Column(name = "surplus_budgetary_amount")
+    @ApiModelProperty("剩余预算金额（分）")
+    private Integer surplusBudgetaryAmount;
+
     /**
      * 剩余预算金额（分）
      */
     @Column(name = "surplus_budgetary_amount")
     @ApiModelProperty("剩余预算金额（分）")
-    private Integer surplusBudgetaryAmount;
+    private Integer e;
 
     /**
      * 账本类型  0：个人账本 1：多人账本
@@ -98,6 +103,6 @@ public class AccountBook {
      * 参与者
      */
     @Transient
-    private List<WechatUser> participants = new ArrayList<>();
+    private List<AccountBookPartersVO> participants = new ArrayList<>();
 
 }

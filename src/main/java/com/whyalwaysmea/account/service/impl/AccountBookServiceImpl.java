@@ -14,10 +14,10 @@ import com.whyalwaysmea.account.parameters.PageParam;
 import com.whyalwaysmea.account.parameters.RecordParam;
 import com.whyalwaysmea.account.po.AccountBook;
 import com.whyalwaysmea.account.po.AccountBookParters;
-import com.whyalwaysmea.account.po.WechatUser;
 import com.whyalwaysmea.account.service.AccountBookService;
 import com.whyalwaysmea.account.utils.DateUtils;
 import com.whyalwaysmea.account.vo.AccountBookDetails;
+import com.whyalwaysmea.account.vo.AccountBookPartersVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -74,7 +74,7 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
     @Override
     public boolean delAccountBook(long id) {
         AccountBook accountBook = accountBookMapper.selectByPrimaryKey(id);
-        List<String> parterIds = accountBook.getParticipants().stream().map(WechatUser::getWechatOpenid).collect(Collectors.toList());
+        List<String> parterIds = accountBook.getParticipants().stream().map(AccountBookPartersVO::getWechatOpenid).collect(Collectors.toList());
         if(parterIds.contains(getCurrentUserId())) {
             AccountBookParters accountBookParters = new AccountBookParters();
             accountBookParters.setBookId(id);
@@ -91,7 +91,7 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
     public AccountBook updateAccountBook(AccountBookParam accountBookParam) {
         AccountBook accountBook = accountBookMapper.getAccountBook(accountBookParam.getId());
         // 账本正确性
-        List<String> parterIds = accountBook.getParticipants().stream().map(WechatUser::getWechatOpenid).collect(Collectors.toList());
+        List<String> parterIds = accountBook.getParticipants().stream().map(AccountBookPartersVO::getWechatOpenid).collect(Collectors.toList());
         if(accountBook == null || !parterIds.contains(getCurrentUserId())) {
             throw new MyException(CommonError.INSUFFICIENT_PERMISSIONS);
         }
@@ -104,17 +104,16 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
             accountBook.setDefaultBook(accountBookParam.getDefaultBook());
         }
 
+        // 更新预算
         if(accountBookParam.getBudgetaryAmount() != null) {
             accountBook.setBudgetaryAmount(accountBookParam.getBudgetaryAmount());
+
+            Integer totalExpenditure = recordMapper.currentMonthTotalMoney(RecordType.EXPENDITURE, DateUtils.getFirstDayOfCurrentMonth(), DateUtils.getCurrentDate());
+
+            int surplusBudgetaryAmount = accountBookParam.getBudgetaryAmount() - totalExpenditure;
+            accountBook.setSurplusBudgetaryAmount(surplusBudgetaryAmount);
         }
 
-        if(accountBookParam.getSurplusBudgetaryAmount() != null) {
-            if(accountBookParam.getSurplusBudgetaryAmount() > accountBook.getBudgetaryAmount()) {
-                throw new MyException(AccountBookError.ERROR_BUDGETARYAMOUNT);
-            } else {
-                accountBook.setSurplusBudgetaryAmount(accountBookParam.getSurplusBudgetaryAmount());
-            }
-        }
 
         // 同步账本参与人
         if(CollectionUtils.isNotEmpty(accountBookParam.getParticipantIds())) {
@@ -198,6 +197,8 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
             return PageBean.data(allAccountBook);
         }
     }
+
+
 
 
 }

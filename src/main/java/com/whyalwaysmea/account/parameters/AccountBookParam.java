@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -22,7 +21,6 @@ public class AccountBookParam {
     private Long id;
 
     @ApiModelProperty("账本名称")
-    @NotBlank(message = "账本名称不能为空")
     private String name;
 
     @ApiModelProperty("账本封面url")
@@ -33,9 +31,6 @@ public class AccountBookParam {
 
     @ApiModelProperty("预算金额")
     private Integer budgetaryAmount;
-
-    @ApiModelProperty("剩余预算金额")
-    private Integer surplusBudgetaryAmount;
 
     @ApiModelProperty("参与者id，创建者的不用传")
     private List<String> participantIds;

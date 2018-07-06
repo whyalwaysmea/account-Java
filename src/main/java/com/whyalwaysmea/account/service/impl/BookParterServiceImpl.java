@@ -6,7 +6,6 @@ import com.whyalwaysmea.account.mapper.AccountBookMapper;
 import com.whyalwaysmea.account.mapper.AccountBookPartersMapper;
 import com.whyalwaysmea.account.po.AccountBook;
 import com.whyalwaysmea.account.po.AccountBookParters;
-import com.whyalwaysmea.account.po.WechatUser;
 import com.whyalwaysmea.account.service.BookParterService;
 import com.whyalwaysmea.account.vo.AccountBookPartersVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +35,8 @@ public class BookParterServiceImpl extends BaseService implements BookParterServ
             throw new MyException(AccountBookError.ERROR_ACCOUNTBOOK);
         }
 
-        List<WechatUser> participants = accountBook.getParticipants();
-        List<String> parterIds = participants.stream().map(WechatUser::getWechatOpenid).collect(Collectors.toList());
+        List<AccountBookPartersVO> participants = accountBook.getParticipants();
+        List<String> parterIds = participants.stream().map(AccountBookPartersVO::getWechatOpenid).collect(Collectors.toList());
 
         AccountBookParters accountBookParters = new AccountBookParters();
         accountBookParters.setWechatOpenid(getCurrentUserId());

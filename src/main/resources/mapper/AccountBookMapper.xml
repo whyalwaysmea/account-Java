@@ -25,7 +25,6 @@
         SELECT <include refid="allColumn" /> FROM account_book b WHERE id = #{id}
     </select>
 
-    <!--TODO 当有大量数据的时候，in会影响效率-->
     <select id="getAllAccountBook" parameterType="java.util.List" resultMap="BaseResultMap">
         SELECT <include refid="allColumn" /> FROM account_book b WHERE id IN
         <foreach collection="ids" open=" (" close=")" item="id" separator=",">

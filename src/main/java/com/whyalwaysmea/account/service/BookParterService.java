@@ -37,4 +37,6 @@ public interface BookParterService {
      * @return
      */
     List<AccountBookPartersVO> findAllByBookId(long bookId);
+
+
 }
