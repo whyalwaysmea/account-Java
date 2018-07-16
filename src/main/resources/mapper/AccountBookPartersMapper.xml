@@ -22,5 +22,4 @@
         UPDATE account_book_parters SET last_account_time = NOW() WHERE book_id = #{bookId} AND wechat_openid = #{userId}
     </update>
 
-
 </mapper>

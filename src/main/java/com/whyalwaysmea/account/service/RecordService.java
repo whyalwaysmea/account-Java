@@ -2,6 +2,7 @@ package com.whyalwaysmea.account.service;
 
 import com.whyalwaysmea.account.parameters.RecordParam;
 import com.whyalwaysmea.account.po.AccountRecord;
+import com.whyalwaysmea.account.vo.MemberRecordsVO;
 import com.whyalwaysmea.account.vo.RecordListVO;
 
 import java.util.List;
@@ -42,4 +43,10 @@ public interface RecordService {
      */
     List<RecordListVO> getRecords(long bookId, String date);
 
+    /**
+     * 根据账本id，获取成员的当月统计
+     * @param bookId
+     * @return
+     */
+    List<MemberRecordsVO> getMemberRecord(long bookId);
 }

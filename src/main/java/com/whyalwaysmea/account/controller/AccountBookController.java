@@ -2,16 +2,15 @@ package com.whyalwaysmea.account.controller;
 
 import com.whyalwaysmea.account.controller.common.BaseController;
 import com.whyalwaysmea.account.dto.ExecuteResult;
-import com.whyalwaysmea.account.dto.PageBean;
 import com.whyalwaysmea.account.enums.CommonError;
 import com.whyalwaysmea.account.exception.MyException;
 import com.whyalwaysmea.account.parameters.AccountBookParam;
-import com.whyalwaysmea.account.parameters.PageParam;
 import com.whyalwaysmea.account.po.AccountBook;
 import com.whyalwaysmea.account.service.AccountBookService;
 import com.whyalwaysmea.account.service.BookParterService;
 import com.whyalwaysmea.account.vo.AccountBookDetails;
 import com.whyalwaysmea.account.vo.AccountBookPartersVO;
+import com.whyalwaysmea.account.vo.BookListVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -71,8 +70,8 @@ public class AccountBookController extends BaseController{
 
     @GetMapping("/all")
     @ApiOperation("获取所有的账本信息")
-    public ExecuteResult<PageBean<AccountBook>> getAllAccountBook(PageParam pageParam) {
-        PageBean<AccountBook> allAccountBook = accountBookService.getAllAccountBook(pageParam);
+    public ExecuteResult<List<BookListVO>> getAllAccountBook() {
+        List<BookListVO> allAccountBook = accountBookService.getAllAccountBook();
         return ExecuteResult.ok(allAccountBook);
     }
 

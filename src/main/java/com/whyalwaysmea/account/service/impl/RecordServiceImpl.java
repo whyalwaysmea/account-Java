@@ -2,6 +2,7 @@ package com.whyalwaysmea.account.service.impl;
 
 import com.whyalwaysmea.account.constant.RecordType;
 import com.whyalwaysmea.account.dto.RecordListItem;
+import com.whyalwaysmea.account.dto.RecordRoughStatisticsDTO;
 import com.whyalwaysmea.account.dto.SyncAccountBookDTO;
 import com.whyalwaysmea.account.enums.WaysError;
 import com.whyalwaysmea.account.exception.MyException;
@@ -19,6 +20,8 @@ import com.whyalwaysmea.account.service.RecordService;
 import com.whyalwaysmea.account.service.WaysService;
 import com.whyalwaysmea.account.utils.DateUtils;
 import com.whyalwaysmea.account.utils.UserUtils;
+import com.whyalwaysmea.account.vo.AccountBookPartersVO;
+import com.whyalwaysmea.account.vo.MemberRecordsVO;
 import com.whyalwaysmea.account.vo.RecordListVO;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -166,5 +169,31 @@ public class RecordServiceImpl extends BaseService implements RecordService {
             }
         }
         return result;
+    }
+
+    @Override
+    public List<MemberRecordsVO> getMemberRecord(long bookId) {
+        Date firstDayOfCurrentMonth = DateUtils.getFirstDayOfCurrentMonth();
+        Date date = new Date();
+
+        List<AccountBookPartersVO> parters = partersMapper.getParters(bookId);
+        List<MemberRecordsVO> memberRecordsVOS = new ArrayList<>();
+        for (AccountBookPartersVO parter : parters) {
+            MemberRecordsVO memberRecordsVO = new MemberRecordsVO();
+            memberRecordsVO.setUserId(parter.getWechatOpenid());
+            memberRecordsVO.setUserName(parter.getNickName());
+            memberRecordsVO.setUserAvatar(parter.getAvatarUrl());
+
+            RecordRoughStatisticsDTO expenditure = accountRecordMapper.findRecordRoughStatisticsByUserId(parter.getWechatOpenid(), bookId, firstDayOfCurrentMonth, date, RecordType.EXPENDITURE);
+            RecordRoughStatisticsDTO income = accountRecordMapper.findRecordRoughStatisticsByUserId(parter.getWechatOpenid(), bookId, firstDayOfCurrentMonth, date, RecordType.INCOME);
+
+            memberRecordsVO.setTotalExpenditureMoney(expenditure.getTotalMoney());
+            memberRecordsVO.setTotalExpenditureNums(expenditure.getTotalNum());
+
+            memberRecordsVO.setTotalIncomeNums(income.getTotalNum());
+            memberRecordsVO.setTotalIncomeMoney(income.getTotalMoney());
+            memberRecordsVOS.add(memberRecordsVO);
+        }
+        return memberRecordsVOS;
     }
 }

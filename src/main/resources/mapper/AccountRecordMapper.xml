@@ -2,43 +2,58 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.whyalwaysmea.account.mapper.AccountRecordMapper">
     <resultMap id="BaseResultMap" type="com.whyalwaysmea.account.po.AccountRecord">
-        <id column="id" jdbcType="BIGINT" property="id" />
-        <result column="book_id" jdbcType="BIGINT" property="bookId" />
-        <result column="amount" jdbcType="INTEGER" property="amount" />
-        <result column="record_type" jdbcType="TINYINT" property="recordType" />
-        <result column="main_type" jdbcType="BIGINT" property="mainType" />
-        <result column="secondary_type" jdbcType="BIGINT" property="secondaryType" />
-        <result column="pay_income_way" jdbcType="BIGINT" property="payIncomeWay" />
-        <result column="creator_id" jdbcType="VARCHAR" property="creatorId" />
-        <result column="record_time" jdbcType="DATE" property="recordTime" />
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-        <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="book_id" jdbcType="BIGINT" property="bookId"/>
+        <result column="amount" jdbcType="INTEGER" property="amount"/>
+        <result column="record_type" jdbcType="TINYINT" property="recordType"/>
+        <result column="main_type" jdbcType="BIGINT" property="mainType"/>
+        <result column="secondary_type" jdbcType="BIGINT" property="secondaryType"/>
+        <result column="pay_income_way" jdbcType="BIGINT" property="payIncomeWay"/>
+        <result column="creator_id" jdbcType="VARCHAR" property="creatorId"/>
+        <result column="record_time" jdbcType="DATE" property="recordTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="remark" jdbcType="LONGVARCHAR" property="remark"/>
     </resultMap>
 
 
     <resultMap id="recordListMap" type="com.whyalwaysmea.account.dto.RecordListItem">
-        <id column="id" jdbcType="BIGINT" property="id" />
-        <result column="book_id" jdbcType="BIGINT" property="bookId" />
-        <result column="amount" jdbcType="INTEGER" property="amount" />
-        <result column="record_type" jdbcType="TINYINT" property="recordType" />
-        <result column="main_type" jdbcType="BIGINT" property="mainType" />
-        <result column="secondary_type" jdbcType="BIGINT" property="secondaryType" />
-        <result column="record_time" jdbcType="DATE" property="recordTime" />
-        <result column="remark" jdbcType="VARCHAR" property="remark" />
-        <result column="record_avator_url" jdbcType="VARCHAR" property="recordAvatorUrl" />
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="book_id" jdbcType="BIGINT" property="bookId"/>
+        <result column="amount" jdbcType="INTEGER" property="amount"/>
+        <result column="record_type" jdbcType="TINYINT" property="recordType"/>
+        <result column="main_type" jdbcType="BIGINT" property="mainType"/>
+        <result column="secondary_type" jdbcType="BIGINT" property="secondaryType"/>
+        <result column="record_time" jdbcType="DATE" property="recordTime"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="record_avator_url" jdbcType="VARCHAR" property="recordAvatorUrl"/>
         <collection property="avatorUrls" ofType="String" column="avatar_url">
-            <result column="avatar_url" property="avatorUrls" jdbcType="VARCHAR" />
+            <result column="avatar_url" property="avatorUrls" jdbcType="VARCHAR"/>
         </collection>
     </resultMap>
 
     <select id="currentMonthTotalMoney" resultType="int">
-        SELECT IFNULL(SUM(amount), 0) FROM account_record WHERE record_time BETWEEN #{startDate} AND #{endDate} AND is_delete = 0 AND record_type = ${recordType};
+        SELECT IFNULL(SUM(amount), 0)
+        FROM account_record
+        WHERE book_id = #{bookId} AND record_time BETWEEN #{startDate} AND #{endDate} AND is_delete = 0 AND
+              record_type = ${recordType};
     </select>
 
     <select id="getRecordList" resultMap="recordListMap">
-        SELECT r.id, r.book_id, r.amount, r.record_type, r.main_type, r.secondary_type, r.record_time, r.remark, u.avatar_url, ur.avatar_url AS record_avator_url
-        FROM (SELECT * FROM account_record WHERE book_id = #{bookId} AND is_delete = 0 AND DATE_FORMAT(record_time, '%Y-%m') = #{date}) r
+        SELECT
+            r.id,
+            r.book_id,
+            r.amount,
+            r.record_type,
+            r.main_type,
+            r.secondary_type,
+            r.record_time,
+            r.remark,
+            u.avatar_url,
+            ur.avatar_url AS record_avator_url
+        FROM (SELECT *
+              FROM account_record
+              WHERE book_id = #{bookId} AND is_delete = 0 AND DATE_FORMAT(record_time, '%Y-%m') = #{date}) r
             INNER JOIN account_record_parters p
                 ON r.id = p.record_id
             INNER JOIN wechat_user u
@@ -48,4 +63,20 @@
         ORDER BY r.record_time DESC
     </select>
 
+    <select id="totalRecordDays" resultType="int">
+        SELECT COUNT(DISTINCT DATE_FORMAT(create_time, '%Y-%m-%d'))
+        FROM account_record
+        WHERE creator_id = #{userId}
+    </select>
+
+    <select id="findRecordRoughStatisticsByUserId" resultType="com.whyalwaysmea.account.dto.RecordRoughStatisticsDTO">
+        SELECT IFNULL(SUM(amount), 0) AS totalMoney, COUNT(1) AS totalNum
+        FROM account_record
+        WHERE creator_id = #{userId} AND book_id = #{bookId} AND record_time BETWEEN #{startDate} AND #{endDate} AND is_delete = 0 AND
+              record_type = ${recordType};
+    </select>
+
+    <select id="countRecordNums" resultType="int">
+        SELECT COUNT(1) FROM account_record WHERE book_id = #{bookId}
+    </select>
 </mapper>

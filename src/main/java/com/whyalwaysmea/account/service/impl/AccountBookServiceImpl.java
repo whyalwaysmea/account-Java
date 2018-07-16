@@ -1,8 +1,6 @@
 package com.whyalwaysmea.account.service.impl;
 
-import com.github.pagehelper.PageHelper;
 import com.whyalwaysmea.account.constant.RecordType;
-import com.whyalwaysmea.account.dto.PageBean;
 import com.whyalwaysmea.account.enums.AccountBookError;
 import com.whyalwaysmea.account.enums.CommonError;
 import com.whyalwaysmea.account.exception.MyException;
@@ -10,7 +8,6 @@ import com.whyalwaysmea.account.mapper.AccountBookMapper;
 import com.whyalwaysmea.account.mapper.AccountBookPartersMapper;
 import com.whyalwaysmea.account.mapper.AccountRecordMapper;
 import com.whyalwaysmea.account.parameters.AccountBookParam;
-import com.whyalwaysmea.account.parameters.PageParam;
 import com.whyalwaysmea.account.parameters.RecordParam;
 import com.whyalwaysmea.account.po.AccountBook;
 import com.whyalwaysmea.account.po.AccountBookParters;
@@ -18,6 +15,7 @@ import com.whyalwaysmea.account.service.AccountBookService;
 import com.whyalwaysmea.account.utils.DateUtils;
 import com.whyalwaysmea.account.vo.AccountBookDetails;
 import com.whyalwaysmea.account.vo.AccountBookPartersVO;
+import com.whyalwaysmea.account.vo.BookListVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -73,7 +72,7 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
 
     @Override
     public boolean delAccountBook(long id) {
-        AccountBook accountBook = accountBookMapper.selectByPrimaryKey(id);
+        AccountBook accountBook = accountBookMapper.getAccountBook(id);
         List<String> parterIds = accountBook.getParticipants().stream().map(AccountBookPartersVO::getWechatOpenid).collect(Collectors.toList());
         if(parterIds.contains(getCurrentUserId())) {
             AccountBookParters accountBookParters = new AccountBookParters();
@@ -108,7 +107,7 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
         if(accountBookParam.getBudgetaryAmount() != null) {
             accountBook.setBudgetaryAmount(accountBookParam.getBudgetaryAmount());
 
-            Integer totalExpenditure = recordMapper.currentMonthTotalMoney(RecordType.EXPENDITURE, DateUtils.getFirstDayOfCurrentMonth(), DateUtils.getCurrentDate());
+            Integer totalExpenditure = recordMapper.currentMonthTotalMoney(accountBook.getId(), RecordType.EXPENDITURE, DateUtils.getFirstDayOfCurrentMonth(), DateUtils.getCurrentDate());
 
             int surplusBudgetaryAmount = accountBookParam.getBudgetaryAmount() - totalExpenditure;
             accountBook.setSurplusBudgetaryAmount(surplusBudgetaryAmount);
@@ -176,26 +175,36 @@ public class AccountBookServiceImpl extends BaseService implements AccountBookSe
         AccountBookDetails accountBookDetails = new AccountBookDetails();
         BeanUtils.copyProperties(accountBook, accountBookDetails);
 
-        Integer totalIncome = recordMapper.currentMonthTotalMoney(RecordType.INCOME, DateUtils.getFirstDayOfCurrentMonth(), DateUtils.getCurrentDate());
-        Integer totalExpenditure = recordMapper.currentMonthTotalMoney(RecordType.EXPENDITURE, DateUtils.getFirstDayOfCurrentMonth(), DateUtils.getCurrentDate());
+        Integer totalIncome = recordMapper.currentMonthTotalMoney(id, RecordType.INCOME, DateUtils.getFirstDayOfCurrentMonth(), DateUtils.getCurrentDate());
+        Integer totalExpenditure = recordMapper.currentMonthTotalMoney(id, RecordType.EXPENDITURE, DateUtils.getFirstDayOfCurrentMonth(), DateUtils.getCurrentDate());
         accountBookDetails.setIncomeAmount(totalIncome);
         accountBookDetails.setExpenditureAmount(totalExpenditure);
         return accountBookDetails;
     }
 
     @Override
-    public PageBean<AccountBook> getAllAccountBook(PageParam pageParam) {
+    public List<BookListVO> getAllAccountBook() {
         AccountBookParters accountBookParters = new AccountBookParters();
         accountBookParters.setWechatOpenid(getCurrentUserId());
         List<AccountBookParters> parters = partersMapper.select(accountBookParters);
         List<Long> bookIds = parters.stream().map(parter -> parter.getBookId()).collect(Collectors.toList());
-        PageHelper.startPage(pageParam);
-        if(CollectionUtils.isEmpty(bookIds)) {
-            return PageBean.data(null);
-        } else {
-            List<AccountBook> allAccountBook = accountBookMapper.getAllAccountBook(bookIds);
-            return PageBean.data(allAccountBook);
+
+        List<BookListVO> result = new ArrayList<>();
+        for (Long bookId : bookIds) {
+            AccountBook accountBook = accountBookMapper.getAccountBook(bookId);
+
+            BookListVO bookListVO = new BookListVO();
+            bookListVO.setMemberNums(accountBook.getParticipants().size());
+            bookListVO.setBookId(bookId);
+            bookListVO.setName(accountBook.getName());
+
+            int recordNums = recordMapper.countRecordNums(bookId);
+            bookListVO.setRecordNums(recordNums);
+
+            result.add(bookListVO);
         }
+
+        return result;
     }
 
 

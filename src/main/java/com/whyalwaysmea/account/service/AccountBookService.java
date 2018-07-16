@@ -1,11 +1,12 @@
 package com.whyalwaysmea.account.service;
 
-import com.whyalwaysmea.account.dto.PageBean;
 import com.whyalwaysmea.account.parameters.AccountBookParam;
-import com.whyalwaysmea.account.parameters.PageParam;
 import com.whyalwaysmea.account.parameters.RecordParam;
 import com.whyalwaysmea.account.po.AccountBook;
 import com.whyalwaysmea.account.vo.AccountBookDetails;
+import com.whyalwaysmea.account.vo.BookListVO;
+
+import java.util.List;
 
 /**
  * @Author: Long
@@ -53,7 +54,7 @@ public interface AccountBookService {
      * 分页获取账本列表
      * @return
      */
-    PageBean<AccountBook> getAllAccountBook(PageParam pageParam);
+    List<BookListVO> getAllAccountBook();
 
 
 }

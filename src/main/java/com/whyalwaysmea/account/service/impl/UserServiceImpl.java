@@ -1,6 +1,6 @@
 package com.whyalwaysmea.account.service.impl;
 
-import com.whyalwaysmea.account.mapper.AccountBookPartersMapper;
+import com.whyalwaysmea.account.mapper.AccountRecordMapper;
 import com.whyalwaysmea.account.mapper.UserStatisticalMapper;
 import com.whyalwaysmea.account.mapper.WechatUserMapper;
 import com.whyalwaysmea.account.mq.QueueEnum;
@@ -11,6 +11,7 @@ import com.whyalwaysmea.account.po.UserStatistical;
 import com.whyalwaysmea.account.po.WechatUser;
 import com.whyalwaysmea.account.service.*;
 import com.whyalwaysmea.account.utils.UserUtils;
+import com.whyalwaysmea.account.vo.UserStatisticalVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
@@ -53,7 +54,8 @@ public class UserServiceImpl implements UserService {
     private UserStatisticalMapper userStatisticalMapper;
 
     @Autowired
-    private AccountBookPartersMapper bookPartersMapper;
+    private AccountRecordMapper recordMapper;
+
 
     private static final String DEFAULT_BOOKNAME = "%s的默认账本";
 
@@ -148,6 +150,19 @@ public class UserServiceImpl implements UserService {
         Integer totalRecordTimes = userStatistical.getTotalRecordTimes() + 1;
         userStatistical.setTotalRecordTimes(totalRecordTimes);
         userStatisticalMapper.updateByPrimaryKeySelective(userStatistical);
+    }
+
+    @Override
+    public UserStatisticalVO getUserStatistics() {
+        String currentUserId = getCurrentUserId();
+        UserStatistical userStatistical = userStatisticalMapper.selectByPrimaryKey(currentUserId);
+        int totalRecordDays = recordMapper.totalRecordDays(currentUserId);
+
+        UserStatisticalVO userStatisticalVO = new UserStatisticalVO();
+        userStatisticalVO.setContinuityAccountDays(userStatistical.getContinuityAccountDays());
+        userStatisticalVO.setTotalRecordTimes(userStatistical.getTotalRecordTimes());
+        userStatisticalVO.setTotalRecordDays(totalRecordDays);
+        return userStatisticalVO;
     }
 
 

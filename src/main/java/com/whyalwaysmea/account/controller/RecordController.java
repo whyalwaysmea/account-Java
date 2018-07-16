@@ -5,6 +5,7 @@ import com.whyalwaysmea.account.dto.ExecuteResult;
 import com.whyalwaysmea.account.parameters.RecordParam;
 import com.whyalwaysmea.account.po.AccountRecord;
 import com.whyalwaysmea.account.service.RecordService;
+import com.whyalwaysmea.account.vo.MemberRecordsVO;
 import com.whyalwaysmea.account.vo.RecordListVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,7 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -57,4 +57,10 @@ public class RecordController extends BaseController {
         return ExecuteResult.ok(records);
     }
 
+    @GetMapping("/member/{bookId}")
+    @ApiOperation("成员的记账统计")
+    public ExecuteResult<List<MemberRecordsVO>> getMemberRecordsVO(@PathVariable("bookId") long bookId) {
+        List<MemberRecordsVO> memberRecord = recordService.getMemberRecord(bookId);
+        return ExecuteResult.ok(memberRecord);
+    }
 }

@@ -7,6 +7,7 @@ import com.whyalwaysmea.account.parameters.WechatUserInfoParam;
 import com.whyalwaysmea.account.po.WechatUser;
 import com.whyalwaysmea.account.service.UserService;
 import com.whyalwaysmea.account.utils.JsonUtil;
+import com.whyalwaysmea.account.vo.UserStatisticalVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -82,6 +83,11 @@ public class UserController extends BaseController {
         return ExecuteResult.ok();
     }
 
+    @ApiOperation("获取用户数据统计")
+    @GetMapping("/statistics")
+    public ExecuteResult<UserStatisticalVO> getUserStatistics() {
+        return ExecuteResult.ok(userService.getUserStatistics());
+    }
 }
 
 

@@ -2,6 +2,7 @@ package com.whyalwaysmea.account.service;
 
 import com.whyalwaysmea.account.parameters.WechatUserInfoParam;
 import com.whyalwaysmea.account.po.WechatUser;
+import com.whyalwaysmea.account.vo.UserStatisticalVO;
 
 /**
  * @Author: whyalwaysmea
@@ -57,4 +58,10 @@ public interface UserService {
      * @param userId
      */
     void updateLastAccountTime(String userId);
+
+    /**
+     * 获取用户统计数据
+     * @return
+     */
+    UserStatisticalVO getUserStatistics();
 }
