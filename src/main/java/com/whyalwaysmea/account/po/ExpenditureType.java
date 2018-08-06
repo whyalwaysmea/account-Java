@@ -68,4 +68,5 @@ public class ExpenditureType implements Serializable {
     @Transient
     @ApiModelProperty("子分类")
     private List<ExpenditureType> childExpenditure;
+
 }
