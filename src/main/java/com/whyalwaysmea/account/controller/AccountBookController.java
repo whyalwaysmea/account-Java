@@ -77,8 +77,8 @@ public class AccountBookController extends BaseController{
 
     @ApiOperation("加入账本")
     @PostMapping("/parter/{bookId:\\d+}")
-    public ExecuteResult<Integer> joinAccountBook(@PathVariable("bookId") @ApiParam("账本id") long bookId) {
-        int result = bookParterService.joinAccountBook(bookId);
+    public ExecuteResult<List<AccountBookPartersVO>> joinAccountBook(@PathVariable("bookId") @ApiParam("账本id") long bookId) {
+        List<AccountBookPartersVO> result = bookParterService.joinAccountBook(bookId);
         return ExecuteResult.ok(result);
     }
 

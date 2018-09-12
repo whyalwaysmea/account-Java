@@ -74,7 +74,6 @@ public class ExpenditureServiceImpl extends BaseService implements ExpenditureSe
 
     @Override
     public void addDefaultExpenditureForNewUser(String userId) {
-        // TODO 第一次会很慢，不知道是不是逻辑有问题
         List<ExpenditureType> allDefaultExpenditure = getAllParentDefaultExpenditure();
         for (ExpenditureType expenditureType : allDefaultExpenditure) {
             // 先保存父类

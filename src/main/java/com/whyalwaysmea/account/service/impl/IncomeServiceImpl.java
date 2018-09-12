@@ -52,6 +52,7 @@ public class IncomeServiceImpl extends BaseService implements IncomeService {
     public void addDefaultIncomeTypeForNewUser(String userId) {
         List<IncomeType> allDefaultIncomeType = getAllDefaultIncomeType();
         List<IncomeType> collect = allDefaultIncomeType.stream().peek(incomeType -> {
+                    incomeType.setId(null);
                     incomeType.setCreatorId(userId);
                     incomeType.setCreateTime(new Date());
                 }).collect(Collectors.toList());

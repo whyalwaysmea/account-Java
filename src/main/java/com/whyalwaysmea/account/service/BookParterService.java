@@ -13,9 +13,9 @@ public interface BookParterService {
 
     /**
      * 参与到账本
-     * @return  0表示加入成功  1表示已经加入过的  -1表示失败
+     * @return
      */
-    int joinAccountBook(long id);
+    List<AccountBookPartersVO> joinAccountBook(long id);
 
     /**
      * 创建一个虚拟的成员

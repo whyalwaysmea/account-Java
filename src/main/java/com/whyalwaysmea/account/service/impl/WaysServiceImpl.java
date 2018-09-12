@@ -52,6 +52,7 @@ public class WaysServiceImpl extends BaseService implements WaysService {
     public void addDefaultWaysForNewUser(String userId) {
         List<PayIncomeWays> allDefaultWays = getAllDefaultWays();
         List<PayIncomeWays> collect = allDefaultWays.stream().peek(payIncomeWays -> {
+            payIncomeWays.setId(null);
             payIncomeWays.setCreatorId(userId);
             payIncomeWays.setCreateTime(new Date());
         }).collect(Collectors.toList());

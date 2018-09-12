@@ -6,6 +6,7 @@ import com.whyalwaysmea.account.mapper.AccountBookMapper;
 import com.whyalwaysmea.account.mapper.AccountBookPartersMapper;
 import com.whyalwaysmea.account.po.AccountBook;
 import com.whyalwaysmea.account.po.AccountBookParters;
+import com.whyalwaysmea.account.po.WechatUser;
 import com.whyalwaysmea.account.service.BookParterService;
 import com.whyalwaysmea.account.vo.AccountBookPartersVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class BookParterServiceImpl extends BaseService implements BookParterServ
     private AccountBookMapper accountBookMapper;
 
     @Override
-    public int joinAccountBook(long id) {
+    public List<AccountBookPartersVO> joinAccountBook(long id) {
         AccountBook accountBook = accountBookMapper.getAccountBook(id);
         if(accountBook == null) {
             throw new MyException(AccountBookError.ERROR_ACCOUNTBOOK);
@@ -47,16 +48,14 @@ public class BookParterServiceImpl extends BaseService implements BookParterServ
 
             accountBook.setMultipleType(true);
             accountBookMapper.updateByPrimaryKeySelective(accountBook);
-            return 0;
+
+            WechatUser currentUser = getCurrentUser();
+            AccountBookPartersVO accountBookPartersVO = new AccountBookPartersVO();
+            accountBookPartersVO.setAvatarUrl(currentUser.getAvatarUrl());
+            participants.add(accountBookPartersVO);
         }
 
-        // 如果已经在账本中
-        AccountBookParters parter = partersMapper.selectOne(accountBookParters);
-        if(parter != null) {
-            return 1;
-        }
-
-        return -1;
+        return participants;
     }
 
     @Override
